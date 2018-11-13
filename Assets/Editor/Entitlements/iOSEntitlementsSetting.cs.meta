@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b77f5766c882c4fdba21844d5876b46c
+timeCreated: 1541755396
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - RomDev: {instanceID: 0}
+  - RomBeta: {instanceID: 0}
+  - RomRelease: {fileID: 102900000, guid: 3995843c8d26d4e14895817fae56f450, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

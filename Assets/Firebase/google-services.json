@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "987859633662",
+    "firebase_url": "https://libra-of-precatus.firebaseio.com",
+    "project_id": "libra-of-precatus",
+    "storage_bucket": "libra-of-precatus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987859633662:android:fe7e28bb4b704c28",
+        "android_client_info": {
+          "package_name": "jp.fg.precatus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "987859633662-brm8jmamd42hsdh00rm58hhqdubsg5aa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlCdEojaLYahIIDllar7lLG6_D-BDPLW4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

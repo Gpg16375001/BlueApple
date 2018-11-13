@@ -1,0 +1,241 @@
+fileFormatVersion: 2
+guid: aa83fca2f362fa54b976ae3ce8d0329d
+timeCreated: 1510536578
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: AtlasUnityChan_Head
+    21300002: AtlasUnityChan_LegR
+    21300004: AtlasUnityChan_LegL
+    21300006: AtlasUnityChan_ArmR
+    21300008: AtlasUnityChan_ArmL
+    21300010: AtlasUnityChan_Body
+    21300012: AtlasUnityChan_Waist
+    21300014: AtlasUnityChan_HairBack
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: AtlasUnityChan_Head
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 369.95703
+        width: 158.56992
+        height: 139.04297
+      alignment: 9
+      pivot: {x: 0.5045093, y: 0.4965585}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AtlasUnityChan_LegR
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 24.921432
+        width: 101
+        height: 353
+      alignment: 9
+      pivot: {x: 0.4950495, y: 0.47614324}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AtlasUnityChan_LegL
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 36.895813
+        width: 100
+        height: 311
+      alignment: 9
+      pivot: {x: 0.51, y: 0.49229643}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AtlasUnityChan_ArmR
+      rect:
+        serializedVersion: 2
+        x: 199.57275
+        y: 262
+        width: 69.64087
+        height: 248
+      alignment: 9
+      pivot: {x: 0.49435404, y: 0.49193546}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AtlasUnityChan_ArmL
+      rect:
+        serializedVersion: 2
+        x: 262.21362
+        y: 290
+        width: 66.48297
+        height: 217
+      alignment: 9
+      pivot: {x: 0.5382788, y: 0.49308756}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AtlasUnityChan_Body
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 26.499992
+        width: 114
+        height: 227
+      alignment: 9
+      pivot: {x: 0.47368422, y: 0.49559474}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AtlasUnityChan_Waist
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 1
+        width: 124
+        height: 96
+      alignment: 9
+      pivot: {x: 0.5080645, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: AtlasUnityChan_HairBack
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 104
+        width: 184
+        height: 407
+      alignment: 9
+      pivot: {x: 0.5054348, y: 0.4987715}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 98994523823198
+  assetBundleName: 
+  assetBundleVariant: 

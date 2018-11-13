@@ -1,0 +1,20 @@
+
+020001.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+02_WhipDef
+  rotate: true
+  xy: 457, 2
+  size: 205, 209
+  orig: 600, 600
+  offset: 349, 103
+  index: -1
+02_WhipDef_hit
+  rotate: false
+  xy: 2, 122
+  size: 453, 85
+  orig: 600, 600
+  offset: 101, 283
+  index: -1

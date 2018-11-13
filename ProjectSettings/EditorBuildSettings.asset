@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Project/Scenes/boot.unity
+    guid: f9044e3ad0eef4ec4b2bc67ae9dc09ea
+  - enabled: 1
+    path: Assets/Project/Scenes/Title.unity
+    guid: de6b0b6f147544c60b1808c21748df9f
+  - enabled: 1
+    path: Assets/Project/Scenes/MyPage.unity
+    guid: 127454e2a68294a069f872510e3bd3ab
+  - enabled: 1
+    path: Assets/Project/Scenes/Scenario.unity
+    guid: 03ac4d154af784df2b76f1fb02f6721a
+  - enabled: 1
+    path: Assets/Project/Scenes/Battle.unity
+    guid: d6b001543cf0342a9b1a667b405c623f
+  - enabled: 1
+    path: Assets/Project/Scenes/MainQuest.unity
+    guid: 6c9413e4b13c846ea9c3517a674fd4a7
+  - enabled: 1
+    path: Assets/Project/Scenes/FriendSelect.unity
+    guid: 073d086735e6047e986f3b5031bce155
+  - enabled: 1
+    path: Assets/Project/Scenes/QuestPreparation.unity
+    guid: 391206d709f99411b9c80b4544ef0aa3
+  - enabled: 1
+    path: Assets/Project/Scenes/PresentBox.unity
+    guid: 698383a64f4a746f0b9cf39c09f29925
+  - enabled: 1
+    path: Assets/Project/Scenes/Option.unity
+    guid: 15cb2f842625049b1b95a3af7121784c
+  - enabled: 1
+    path: Assets/Project/Scenes/PartyEdit.unity
+    guid: 391dcb58d347646458e5ec5f76ae6775
+  - enabled: 1
+    path: Assets/Project/Scenes/FormationSelect.unity
+    guid: 1514c45c246934016b610ff2ef58b1b4
+  - enabled: 1
+    path: Assets/Project/Scenes/UnitDetails.unity
+    guid: 747ceae3891d246359f306d0681a6303
+  - enabled: 1
+    path: Assets/Project/Scenes/PartyDetails.unity
+    guid: 8f2f05341d9b847c0898e4dc9ef6a4c6
+  - enabled: 1
+    path: Assets/Project/Scenes/PartyChange.unity
+    guid: 31a97b1f7a79f4593a0371515a9aee47
+  - enabled: 1
+    path: Assets/Project/Scenes/PartyEditUnit.unity
+    guid: a09cdf6aae94f4a388ee2e7d328257d2
+  - enabled: 1
+    path: Assets/Project/Scenes/Gacha.unity
+    guid: a8bf4104174b14b3fa82d76f9f317448
+  - enabled: 1
+    path: Assets/Project/Scenes/Weapon.unity
+    guid: 048418318598448a39154cee5d3d8de0
+  - enabled: 1
+    path: Assets/Project/Scenes/UnitList.unity
+    guid: 7ef19da830255437999c68e43b6c1f95
+  - enabled: 1
+    path: Assets/Project/Scenes/Tutorial.unity
+    guid: 39568e2e5ea0d47d1a5f0f276a2f27db
+  - enabled: 1
+    path: Assets/Project/Scenes/PVP.unity
+    guid: a67a899df7d0c44c2b5bd8c5e6c0ee65
+  - enabled: 1
+    path: Assets/Project/Scenes/Mission.unity
+    guid: 4003273e393e449efa7cffc6ea6a4c96
+  - enabled: 1
+    path: Assets/Project/Scenes/Shop.unity
+    guid: bc794886780104abd94321d35a8eb22f
+  - enabled: 1
+    path: Assets/Project/Scenes/UnitQuest.unity
+    guid: 13efa4a4e08654afe88abf9d70414cc3
+  - enabled: 1
+    path: Assets/Project/Scenes/PlayerSupportEdit.unity
+    guid: c6b585748192b4436b15f9e04d72972e
+  - enabled: 1
+    path: Assets/Project/Scenes/Event.unity
+    guid: a1e92d6886c62463d8a73693a32d2839
+  - enabled: 1
+    path: Assets/Project/Scenes/DailyQuest.unity
+    guid: aa7ae4739f15f46858a440fa488a6b21
+  - enabled: 1
+    path: Assets/Project/Scenes/PartyEditTop.unity
+    guid: 872cd8e14f0a14b5497a3f3ce4708ba6

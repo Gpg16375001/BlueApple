@@ -1,0 +1,83 @@
+
+m003_character_v1.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+body
+  rotate: true
+  xy: 354, 2
+  size: 232, 224
+  orig: 232, 224
+  offset: 0, 0
+  index: -1
+chest
+  rotate: false
+  xy: 580, 10
+  size: 223, 228
+  orig: 223, 228
+  offset: 0, 0
+  index: -1
+handL01
+  rotate: false
+  xy: 805, 35
+  size: 112, 127
+  orig: 112, 127
+  offset: 0, 0
+  index: -1
+handL02
+  rotate: false
+  xy: 919, 56
+  size: 96, 106
+  orig: 96, 106
+  offset: 0, 0
+  index: -1
+handR01
+  rotate: true
+  xy: 2, 27
+  size: 148, 125
+  orig: 148, 125
+  offset: 0, 0
+  index: -1
+handR02
+  rotate: false
+  xy: 805, 164
+  size: 136, 115
+  orig: 136, 115
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 548, 240
+  size: 197, 264
+  orig: 197, 264
+  offset: 0, 0
+  index: -1
+needle
+  rotate: false
+  xy: 129, 36
+  size: 223, 139
+  orig: 223, 139
+  offset: 0, 0
+  index: -1
+wingL
+  rotate: false
+  xy: 805, 281
+  size: 201, 223
+  orig: 201, 223
+  offset: 0, 0
+  index: -1
+wingR
+  rotate: true
+  xy: 311, 236
+  size: 268, 235
+  orig: 268, 235
+  offset: 0, 0
+  index: -1
+wingRE
+  rotate: false
+  xy: 2, 177
+  size: 307, 327
+  orig: 307, 327
+  offset: 0, 0
+  index: -1

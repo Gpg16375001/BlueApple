@@ -1,0 +1,139 @@
+
+m004_character_v1.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+armL
+  rotate: false
+  xy: 258, 433
+  size: 115, 226
+  orig: 115, 226
+  offset: 0, 0
+  index: -1
+armR
+  rotate: false
+  xy: 152, 144
+  size: 137, 261
+  orig: 137, 261
+  offset: 0, 0
+  index: -1
+calfL
+  rotate: true
+  xy: 473, 682
+  size: 113, 204
+  orig: 113, 204
+  offset: 0, 0
+  index: -1
+calfR
+  rotate: true
+  xy: 291, 110
+  size: 116, 179
+  orig: 116, 179
+  offset: 0, 0
+  index: -1
+earL
+  rotate: true
+  xy: 472, 567
+  size: 113, 194
+  orig: 113, 194
+  offset: 0, 0
+  index: -1
+earR
+  rotate: false
+  xy: 291, 228
+  size: 117, 203
+  orig: 117, 203
+  offset: 0, 0
+  index: -1
+footL
+  rotate: false
+  xy: 152, 2
+  size: 172, 106
+  orig: 172, 106
+  offset: 0, 0
+  index: -1
+footR
+  rotate: false
+  xy: 326, 2
+  size: 172, 106
+  orig: 172, 106
+  offset: 0, 0
+  index: -1
+fundoshi
+  rotate: false
+  xy: 473, 797
+  size: 219, 225
+  orig: 219, 225
+  offset: 0, 0
+  index: -1
+handL
+  rotate: true
+  xy: 668, 483
+  size: 121, 189
+  orig: 121, 189
+  offset: 0, 0
+  index: -1
+handR
+  rotate: true
+  xy: 679, 606
+  size: 118, 199
+  orig: 118, 199
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 2, 407
+  size: 254, 252
+  orig: 254, 252
+  offset: 0, 0
+  index: -1
+pelvis
+  rotate: false
+  xy: 375, 444
+  size: 175, 121
+  orig: 175, 121
+  offset: 0, 0
+  index: -1
+shoulderL
+  rotate: true
+  xy: 694, 726
+  size: 137, 248
+  orig: 137, 248
+  offset: 0, 0
+  index: -1
+shoulderR
+  rotate: true
+  xy: 694, 865
+  size: 157, 259
+  orig: 157, 259
+  offset: 0, 0
+  index: -1
+spine
+  rotate: false
+  xy: 2, 661
+  size: 300, 361
+  orig: 300, 361
+  offset: 0, 0
+  index: -1
+tail
+  rotate: true
+  xy: 552, 415
+  size: 150, 114
+  orig: 150, 114
+  offset: 0, 0
+  index: -1
+thighL
+  rotate: false
+  xy: 304, 720
+  size: 167, 302
+  orig: 167, 302
+  offset: 0, 0
+  index: -1
+thighR
+  rotate: false
+  xy: 2, 103
+  size: 148, 302
+  orig: 148, 302
+  offset: 0, 0
+  index: -1

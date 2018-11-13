@@ -1,0 +1,250 @@
+
+chara_m_krasikov.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BackColorCloth
+  rotate: true
+  xy: 972, 743
+  size: 49, 26
+  orig: 51, 28
+  offset: 1, 1
+  index: -1
+BackHair
+  rotate: true
+  xy: 2, 10
+  size: 371, 401
+  orig: 373, 403
+  offset: 1, 1
+  index: -1
+Bag
+  rotate: false
+  xy: 955, 165
+  size: 46, 61
+  orig: 48, 63
+  offset: 1, 1
+  index: -1
+Dagger
+  rotate: true
+  xy: 753, 794
+  size: 228, 248
+  orig: 230, 251
+  offset: 1, 2
+  index: -1
+Gun
+  rotate: false
+  xy: 2, 823
+  size: 749, 199
+  orig: 751, 202
+  offset: 1, 2
+  index: -1
+Hat
+  rotate: true
+  xy: 418, 303
+  size: 518, 323
+  orig: 520, 325
+  offset: 1, 1
+  index: -1
+Head
+  rotate: false
+  xy: 2, 383
+  size: 414, 438
+  orig: 416, 439
+  offset: 1, 1
+  index: -1
+LeftHair
+  rotate: false
+  xy: 759, 107
+  size: 194, 324
+  orig: 196, 326
+  offset: 1, 1
+  index: -1
+LeftHand
+  rotate: true
+  xy: 955, 228
+  size: 45, 67
+  orig: 47, 68
+  offset: 1, 1
+  index: -1
+Mouth
+  rotate: false
+  xy: 2, 2
+  size: 35, 6
+  orig: 37, 8
+  offset: 1, 1
+  index: -1
+RLowerCloth
+  rotate: true
+  xy: 759, 8
+  size: 97, 225
+  orig: 99, 226
+  offset: 1, 1
+  index: -1
+RightFingers
+  rotate: true
+  xy: 972, 674
+  size: 31, 30
+  orig: 33, 32
+  offset: 1, 1
+  index: -1
+RightHair
+  rotate: false
+  xy: 743, 433
+  size: 227, 359
+  orig: 229, 363
+  offset: 1, 1
+  index: -1
+RightLeg
+  rotate: false
+  xy: 955, 275
+  size: 67, 156
+  orig: 69, 158
+  offset: 1, 1
+  index: -1
+RightPalm
+  rotate: false
+  xy: 955, 121
+  size: 41, 42
+  orig: 43, 44
+  offset: 1, 1
+  index: -1
+RightThumb
+  rotate: true
+  xy: 972, 707
+  size: 34, 27
+  orig: 36, 28
+  offset: 1, 1
+  index: -1
+Sword
+  rotate: false
+  xy: 405, 10
+  size: 352, 291
+  orig: 354, 293
+  offset: 1, 1
+  index: -1
+
+chara_m_krasikov2.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BackCloth
+  rotate: false
+  xy: 414, 804
+  size: 223, 211
+  orig: 225, 214
+  offset: 1, 2
+  index: -1
+BackHair2
+  rotate: false
+  xy: 2, 687
+  size: 410, 328
+  orig: 412, 330
+  offset: 1, 1
+  index: -1
+Body
+  rotate: false
+  xy: 195, 460
+  size: 146, 225
+  orig: 148, 227
+  offset: 1, 1
+  index: -1
+Eyes
+  rotate: false
+  xy: 639, 836
+  size: 233, 60
+  orig: 235, 63
+  offset: 1, 2
+  index: -1
+FrontHair01
+  rotate: false
+  xy: 2, 396
+  size: 191, 289
+  orig: 193, 291
+  offset: 1, 1
+  index: -1
+FrontHair02
+  rotate: true
+  xy: 639, 898
+  size: 117, 294
+  orig: 119, 296
+  offset: 1, 1
+  index: -1
+LLowerCloth
+  rotate: false
+  xy: 2, 123
+  size: 162, 271
+  orig: 164, 273
+  offset: 1, 1
+  index: -1
+LRobe
+  rotate: true
+  xy: 2, 2
+  size: 119, 156
+  orig: 127, 158
+  offset: 3, 1
+  index: -1
+LeftLeg
+  rotate: false
+  xy: 551, 511
+  size: 83, 161
+  orig: 85, 163
+  offset: 1, 1
+  index: -1
+LeftLowerArm
+  rotate: false
+  xy: 160, 6
+  size: 85, 106
+  orig: 88, 108
+  offset: 1, 1
+  index: -1
+LeftUpperArm
+  rotate: false
+  xy: 935, 882
+  size: 86, 133
+  orig: 88, 135
+  offset: 1, 1
+  index: -1
+LeftUpperLeg
+  rotate: false
+  xy: 343, 478
+  size: 111, 194
+  orig: 113, 195
+  offset: 1, 1
+  index: -1
+Pistol
+  rotate: false
+  xy: 414, 674
+  size: 192, 128
+  orig: 194, 130
+  offset: 1, 1
+  index: -1
+RRobe
+  rotate: true
+  xy: 195, 325
+  size: 133, 138
+  orig: 135, 140
+  offset: 1, 1
+  index: -1
+RightForeArm
+  rotate: false
+  xy: 166, 114
+  size: 97, 97
+  orig: 99, 99
+  offset: 1, 1
+  index: -1
+RightUpperArm
+  rotate: false
+  xy: 166, 213
+  size: 95, 110
+  orig: 97, 113
+  offset: 1, 2
+  index: -1
+RightUpperLeg
+  rotate: false
+  xy: 456, 491
+  size: 93, 181
+  orig: 96, 184
+  offset: 2, 2
+  index: -1

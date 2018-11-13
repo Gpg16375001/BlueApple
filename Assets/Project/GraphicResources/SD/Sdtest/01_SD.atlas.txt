@@ -1,0 +1,237 @@
+
+01_SD.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Body
+  rotate: false
+  xy: 2, 51
+  size: 139, 226
+  orig: 139, 226
+  offset: 0, 0
+  index: -1
+Eyes
+  rotate: false
+  xy: 420, 894
+  size: 264, 117
+  orig: 264, 117
+  offset: 0, 0
+  index: -1
+Head
+  rotate: false
+  xy: 2, 572
+  size: 416, 439
+  orig: 416, 439
+  offset: 0, 0
+  index: -1
+Hip
+  rotate: false
+  xy: 143, 145
+  size: 140, 132
+  orig: 140, 132
+  offset: 0, 0
+  index: -1
+LeftHand
+  rotate: true
+  xy: 2, 2
+  size: 47, 68
+  orig: 47, 68
+  offset: 0, 0
+  index: -1
+LeftLeg
+  rotate: false
+  xy: 525, 730
+  size: 78, 162
+  orig: 78, 162
+  offset: 0, 0
+  index: -1
+LeftLowerArm
+  rotate: false
+  xy: 605, 791
+  size: 75, 101
+  orig: 75, 101
+  offset: 0, 0
+  index: -1
+LeftUpperArm
+  rotate: false
+  xy: 420, 582
+  size: 81, 124
+  orig: 81, 124
+  offset: 0, 0
+  index: -1
+LeftUpperLeg
+  rotate: false
+  xy: 420, 708
+  size: 103, 184
+  orig: 103, 184
+  offset: 0, 0
+  index: -1
+Marker1
+  rotate: false
+  xy: 249, 108
+  size: 35, 35
+  orig: 35, 35
+  offset: 0, 0
+  index: -1
+Marker10
+  rotate: false
+  xy: 358, 393
+  size: 87, 87
+  orig: 87, 87
+  offset: 0, 0
+  index: -1
+Marker12
+  rotate: false
+  xy: 686, 895
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
+Marker13
+  rotate: false
+  xy: 420, 574
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
+Marker15
+  rotate: false
+  xy: 525, 709
+  size: 29, 19
+  orig: 29, 19
+  offset: 0, 0
+  index: -1
+Marker16
+  rotate: false
+  xy: 114, 32
+  size: 24, 17
+  orig: 24, 17
+  offset: 0, 0
+  index: -1
+Marker17
+  rotate: false
+  xy: 655, 764
+  size: 20, 25
+  orig: 20, 25
+  offset: 0, 0
+  index: -1
+Marker18
+  rotate: false
+  xy: 325, 164
+  size: 17, 19
+  orig: 17, 19
+  offset: 0, 0
+  index: -1
+Marker2
+  rotate: false
+  xy: 912, 916
+  size: 31, 31
+  orig: 31, 31
+  offset: 0, 0
+  index: -1
+Marker3
+  rotate: false
+  xy: 72, 9
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+Marker4
+  rotate: false
+  xy: 285, 145
+  size: 38, 38
+  orig: 38, 38
+  offset: 0, 0
+  index: -1
+Marker5
+  rotate: false
+  xy: 358, 482
+  size: 88, 88
+  orig: 88, 88
+  offset: 0, 0
+  index: -1
+Marker6
+  rotate: false
+  xy: 358, 345
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+Marker8
+  rotate: false
+  xy: 605, 741
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Marker9
+  rotate: false
+  xy: 249, 95
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1
+Mouth
+  rotate: true
+  xy: 503, 675
+  size: 31, 15
+  orig: 31, 15
+  offset: 0, 0
+  index: -1
+RightFingers
+  rotate: false
+  xy: 358, 311
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+RightForeArm
+  rotate: false
+  xy: 285, 185
+  size: 91, 92
+  orig: 91, 92
+  offset: 0, 0
+  index: -1
+RightLeg
+  rotate: true
+  xy: 867, 949
+  size: 62, 155
+  orig: 62, 155
+  offset: 0, 0
+  index: -1
+RightPalm
+  rotate: false
+  xy: 867, 903
+  size: 43, 44
+  orig: 43, 44
+  offset: 0, 0
+  index: -1
+RightThumb
+  rotate: false
+  xy: 406, 363
+  size: 36, 28
+  orig: 36, 28
+  offset: 0, 0
+  index: -1
+RightUpperArm
+  rotate: true
+  xy: 143, 55
+  size: 88, 104
+  orig: 88, 104
+  offset: 0, 0
+  index: -1
+RightUpperLeg
+  rotate: true
+  xy: 686, 903
+  size: 108, 179
+  orig: 108, 179
+  offset: 0, 0
+  index: -1
+Sword
+  rotate: false
+  xy: 2, 279
+  size: 354, 291
+  orig: 354, 291
+  offset: 0, 0
+  index: -1

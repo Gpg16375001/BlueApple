@@ -1,0 +1,322 @@
+fileFormatVersion: 2
+guid: 11e9b8f68093693439f67c2e1a547be3
+timeCreated: 1510888476
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: atlasAlice_eplon
+    21300002: atlasAlice_body
+    21300004: atlasAlice_Arm1
+    21300006: atlasAlice_dagger
+    21300008: atlasAlice_leg1
+    21300010: atlasAlice_leg2
+    21300012: atlasAlice_skart
+    21300014: atlasAlice_sword
+    21300016: atlasAlice_ribbon
+    21300018: atlasAlice_Arm2
+    21300020: atlasAlice_skartU
+    21300022: atlasAlice_head
+    21300024: atlasAlice_kage
+    21300026: atlasAlice_dam
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: atlasAlice_eplon
+      rect:
+        serializedVersion: 2
+        x: 503.38623
+        y: 19.269714
+        width: 87
+        height: 75
+      alignment: 9
+      pivot: {x: 0.6497059, y: 0.29222465}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_body
+      rect:
+        serializedVersion: 2
+        x: 14.000008
+        y: 188
+        width: 95
+        height: 124
+      alignment: 9
+      pivot: {x: 0.568421, y: 0.4795286}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_Arm1
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 122
+        width: 63
+        height: 54
+      alignment: 9
+      pivot: {x: 0.21790224, y: 0.474296}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_dagger
+      rect:
+        serializedVersion: 2
+        x: 43.499992
+        y: 19.000008
+        width: 54
+        height: 72
+      alignment: 9
+      pivot: {x: 0.74992824, y: 0.80469686}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_leg1
+      rect:
+        serializedVersion: 2
+        x: 156.64966
+        y: 230.43608
+        width: 73
+        height: 230.00002
+      alignment: 9
+      pivot: {x: 0.36046067, y: 0.92193884}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_leg2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 3.0000153
+        width: 96
+        height: 211.99998
+      alignment: 9
+      pivot: {x: 0.7100021, y: 0.88589025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_skart
+      rect:
+        serializedVersion: 2
+        x: 235.00002
+        y: 192.49998
+        width: 208.99998
+        height: 319.5
+      alignment: 9
+      pivot: {x: 0.4856459, y: 0.50547737}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_sword
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 0
+        width: 234
+        height: 193
+      alignment: 9
+      pivot: {x: 0.8318071, y: 0.6641719}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_ribbon
+      rect:
+        serializedVersion: 2
+        x: 445
+        y: 298
+        width: 202
+        height: 202
+      alignment: 9
+      pivot: {x: 0.9352006, y: 0.090461805}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_Arm2
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 205
+        width: 130
+        height: 71
+      alignment: 9
+      pivot: {x: 0.50384617, y: 0.48591548}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_skartU
+      rect:
+        serializedVersion: 2
+        x: 502.00003
+        y: 92
+        width: 159.99997
+        height: 81
+      alignment: 9
+      pivot: {x: 0.4874999, y: 0.5617284}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_head
+      rect:
+        serializedVersion: 2
+        x: 8.891006
+        y: 364.11768
+        width: 146
+        height: 108
+      alignment: 9
+      pivot: {x: 0.45338565, y: 0.42001683}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_kage
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 475
+        width: 179
+        height: 35
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: atlasAlice_dam
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 312
+        width: 59.999992
+        height: 61
+      alignment: 9
+      pivot: {x: 0.50000006, y: 0.49999997}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 99017554128536
+  assetBundleName: 
+  assetBundleVariant: 

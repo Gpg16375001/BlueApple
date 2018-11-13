@@ -1,0 +1,216 @@
+
+chara_m_krasikov_test.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BackCloth
+  rotate: true
+  xy: 167, 27
+  size: 113, 106
+  orig: 113, 107
+  offset: 0, 1
+  index: -1
+BackColorCloth
+  rotate: false
+  xy: 478, 203
+  size: 26, 14
+  orig: 26, 14
+  offset: 0, 0
+  index: -1
+BackHair
+  rotate: false
+  xy: 212, 308
+  size: 187, 202
+  orig: 187, 202
+  offset: 0, 0
+  index: -1
+BackHair2
+  rotate: false
+  xy: 401, 345
+  size: 206, 165
+  orig: 206, 165
+  offset: 0, 0
+  index: -1
+Bag
+  rotate: true
+  xy: 38, 2
+  size: 24, 32
+  orig: 24, 32
+  offset: 0, 0
+  index: -1
+Body
+  rotate: false
+  xy: 350, 192
+  size: 74, 114
+  orig: 74, 114
+  offset: 0, 0
+  index: -1
+Eyes
+  rotate: false
+  xy: 401, 312
+  size: 118, 31
+  orig: 118, 32
+  offset: 0, 1
+  index: -1
+FrontHair01
+  rotate: false
+  xy: 167, 142
+  size: 97, 146
+  orig: 97, 146
+  offset: 0, 0
+  index: -1
+FrontHair02
+  rotate: true
+  xy: 609, 333
+  size: 60, 148
+  orig: 60, 148
+  offset: 0, 0
+  index: -1
+Hat
+  rotate: true
+  xy: 2, 28
+  size: 260, 163
+  orig: 260, 163
+  offset: 0, 0
+  index: -1
+Head
+  rotate: false
+  xy: 2, 290
+  size: 208, 220
+  orig: 208, 220
+  offset: 0, 0
+  index: -1
+LLowerCloth
+  rotate: false
+  xy: 266, 169
+  size: 82, 137
+  orig: 82, 137
+  offset: 0, 0
+  index: -1
+LRobe
+  rotate: false
+  xy: 275, 88
+  size: 61, 79
+  orig: 64, 79
+  offset: 1, 0
+  index: -1
+LeftHair
+  rotate: true
+  xy: 792, 412
+  size: 98, 163
+  orig: 98, 163
+  offset: 0, 0
+  index: -1
+LeftHand
+  rotate: true
+  xy: 2, 2
+  size: 24, 34
+  orig: 24, 34
+  offset: 0, 0
+  index: -1
+LeftLeg
+  rotate: true
+  xy: 792, 367
+  size: 43, 82
+  orig: 43, 82
+  offset: 0, 0
+  index: -1
+LeftLowerArm
+  rotate: false
+  xy: 345, 38
+  size: 43, 54
+  orig: 44, 54
+  offset: 0, 0
+  index: -1
+LeftUpperArm
+  rotate: true
+  xy: 350, 146
+  size: 44, 68
+  orig: 44, 68
+  offset: 0, 0
+  index: -1
+LeftUpperLeg
+  rotate: false
+  xy: 957, 412
+  size: 57, 98
+  orig: 57, 98
+  offset: 0, 0
+  index: -1
+Mouth
+  rotate: true
+  xy: 1016, 491
+  size: 19, 4
+  orig: 19, 4
+  offset: 0, 0
+  index: -1
+RLowerCloth
+  rotate: false
+  xy: 426, 197
+  size: 50, 113
+  orig: 50, 113
+  offset: 0, 0
+  index: -1
+RRobe
+  rotate: false
+  xy: 275, 17
+  size: 68, 69
+  orig: 68, 70
+  offset: 0, 0
+  index: -1
+RightFingers
+  rotate: false
+  xy: 212, 290
+  size: 17, 16
+  orig: 17, 16
+  offset: 0, 0
+  index: -1
+RightForeArm
+  rotate: false
+  xy: 338, 94
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+RightHair
+  rotate: true
+  xy: 609, 395
+  size: 115, 181
+  orig: 115, 182
+  offset: 0, 0
+  index: -1
+RightLeg
+  rotate: true
+  xy: 876, 375
+  size: 35, 79
+  orig: 35, 79
+  offset: 0, 0
+  index: -1
+RightPalm
+  rotate: false
+  xy: 521, 321
+  size: 22, 22
+  orig: 22, 22
+  offset: 0, 0
+  index: -1
+RightThumb
+  rotate: false
+  xy: 759, 379
+  size: 18, 14
+  orig: 18, 14
+  offset: 0, 0
+  index: -1
+RightUpperArm
+  rotate: true
+  xy: 957, 361
+  size: 49, 56
+  orig: 49, 57
+  offset: 0, 1
+  index: -1
+RightUpperLeg
+  rotate: false
+  xy: 478, 219
+  size: 47, 91
+  orig: 48, 92
+  offset: 1, 1
+  index: -1

@@ -1,0 +1,264 @@
+
+all_SD.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Body
+  rotate: false
+  xy: 421, 160
+  size: 142, 225
+  orig: 144, 227
+  offset: 1, 1
+  index: -1
+Eyes_damage
+  rotate: false
+  xy: 685, 392
+  size: 244, 106
+  orig: 249, 108
+  offset: 2, 0
+  index: -1
+Eyes_happy
+  rotate: true
+  xy: 565, 160
+  size: 225, 86
+  orig: 227, 88
+  offset: 1, 1
+  index: -1
+Eyes_normal
+  rotate: false
+  xy: 421, 387
+  size: 262, 111
+  orig: 262, 111
+  offset: 0, 0
+  index: -1
+Head
+  rotate: false
+  xy: 2, 56
+  size: 417, 442
+  orig: 417, 442
+  offset: 0, 0
+  index: -1
+Hip
+  rotate: false
+  xy: 765, 259
+  size: 142, 131
+  orig: 144, 133
+  offset: 1, 1
+  index: -1
+LeftHand
+  rotate: true
+  xy: 2, 4
+  size: 50, 68
+  orig: 50, 68
+  offset: 0, 0
+  index: -1
+LeftLeg
+  rotate: true
+  xy: 765, 175
+  size: 82, 162
+  orig: 82, 162
+  offset: 0, 0
+  index: -1
+LeftLowerArm
+  rotate: false
+  xy: 929, 170
+  size: 77, 102
+  orig: 79, 104
+  offset: 1, 1
+  index: -1
+LeftUpperArm
+  rotate: false
+  xy: 931, 376
+  size: 81, 122
+  orig: 83, 125
+  offset: 1, 1
+  index: -1
+LeftUpperLeg
+  rotate: true
+  xy: 421, 54
+  size: 104, 184
+  orig: 106, 186
+  offset: 1, 1
+  index: -1
+Mouth_damage
+  rotate: true
+  xy: 1014, 423
+  size: 23, 8
+  orig: 25, 10
+  offset: 1, 1
+  index: -1
+Mouth_happy
+  rotate: true
+  xy: 1014, 474
+  size: 24, 8
+  orig: 26, 10
+  offset: 1, 1
+  index: -1
+Mouth_normal
+  rotate: true
+  xy: 1014, 448
+  size: 24, 8
+  orig: 26, 10
+  offset: 1, 1
+  index: -1
+RightForeArm
+  rotate: false
+  xy: 674, 113
+  size: 89, 90
+  orig: 89, 90
+  offset: 0, 0
+  index: -1
+RightHand
+  rotate: false
+  xy: 674, 57
+  size: 51, 54
+  orig: 51, 54
+  offset: 0, 0
+  index: -1
+RightLeg
+  rotate: false
+  xy: 607, 2
+  size: 65, 156
+  orig: 67, 157
+  offset: 1, 1
+  index: -1
+RightUpperArm
+  rotate: false
+  xy: 909, 274
+  size: 87, 100
+  orig: 90, 103
+  offset: 1, 2
+  index: -1
+RightUpperLeg
+  rotate: false
+  xy: 653, 205
+  size: 110, 180
+  orig: 113, 181
+  offset: 1, 1
+  index: -1
+
+all_SD2.png
+size: 16,16
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Weapon/01_SwordDef
+  rotate: false
+  xy: 2, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/10_DaggerDef
+  rotate: false
+  xy: 2, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/02_WhipDef
+  rotate: false
+  xy: 2, 8
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/02_WhipDef_hit
+  rotate: false
+  xy: 5, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/03_HeavySwordDef
+  rotate: false
+  xy: 2, 5
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/12_ChakramDef
+  rotate: false
+  xy: 2, 5
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/03_HeavySwordDef_max
+  rotate: false
+  xy: 5, 8
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/04_KatanaDef
+  rotate: false
+  xy: 8, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/07_CombatDef_L
+  rotate: false
+  xy: 8, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/09_TwoPistolDef
+  rotate: false
+  xy: 8, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/11_PistolDef
+  rotate: false
+  xy: 8, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/05_AxeDef
+  rotate: false
+  xy: 2, 2
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/06_SpearDef
+  rotate: false
+  xy: 5, 5
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/06_SpearDef_max
+  rotate: false
+  xy: 8, 8
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/07_CombaDeft_R
+  rotate: false
+  xy: 11, 11
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/08_GunDef
+  rotate: false
+  xy: 5, 2
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Weapon/12_BombDef
+  rotate: false
+  xy: 8, 5
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
