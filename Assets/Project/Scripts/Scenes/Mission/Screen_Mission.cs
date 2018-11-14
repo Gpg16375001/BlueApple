@@ -74,7 +74,10 @@ public class Screen_Mission : ViewBase
         }
         var categoryInfo = MasterDataTable.mission_category.DataList.Find(c => c.name == category);
         m_list = MasterDataTable.mission_setting.DataList
-                                .Where(set => !m_missionAchievements.First(a => a.MissionId == set.id).IsReceived && set.category.Enum == categoryInfo.Enum)
+                                .Where(set => {
+									var ma = m_missionAchievements.FirstOrDefault(a => a.MissionId == set.id);
+									return (ma != null) && !ma.IsReceived && set.category.Enum == categoryInfo.Enum;
+								})
                                 .ToList();
         this.GetScript<RectTransform>("NoItem").gameObject.SetActive(m_list.Count <= 0);
         var grid = this.GetScript<InfiniteGridLayoutGroup>("MissionItemGrid");

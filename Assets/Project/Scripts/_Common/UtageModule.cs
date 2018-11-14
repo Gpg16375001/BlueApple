@@ -456,13 +456,17 @@ public class UtageModule : ViewBase
             if (Engine.SelectionManager.IsWaitInput) {
                 return;
             }
+            // バックログの状態の場合は先に進めないようにする。
+            if (Engine.UiManager.Status == AdvUiManager.UiStatus.Backlog) {
+                return;
+            }
+            Engine.Config.IsSkip = true;
             this.PlaySkipFade(true, () => {
                 this.StartCoroutine(this.SkipToSelectionWait());
             });
         }
         IEnumerator SkipToSelectionWait()
         {
-            Engine.Config.IsSkip = true;
             do {
                 if (Engine.IsEndScenario) {
                     break;

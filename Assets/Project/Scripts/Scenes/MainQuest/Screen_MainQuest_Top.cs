@@ -62,13 +62,9 @@ public class Screen_MainQuest_Top : ViewBase
 		this.SetCanvasCustomButtonMsg("bt_FujiReview", DidTapFujiReview);
 
 		// TODO : フェードを開ける.ローンチ段階ではサブクエストは入らない.
-		if (m_bBoot) {
-			View_FadePanel.SharedInstance.FadeIn(View_FadePanel.FadeColor.Black, CheckBootMainQuestFromRoot);
-			m_viewCtrl.ChangeView(fixBoot);
-		} else {
-			View_FadePanel.SharedInstance.FadeIn(View_FadePanel.FadeColor.Black);
-			m_viewCtrl.ChangeView(fixBoot, CheckBackToMainQuest);
-		}
+        m_viewCtrl.ChangeView(fixBoot, () => {
+            View_FadePanel.SharedInstance.FadeIn(View_FadePanel.FadeColor.Black, CheckBootMainQuestFromRoot);
+        });
 	}
 	// 起動Viewのモードを修正.
 	private MainQuestBootEnum FixBoot()

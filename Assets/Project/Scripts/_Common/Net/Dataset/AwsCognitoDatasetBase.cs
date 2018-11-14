@@ -162,7 +162,10 @@ abstract public class AwsCognitoDatasetBase : IDisposable
     // Sync失敗
     protected virtual void OnSyncFailure(object sender, SyncFailureEventArgs e)
     {
-        UnityEngine.Debug.LogWarning(e.Exception.Message);
+        // 一応、null判定を入れておく
+        if (e != null && e.Exception != null) {
+            UnityEngine.Debug.LogError (e.Exception.Message);
+        }
         if (m_DidCallback == null) {
             return;
         }

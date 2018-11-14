@@ -233,6 +233,10 @@ namespace Utage
 		//バックログボタンが押された
 		public void OnTapBackLog()
 		{
+            // スキップ中は開かない
+            if (Engine.Config.IsSkip) {
+                return;
+            }
 			Engine.UiManager.Status = AdvUiManager.UiStatus.Backlog;
 		}
 	}

@@ -76,13 +76,12 @@ public class View_QuestMap : ViewBase
 	public void DrawAndForcusDetailMap(MainQuest questData, bool bReleaseRoot = false, Action didPlayEnd = null)
 	{
 		// アニメーションを再生してから作る.
+        var go = GameObjectEx.LoadAndCreateObject(string.Format("MainQuest/View_QuestMap_{0}_{1}", (int)questData.Country.Enum, questData.ChapterNum), this.gameObject);
+        this.DetailMap = go.GetOrAddComponent<View_QuestMap_Detail>();
+        this.DetailMap.Init(questData);
 		this.StartCoroutine(this.CoPlayForcusMapAnimation(true, questData.Country, () => {
-
 			// TODO : このプレハブは最終的にバンドルになる想定.
-			var prefabName = "View_QuestMap_"+(int)questData.Country.Enum+"_"+questData.ChapterNum;
-            var go = GameObjectEx.LoadAndCreateObject("MainQuest/" + prefabName, this.gameObject);
-			this.DetailMap = go.GetOrAddComponent<View_QuestMap_Detail>();
-			this.DetailMap.Init(questData, bReleaseRoot);
+            this.DetailMap.SetView(bReleaseRoot);
 
 			if(didPlayEnd != null){
 				didPlayEnd();
@@ -96,6 +95,7 @@ public class View_QuestMap : ViewBase
 	{
 		if(this.DetailMap != null){
 			this.DetailMap.Dispose();
+            this.DetailMap = null;
 		}
 		this.StartCoroutine(this.CoPlayForcusMapAnimation(false, belonging, didPlayEnd));
 	}
@@ -103,14 +103,42 @@ public class View_QuestMap : ViewBase
 	{
 		IsForcusDetail = bForcus;
 		IsZoom |= IsForcusDetail;
+
+        ScreenBackground activeBg = null;
 		if (belonging != null && belonging.Enum != BelongingEnum.Unknown) {
 			foreach (var bel in Enum.GetValues(typeof(BelongingEnum)) as BelongingEnum[]) {
                 if (bel == BelongingEnum.Unknown) {
                     continue;
                 }
-				this.GetScript<RectTransform>("ZoomMap_"+(int)bel).gameObject.SetActive(bel == belonging.Enum);
+                var go = this.GetScript<RectTransform>(string.Format("ZoomMap_{0}", (int)bel)).gameObject;
+                go.SetActive (bel == belonging.Enum);
+                if (bel == belonging.Enum) {
+                    activeBg = go.GetComponent<ScreenBackground> ();
+                }
             }
         }
+
+        // 背景ロード待ち
+        if (activeBg != null) {
+            bool isLoaded = false;
+            activeBg.CallbackLoaded (() => {
+                isLoaded = true;
+            });
+            if (!activeBg.gameObject.activeInHierarchy) {
+                activeBg.Load ();
+            }
+            yield return new WaitUntil (() => isLoaded);
+        }
+        if (this.DetailMap != null) {
+            bool isLoaded = false;
+            var root = GetScript<RectTransform> ("QuestMap/Layout").gameObject;
+            this.DetailMap.LoadBGImage(root.GetComponentsInChildren<ScreenBackground>(), () => {
+                isLoaded = true;
+            });
+            yield return new WaitUntil (() => isLoaded);
+        }
+
+
 		var anim = this.GetScript<Animation>("Map");
 		var animName = IsForcusDetail ? "QuestMapSelectIn" : "QuestMapSelectOut";
 		anim.Play(animName);
@@ -135,15 +163,46 @@ public class View_QuestMap : ViewBase
     {
         IsZoom = bZoom;
 		IsForcusDetail &= IsZoom;
+
+        ScreenBackground activeBg = null;
         if (belonging != null && belonging.Enum != BelongingEnum.Unknown) {
 			foreach(var bel in Enum.GetValues(typeof(BelongingEnum)) as BelongingEnum[]){
 				if(bel == BelongingEnum.Unknown){
 					continue;
 				}
-				this.GetScript<RectTransform>("ZoomMap_"+(int)bel).gameObject.SetActive(bel == belonging.Enum);
+                var go = this.GetScript<RectTransform>(string.Format("ZoomMap_{0}", (int)bel)).gameObject;
+                go.SetActive (bel == belonging.Enum);
+                if (bel == belonging.Enum) {
+                    activeBg = go.GetComponent<ScreenBackground> ();
+                }
 			}
 			m_currentZoomCountry = belonging;
         }
+
+        // 背景ロード待ち
+        if (activeBg != null) {
+            bool isLoaded = false;
+            activeBg.CallbackLoaded (() => {
+                isLoaded = true;
+            });
+            if (!activeBg.gameObject.activeInHierarchy) {
+                activeBg.Load ();
+            }
+            yield return new WaitUntil (() => isLoaded);
+        }
+
+        var worldMap = this.GetScript<ScreenBackground> ("img_StorySelectWorldMap");
+        if (worldMap != null) {
+            bool isLoaded = false;
+            worldMap.CallbackLoaded (() => {
+                isLoaded = true;
+            });
+            if (!worldMap.gameObject.activeInHierarchy) {
+                worldMap.Load ();
+            }
+            yield return new WaitUntil (() => isLoaded);
+        }
+
         var anim = this.GetScript<Animation>("Map");
         var animName = IsZoom ? "StorySelectMapZoomIn" : "StorySelectMapZoomOut";
 		if (m_currentZoomCountry != null && m_currentZoomCountry.Enum != BelongingEnum.Unknown) {

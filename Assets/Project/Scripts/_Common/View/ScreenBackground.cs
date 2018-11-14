@@ -25,6 +25,11 @@ public class ScreenBackground : MonoBehaviour
 
     void Start()
     {
+        Load ();
+    }
+
+    public void Load()
+    {
         if (string.IsNullOrEmpty (BackGroundImageName)) {
             isLoaded = true;
             if (m_LoadEnd != null) {
@@ -36,7 +41,9 @@ public class ScreenBackground : MonoBehaviour
         if (!Application.isEditor && Application.isPlaying) {
             if (this.gameObject.name == "BG" && m_NowBgSprite != null && m_NowBgSprite.name == BackGroundImageName) {
                 // 名前がBGの時に二枚ほどキャッシュとっておきある場合はそちらから使用する。
-                BackGroundImage.sprite = m_NowBgSprite;
+                if (BackGroundImage != null) {
+                    BackGroundImage.sprite = m_NowBgSprite;
+                }
                 isLoaded = true;
                 if (m_LoadEnd != null) {
                     m_LoadEnd ();
@@ -50,7 +57,9 @@ public class ScreenBackground : MonoBehaviour
                         if (this.gameObject.name == "BG") {
                             m_NowBgSprite = spt;
                         }
-                        BackGroundImage.sprite = spt;
+                        if(BackGroundImage != null) {
+                            BackGroundImage.sprite = spt;
+                        }
                     }
                     isLoaded = true;
                     if (m_LoadEnd != null) {
@@ -93,7 +102,7 @@ public class ScreenBackground : MonoBehaviour
         if (BackGroundImage == null) {
             BackGroundImage = GetComponent<Image> ();
         }
-        if (BackGroundImage.sprite != null) {
+        if (BackGroundImage != null && BackGroundImage.sprite != null) {
             BackGroundImageName = BackGroundImage.sprite.name;
             BackGroundImage.sprite = null;
         }

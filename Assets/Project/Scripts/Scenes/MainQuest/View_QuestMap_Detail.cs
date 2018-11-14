@@ -21,18 +21,80 @@ public class View_QuestMap_Detail : ViewBase
     /// <summary>
     /// 初期化.
     /// </summary>
-	public void Init(MainQuest questData, bool bReleaseRoot = false)
+	public void Init(MainQuest questData)
 	{
 		m_quest = questData;
         m_baseCamPos = CameraHelper.SharedInstance.CameraQuestMap.transform.localPosition;
+	}
 
-		this.ClearView();
-		this.DrawRoot(bReleaseRoot);
+    public void SetView(bool bReleaseRoot = false)
+    {
+        this.ClearView();
+        this.DrawRoot(bReleaseRoot);
 
         // 初回フォーカス.終わったらクエスト情報に合わせて現在の解放状況に合わせたルートを表示する.
-        var target = this.GetScript<Transform>("CameraPosAnchor" + m_quest.camera_forcus_index.ToString("d4"));
+        var target = this.GetScript<Transform>(string.Format("CameraPosAnchor{0:d4}", m_quest.camera_forcus_index));
         CameraHelper.SharedInstance.CameraQuestMap.transform.SetPositionAndRotation(new Vector3(target.localPosition.x, target.localPosition.y, CameraHelper.SharedInstance.CameraQuestMap.transform.localPosition.z), Quaternion.identity);
-	}
+
+    }
+
+    // 画面内に映る画像を優先してロードする
+    public void LoadBGImage(ScreenBackground[] bgImages, System.Action didLoaded)
+    {
+        // 判定用にカメラの位置を調整
+        var target = this.GetScript<Transform>(string.Format("CameraPosAnchor{0:d4}", m_quest.camera_forcus_index));
+        CameraHelper.SharedInstance.CameraQuestMap.transform.SetPositionAndRotation(new Vector3(target.localPosition.x, target.localPosition.y, CameraHelper.SharedInstance.CameraQuestMap.transform.localPosition.z), Quaternion.identity);
+
+        var lb = ViewportToWorldPoint(new Vector3(0, 0, 0)); // 左下
+        var rt = ViewportToWorldPoint(new Vector3(1, 1, 0)); // 右上
+
+        List<ScreenBackground> loadWaitImaga = new List<ScreenBackground> ();
+        foreach (var image in bgImages) {
+            var i = image.GetComponent<UnityEngine.UI.Image> ();
+            var ilb = new Vector3 (i.rectTransform.rect.xMin, i.rectTransform.rect.yMax, 0); // 左下
+            var irt = new Vector3 (i.rectTransform.rect.xMax, i.rectTransform.rect.yMin, 0); // 右上
+
+            var wlb = i.rectTransform.localToWorldMatrix.MultiplyPoint (ilb);
+            var wrt = i.rectTransform.localToWorldMatrix.MultiplyPoint (irt);
+
+
+            if (wlb.x <= rt.x && lb.x <= wrt.x && wrt.y <= lb.y && rt.y <= wlb.y) {
+                loadWaitImaga.Add (image);
+            }
+        }
+
+        loadWaitImaga.AddRange(gameObject.GetComponentsInChildren<ScreenBackground> (true));
+
+        if (loadWaitImaga.Count > 0) {
+            int loadEndCount = 0;
+            foreach (var i in loadWaitImaga) {
+                i.CallbackLoaded (() => {
+                    loadEndCount++;
+                    if (loadEndCount >= loadWaitImaga.Count) {
+                        if (didLoaded != null) {
+                            didLoaded ();
+                        }
+                    }
+                });
+                if (!i.gameObject.activeInHierarchy) {
+                    i.Load ();
+                }
+            }
+        } else {
+            if (didLoaded != null) {
+                didLoaded ();
+            }
+        }
+
+        // 判定が終わったら戻す
+        CameraHelper.SharedInstance.CameraQuestMap.transform.localPosition = m_baseCamPos;
+    }
+
+    // カメラからRayを飛ばしてhitした位置を返す
+    Vector3 ViewportToWorldPoint(Vector3 targetPos)
+    {
+        return CameraHelper.SharedInstance.CameraQuestMap.ViewportToWorldPoint(targetPos);
+    }
 
     /// <summary>
     /// マーカー位置の変更.

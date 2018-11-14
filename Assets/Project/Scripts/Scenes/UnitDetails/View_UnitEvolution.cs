@@ -35,7 +35,15 @@ public class View_UnitEvolution : ViewBase
 		c.InitInternal(card, didClose);
         return c;
     }
-	private void InitInternal(CardData card, Action<CardData> didClose)
+
+    public override void Dispose()
+    {
+        m_loader.LoadFlagReset();
+        m_loader.Dispose();
+        base.Dispose();
+    }
+
+    private void InitInternal(CardData card, Action<CardData> didClose)
 	{
 		// ボタン.
         this.SetCanvasCustomButtonMsg("DoEvolution/bt_Common", DidTapEvolved);   
@@ -150,19 +158,22 @@ public class View_UnitEvolution : ViewBase
 		// Live2D
 		View_FadePanel.SharedInstance.IsLightLoading = true;
 		this.GetScript<Transform>("CharacterAnchor").DetachChildren();
-		var loader = new UnitResourceLoader(m_card);
-		loader.IsLoadLive2DModel = true;
-		loader.LoadResource(resource => {
-			var live2d = Instantiate(resource.Live2DModel) as GameObject;
-            live2d.transform.SetParent(this.GetScript<Transform>("CharacterAnchor"));
-            live2d.transform.localScale = Vector3.one;
-            live2d.transform.localPosition = Vector3.zero;
-            var cubismRender = live2d.GetComponentsInChildren<CubismRenderController>()[0];
-            if (cubismRender != null) {
-                var rootCanvas = this.GetScript<Canvas>("CharacterAnchor");
-                cubismRender.gameObject.SetLayerRecursively(rootCanvas.gameObject.layer);
-                cubismRender.SortingLayer = rootCanvas.sortingLayerName;
-                cubismRender.SortingOrder = rootCanvas.sortingOrder;
+        m_loader = new UnitResourceLoader(m_card);
+        m_loader.IsLoadLive2DModel = true;
+        m_loader.LoadResource(resource => {
+            if (resource.Live2DModel != null){
+                var live2d = Instantiate(resource.Live2DModel) as GameObject;
+                live2d.transform.SetParent(this.GetScript<Transform>("CharacterAnchor"));
+                live2d.transform.localScale = Vector3.one;
+                live2d.transform.localPosition = Vector3.zero;
+                var cubismRender = live2d.GetComponentsInChildren<CubismRenderController>()[0];
+                if (cubismRender != null)
+                {
+                    var rootCanvas = this.GetScript<Canvas>("CharacterAnchor");
+                    cubismRender.gameObject.SetLayerRecursively(rootCanvas.gameObject.layer);
+                    cubismRender.SortingLayer = rootCanvas.sortingLayerName;
+                    cubismRender.SortingOrder = rootCanvas.sortingOrder;
+                }
             }
             View_FadePanel.SharedInstance.IsLightLoading = false;
 		});
@@ -235,7 +246,8 @@ public class View_UnitEvolution : ViewBase
     }
  
 	private CardData m_card;
-	private Action<CardData> m_didClose;
+    private UnitResourceLoader m_loader;
+    private Action<CardData> m_didClose;
 	private CharaMaterialEvolutionDefinition m_defineInfo;
 	private List<int> m_alredySetIdList = new List<int>();
 }

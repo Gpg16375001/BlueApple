@@ -98,7 +98,13 @@ public class Screen_FriendSelect : ViewBase
 		// 出現敵属性情報
 		var grid = this.GetScript<GridLayoutGroup>("StageInfoAttribute/ElementIconGrid");
 		if(AwsModule.BattleData != null && AwsModule.BattleData.StageEnemy != null){
-            var elements = AwsModule.BattleData.StageEnemy.Select(s => s.monster.element.Enum).Distinct().ToList();
+            var elements = AwsModule.BattleData.StageEnemy.Select(s => {
+                if(s.card != null) {
+                    // カードをベースに出す場合の対応
+                    return s.card.element.Enum;
+                }
+                return s.monster.element.Enum;
+            }).Distinct().ToList();
             foreach (var sprite in grid.GetComponentsInChildren<uGUISprite>(true)) {
                 if (elements.Count <= 0) {
                     sprite.gameObject.SetActive(false);
@@ -141,11 +147,11 @@ public class Screen_FriendSelect : ViewBase
                 if (iconInfo.IsEnableSprite) {
 					iconRoot.GetComponentsInChildren<uGUISprite>(true)[0].LoadAtlasFromResources(iconInfo.AtlasName, iconInfo.SpriteName);
                 } else if (iconInfo.IconObject != null) {
-					var bMaterial = (ItemTypeEnum)item.reward_type == ItemTypeEnum.material;
-					v.GetScript<Transform>("UnitWeaponRoot").gameObject.SetActive(!bMaterial);
-					v.GetScript<Transform>("ItemIcon1").gameObject.SetActive(bMaterial);
+                    var bUnitOrCard = (ItemTypeEnum)item.reward_type == ItemTypeEnum.weapon || (ItemTypeEnum)item.reward_type == ItemTypeEnum.card;
+					v.GetScript<Transform>("UnitWeaponRoot").gameObject.SetActive(bUnitOrCard);
+					v.GetScript<Transform>("ItemIcon1").gameObject.SetActive(!bUnitOrCard);
 					var parent = v.GetScript<Transform>("UnitWeaponRoot");
-					if(bMaterial){
+					if(!bUnitOrCard){
 						parent = v.GetScript<Transform>("ItemIcon1");
 					}
 					iconInfo.IconObject.transform.SetParent(parent, false);               

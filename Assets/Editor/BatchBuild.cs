@@ -143,7 +143,7 @@ public class BatchBuild
 		PlayerSettings.productName = "DevSeven";
 		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "0.0.1";
 		PlayerSettings.applicationIdentifier = "com.smilelab.devseven";
-		PlayerSettings.iOS.iOSManualProvisioningProfileID = "80f5086e-55b0-4a37-8c7f-486338111284";
+		PlayerSettings.iOS.iOSManualProvisioningProfileID = "4f51f198-00c9-4ad5-b23b-1d6c24d1eb21";
 		ProvisioningAtBuildTime = "seven_dev_adhoc";
 		IsReleaseBuild = false;
 		var buildOption = BuildOptions.Development;

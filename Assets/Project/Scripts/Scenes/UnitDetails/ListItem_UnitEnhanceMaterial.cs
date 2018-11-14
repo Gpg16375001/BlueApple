@@ -53,18 +53,21 @@ public class ListItem_UnitEnhanceMaterial : ViewBase
         // ラベル.
 		this.GetScript<TextMeshProUGUI>("txtp_MaterialNum").text = RemainCount.ToString();
 		this.GetScript<RectTransform>("MaterialSelectNum").gameObject.SetActive(false); // 何個選んでるかルート.
-		IconLoader.LoadMaterial(m_material.id, (d, icon) => {
-			if(d.id == m_material.id){
-				this.GetScript<Image>("EnhanceMaterialIcon").sprite = icon;
-				this.GetScript<Image>("EnhanceMaterialIcon_disable").sprite = icon;
-			}
-		});
+		IconLoader.LoadMaterial(m_material.id, SetIcon);
         
 		// ボタン.      
 		this.GetScript<CustomButton>("bt_EnhanceMaterial").onClick.AddListener(DidTapItem);
 
 		this.IsEnable = RemainCount > 0;
 	}
+
+    public void SetIcon(IconLoadSetting data, Sprite icon)
+    {
+		if(data.id == m_material.id){
+			this.GetScript<Image>("EnhanceMaterialIcon").sprite = icon;
+			this.GetScript<Image>("EnhanceMaterialIcon_disable").sprite = icon;
+		}
+    }
 
     /// <summary>
     /// 選択解除.
@@ -122,6 +125,13 @@ public class ListItem_UnitEnhanceMaterial : ViewBase
 		}
 		this.IsEnable &= this.RemainCount > 0;
 	}
+
+    void OnDestroy()
+    {
+        if (m_material != null) {
+			IconLoader.RemoveLoadedEvent (ItemTypeEnum.material, m_material.id, SetIcon);
+        }
+    }
 
 	private Func<MaterialData,bool> m_didTap;   // 選択上限に達していた場合はタップできないのでfalse.
 	private MaterialData m_data;
