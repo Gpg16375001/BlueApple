@@ -28,6 +28,11 @@ public class MiniView_BattleExpResult : ViewBase, IBattleResultPage
 	private bool m_bEffecting = false;
 
 
+    public ResultTitle GetResultTitle()
+    {
+        return ResultTitle.Clear;
+    }
+
     /// <summary>
     /// 初期化.
     /// </summary>

@@ -40,6 +40,11 @@ public class ListItem_EventBanner : ViewBase {
             break;
         case EventTypeEnum.Main:
             // メインイベントへ
+            // 進化イベントへ
+            View_FadePanel.SharedInstance.FadeOutWithLoadingAnim(View_FadePanel.FadeColor.Black, () => {
+                ScreenChanger.SharedInstance.GoToEventQuest(m_Info.event_arg.Value);
+                LockInputManager.SharedInstance.IsLock = false;
+            });
             break;
         case EventTypeEnum.PvP:
             // PvPへ

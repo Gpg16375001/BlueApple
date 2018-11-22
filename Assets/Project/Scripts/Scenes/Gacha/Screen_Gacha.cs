@@ -33,12 +33,27 @@ public class Screen_Gacha : ViewBase
         
 		this.GetScript<CustomButton>("bt_ArrowPage_1").onClick.AddListener(DidTapLeft);
 		this.GetScript<CustomButton>("bt_ArrowPage_2").onClick.AddListener(DidTapRight);
-		this.GetScript<CustomButton>("bt_ArrowPage_1").gameObject.SetActive(true);
-		this.GetScript<CustomButton>("bt_ArrowPage_2").gameObject.SetActive(false);
 		this.SetCanvasCustomButtonMsg("Character/bt_GachaCategory", DidTapCharaGacha);
 		this.SetCanvasCustomButtonMsg("Weapon/bt_GachaCategory", DidTapWeaponGacha);      
+		{
+			var value = (m_data.WeaponContent.DataFree != null) && (m_data.WeaponContent.DataFree.IsPurchasable);
+			this.GetScript<RectTransform>("Weapon/txtp_WeaponGacha").transform.Find("Exclamation").gameObject.SetActive( value );
+		}
+
 		DidTapCharaGacha();
 
+#if false
+		View_FadePanel.SharedInstance.FadeIn(View_FadePanel.FadeColor.Black);
+#else
+		m_isReady = false;
+		StartCoroutine( coWaitInit() );
+#endif
+	}
+
+	IEnumerator coWaitInit()
+	{
+		while( !m_isReady )
+			yield return null;
 		View_FadePanel.SharedInstance.FadeIn(View_FadePanel.FadeColor.Black);
 	}
 
@@ -65,14 +80,40 @@ public class Screen_Gacha : ViewBase
 		rootList.OnUpdateItemEvent.AddListener(UpdateInfiniteListItem);
 		rootList.gameObject.DestroyChildren();
 		var prefab = Resources.Load("Gacha/View_GachaNormal") as GameObject;
-		rootList.Initialize(prefab, m_data.CharacterGachaContents.Count, m_data.CharacterGachaContents.Count, true);
-		this.GetScript<uGUIPageScrollRect>("Scroll").SetInfinit(true, m_data.CharacterGachaContents.Count);
+		var pageMax = 3;
+		rootList.Initialize(prefab, pageMax, m_data.CharacterGachaContents.Count, true);
+		this.GetScript<uGUIPageScrollRect>("Scroll").SetInfinit(true, pageMax);
 
 		// 初期選択.
+#if false
 		this.GetScript<uGUIPageScrollRect>("Scroll").CenterOn(rootList.GetComponentsInChildren<View_GachaList>(true)[0].gameObject);
 		//var centerObj = this.GetScript<uGUIPageScrollRect>("Scroll").GetCurrentCenterObject(); // rootList.GetComponentsInChildren<View_GachaList>()[0].gameObject;
 		//CallbackPagingOnCenter(centerObj);
+#else
+		StartCoroutine( coWaitUpdateView( rootList ) );
+#endif
 	}   
+
+	IEnumerator coWaitUpdateView( InfiniteGridLayoutGroup rootList )
+	{
+		yield return null;	//InfiniteGridLayoutGroupのアップデートを待つ
+
+		//ページ指定
+		var currIdx = 0;
+		var views = rootList.GetComponentsInChildren<View_GachaList>(true);
+		if( s_PageIndex >= 0 && s_PageIndex < views.Length )
+	 		currIdx = s_PageIndex;
+		this.GetScript<uGUIPageScrollRect>("Scroll").CenterOn( views[currIdx].gameObject, true );
+
+		//カテゴリ指定
+		if( s_SubPageIndex == 0 )
+			DidTapCharaGacha();
+		else
+			DidTapWeaponGacha();
+
+		yield return null;
+		m_isReady = true;
+	}
 
 	#region ButtonDelegate.
 
@@ -109,46 +150,13 @@ public class Screen_Gacha : ViewBase
     // 左スクロール
     void DidTapLeft()
 	{
-		if (m_currentPage >= m_data.CharacterGachaContents.Count-1) {
-            return;
-        }
-		if(!m_bEnableButton){
-			return;
-		}
-		m_bEnableButton = false;
-		++m_currentPage;      
-		this.StartCoroutine(this.WaitInputInterval());      
 		this.GetScript<uGUIPageScrollRect>("Scroll").Paging(-1);
-
-		this.GetScript<CustomButton>("bt_ArrowPage_1").gameObject.SetActive(m_currentPage < m_data.CharacterGachaContents.Count-1);
-		this.GetScript<CustomButton>("bt_ArrowPage_2").gameObject.SetActive(true);
 	}
 	// 右スクロール
 	void DidTapRight()
     {
-		if (m_currentPage <= 0) {
-            return;
-        }      
-		if (!m_bEnableButton) {
-            return;
-        }
-        m_bEnableButton = false;
-		--m_currentPage;
-        this.StartCoroutine(this.WaitInputInterval());
 		this.GetScript<uGUIPageScrollRect>("Scroll").Paging(1);
-
-		this.GetScript<CustomButton>("bt_ArrowPage_1").gameObject.SetActive(true);
-		this.GetScript<CustomButton>("bt_ArrowPage_2").gameObject.SetActive(m_currentPage > 0);
     }
-	private int m_currentPage;
-
-	IEnumerator WaitInputInterval()
-	{
-		yield return new WaitForSeconds(0.2f);
-		m_bEnableButton = true;
-
-	}
-	private bool m_bEnableButton = true;
 
     #endregion
 
@@ -157,46 +165,78 @@ public class Screen_Gacha : ViewBase
 	// コールバック：ページスクロールセンタリング時.
 	void CallbackPagingOnCenter(GameObject centerObj)
 	{
-		Debug.Log("CallbackPagingOnCenter " + m_data.CharacterGachaContents[int.Parse(centerObj.name)].Data.ContentsName + " objName=" + centerObj.name);
-		m_currentPage = int.Parse(centerObj.name);
-		this.GetScript<CustomButton>("bt_ArrowPage_1").gameObject.SetActive(m_currentPage < m_data.CharacterGachaContents.Count-1);
-        this.GetScript<CustomButton>("bt_ArrowPage_2").gameObject.SetActive(m_currentPage > 0);
-
-		var c = centerObj.GetOrAddComponent<View_GachaList>();
-        c.Init(m_data.CharacterGachaContents[int.Parse(centerObj.name)], CallbackDidCloseGacha);
-
-        var rootTab = this.GetScript<HorizontalLayoutGroup>("Page").gameObject;
-        m_currentView = centerObj.GetComponent<View_GachaList>();
-        Debug.Log("CallbackPagingOnCenter : " + centerObj.name + " " + m_currentView.Gacha.name + " index=" + m_currentView.Gacha.index);
-        rootTab.GetComponentsInChildren<ListItem_GachaPage>(true).Select(lst => lst.ForceHighlight = lst.Gacha.index == m_currentView.Gacha.index).ToList();
+		var rootTab = this.GetScript<HorizontalLayoutGroup>("Page").gameObject;
+		m_currentView = centerObj.GetComponent<View_GachaList>();
+		rootTab.GetComponentsInChildren<ListItem_GachaPage>(true).Select(lst => lst.ForceHighlight = lst.Gacha.index == m_currentView.Gacha.index).ToList();
 	}
 
 	// コールバック : 無限スクロール常にリストアイテムを生成した際のコールバック.
+	//index = m_data.CharacterGachaContents[]のインデックス
 	void UpdateInfiniteListItem(int index, GameObject createObj)
 	{
-		var c = createObj.GetOrAddComponent<View_GachaList>();
-		Debug.Log("Init " + m_data.CharacterGachaContents[index].Data.ContentsName + " objName=" + createObj.name);
-        c.Init(m_data.CharacterGachaContents[index], CallbackDidCloseGacha);      
+		//Debug.Log("Screen_Gacha:UpdateInfiniteListItem() index="+index+", createObj="+createObj); //createObj=更新view
+		var oldGacha = createObj.GetComponent<View_GachaList>() ? createObj.GetComponent<View_GachaList>().Gacha : null;
+		var c = createObj.GetOrAddComponent<View_GachaList>();      
+		c.Init(m_data.CharacterGachaContents[index], CallbackDidCloseGacha);
 
-		// ページ側のリンクオブジェクトも更新.
-		var item = this.GetComponentsInChildren<ListItem_GachaPage>(true).FirstOrDefault(lst => lst.Gacha.index == m_data.CharacterGachaContents[index].Gacha.index);
-		if(item != null){
-			item.LinkViewObj = createObj;
-            Debug.Log("UpdateInfiniteListItem UpdatePage : " + item.Gacha.name + " index=" + item.Gacha.index);
-		}      
-	}   
+		if( oldGacha == null ) {
+			var item = this.GetComponentsInChildren<ListItem_GachaPage>(true).FirstOrDefault(lst => lst.Gacha.index == m_data.CharacterGachaContents[index].Gacha.index);
+			if(item != null){
+				if(item.LinkViewObj == null) {
+					item.LinkViewObj = createObj;
+				}
+			}
+		}else{
+			var item = Array.Find( this.GetComponentsInChildren<ListItem_GachaPage>(true), i => i.Gacha == c.Gacha );
+			if( item != null ) {
+				item.LinkViewObj = createObj;
+			}
+			if( oldGacha != c.Gacha ) {
+				item = Array.Find( this.GetComponentsInChildren<ListItem_GachaPage>(true), i => i.Gacha == oldGacha );
+				if( item != null ) {
+#if true
+					var scroll = this.GetScript<uGUIPageScrollRect>("Scroll");
+					var views = scroll.GetComponentsInChildren<View_GachaList>( true );
+					var view = Array.Find( views, v => v.Gacha == item.Gacha );
+					item.LinkViewObj = (view != null) ? view.gameObject : null;
+#else
+					item.LinkViewObj = null;
+#endif
+				}
+			}
+		}
+		return;
+
+	}
 
 	// コールバック : ガチャカテゴリを押した.
-	void CallbackDidTapCategory(GameObject targetViewObj)
+	void CallbackDidTapCategory(GameObject targetViewObj, ListItem_GachaPage item)
 	{
+		var scroll = this.GetScript<uGUIPageScrollRect>("Scroll");
+		if( (scroll == null) || scroll.IsBusy )
+			return;
+		if( targetViewObj == null ) {
+			//強制ページ送り
+			scroll.Paging( -1 );
+			//Debug.Log("DispTransformIndex="+scroll.DispTransformIndex);
+			var views = scroll.GetComponentsInChildren<View_GachaList>( true );
+			var view = Array.Find( views, v => v.gameObject.name == scroll.DispTransformIndex.ToString() );
+			targetViewObj = (view != null) ? view.gameObject : null;
+			//Debug.Log(" > targetViewObj="+targetViewObj);
+		}
 		if (targetViewObj == m_currentView.gameObject){
 			return;
 		}
 
+		//itemから再取得
+		int idx = m_data.CharacterGachaContents.FindIndex( cfv => cfv.Gacha == item.Gacha );
+		//Debug.Log(" > idx="+idx);
+		if( idx < 0 )
+			return;
 		// InfiniteGridLayoutGroup側の都合でView_GachaListの更新がされないことがあるため強制呼び出し.
-		UpdateInfiniteListItem(int.Parse(targetViewObj.name), targetViewObj);
+		UpdateInfiniteListItem(idx, targetViewObj);
 
-		this.GetScript<uGUIPageScrollRect>("Scroll").CenterOn(targetViewObj);
+		scroll.CenterOn(targetViewObj);
 		m_currentView = targetViewObj.GetComponent<View_GachaList>();      
 		this.gameObject.GetComponentsInChildren<ListItem_GachaPage>(true).Select(lst => lst.ForceHighlight = lst.LinkViewObj == targetViewObj).ToList();
 	}
@@ -217,7 +257,12 @@ public class Screen_Gacha : ViewBase
 			});
         };
         Action oneMoreProc = () => {
-            m_currentView.Draw(row);
+			if( m_currentView == null ) {
+				//武器ガチャ引いて戻った時、m_currentViewが初期化されたままになるので再検索
+				var views = GetComponentsInChildren<View_GachaList>( true );
+				m_currentView = Array.Find( views, v => v.ID == row.ID );
+			}
+           m_currentView.Draw(row , true);
         };
 
 		// ガチャを引いた.
@@ -306,4 +351,13 @@ public class Screen_Gacha : ViewBase
 
 	private GachaClientUseData m_data;
 	private View_GachaList m_currentView;
+	private bool m_isReady;
+
+	public static int s_PageIndex;
+	public static int s_SubPageIndex;
+	public static void Reset()
+	{
+		s_PageIndex = 0;
+		s_SubPageIndex = 0;
+	}
 }

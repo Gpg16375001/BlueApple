@@ -139,6 +139,11 @@ public class AwsUserProgressData : AwsCognitoDatasetBase
 		}
 	}
 
+    public EventQuestSaveData EventQuestSaveData {
+        get { return Get<EventQuestSaveData>("EventQuestSaveData"); }
+        set { Put("EventQuestSaveData", value); }
+    }
+
 	/// <summary>
 	/// 現在選択しているクエスト.
 	/// </summary>
@@ -565,7 +570,29 @@ public class AwsUserProgressData : AwsCognitoDatasetBase
     {
 		get { return Get<string>("prevViewTimeStrNotice"); }
 		set { Put("prevViewTimeStrNotice", value); }
-    }   
+    }
+
+    public void SetEventQuestReadScenarioId(int eventQuestId, int scerarioSettingId)
+    {
+        var saveData = EventQuestSaveData;
+        if(saveData == null) {
+            saveData = new EventQuestSaveData();
+        }
+        saveData.SetReadedScenario(eventQuestId, scerarioSettingId);
+        EventQuestSaveData = saveData;
+        Sync();
+    }
+
+    public void ResetEventQuestReadScenarioId(int eventQuestId)
+    {
+        var saveData = EventQuestSaveData;
+        if(saveData == null) {
+            return;
+        }
+        saveData.ResetReadedScenario(eventQuestId);
+        EventQuestSaveData = saveData;
+        Sync();
+    }
 
     // コンストラクタ.
     public AwsUserProgressData(CognitoSyncManager mng) : base(mng, "PlayerProgressData") 

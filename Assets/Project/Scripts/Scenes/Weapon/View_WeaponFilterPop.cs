@@ -111,9 +111,6 @@ public class View_WeaponFilterPop : PopupViewBase
 	/// </summary>
 	public override void Dispose()
 	{
-        m_currentSetting = new WeaponFilterSetting();
-        this.UpdateView();
-        m_currentSetting.SaveData();
 		if (m_didClose != null) {
             m_didClose(m_currentSetting.CurrentData);
         }
@@ -134,7 +131,8 @@ public class View_WeaponFilterPop : PopupViewBase
             return;
         }
 
-		this.PlayOpenCloseAnimation(false, () => {
+        m_currentSetting.LoadData();
+        this.PlayOpenCloseAnimation(false, () => {
 			this.gameObject.SetActive(false);
             if (m_didClose != null){
 				m_didClose(m_currentSetting.CurrentData);
@@ -163,7 +161,7 @@ public class View_WeaponFilterPop : PopupViewBase
             return;
         }
 
-		m_currentSetting = new WeaponFilterSetting();
+		m_currentSetting.ResetData();
 		this.UpdateView();
     }
 
@@ -278,19 +276,27 @@ public class WeaponFilterSetting
 	/// <summary>前回情報を復元する.</summary>
     public void LoadData()
 	{
-		RarityList = CurrentData.RarityList != null ? new List<int>(CurrentData.RarityList): new List<int>();
+        CurrentData = new Data();
+        RarityList = CurrentData.RarityList != null ? new List<int>(CurrentData.RarityList): new List<int>();
 		WeaponTypeIndexList = CurrentData.WeaponTypeIndexList != null ? new List<int>(CurrentData.WeaponTypeIndexList): new List<int>();
 		IsVisibleLock = CurrentData.IsVisibleLock;
 		IsVisibleWithoutLock = CurrentData.IsVisibleWithoutLock;
 		IsVisibleMaterial = CurrentData.IsVisibleMaterial;
 	}
+    /// <summary>情報を削除する.</summary>
+    public void ResetData()
+    {
+        CurrentData.Reset();
+        RarityList.Clear();
+        WeaponTypeIndexList.Clear();
+    }
 
-	public WeaponFilterSetting()
+    public WeaponFilterSetting()
 	{
-		RarityList = new List<int>();
-		WeaponTypeIndexList = new List<int>();
-		CurrentData = new Data();
-	}
+        CurrentData = new Data();
+        RarityList = CurrentData.RarityList != null ? new List<int>(CurrentData.RarityList) : new List<int>();
+        WeaponTypeIndexList = CurrentData.WeaponTypeIndexList != null ? new List<int>(CurrentData.WeaponTypeIndexList) : new List<int>();
+    }
 
 
 	/// <summary>class : WeaponFilterSettingデータ.</summary>
@@ -321,16 +327,30 @@ public class WeaponFilterSetting
 			IsHaveContents = (RarityList != null && RarityList.Length > 0) ||
 				             (WeaponTypeIndexList != null && WeaponTypeIndexList.Length > 0) || 
 				             IsVisibleLock || IsVisibleWithoutLock || IsVisibleMaterial;
-		}
-  
-		public Data()
+            var weaponSortData = AwsModule.LocalData.WeaponSortData;
+            weaponSortData.ApplyFilterData(this);
+            AwsModule.LocalData.WeaponSortData = weaponSortData;
+        }
+
+		public void Reset()
 		{
-			RarityList = null;
-			WeaponTypeIndexList = null;
-			IsVisibleLock = false;
-			IsVisibleWithoutLock = false;
-			IsVisibleMaterial = false;
-			IsHaveContents = false;
+            RarityList = null;
+            WeaponTypeIndexList = null;
+            IsVisibleLock = false;
+            IsVisibleWithoutLock = false;
+            IsVisibleMaterial = false;
+            IsHaveContents = false;
+        }
+
+        public Data()
+		{
+            var weaponSortData = AwsModule.LocalData.WeaponSortData;
+            RarityList = weaponSortData.RarityList;
+			WeaponTypeIndexList = weaponSortData.WeaponTypeIndexList;
+			IsVisibleLock = weaponSortData.IsVisibleLock;
+			IsVisibleWithoutLock = weaponSortData.IsVisibleWithoutLock;
+			IsVisibleMaterial = weaponSortData.IsVisibleMaterial;
+			IsHaveContents = weaponSortData.IsHaveContents;
 		}
 	}
 }

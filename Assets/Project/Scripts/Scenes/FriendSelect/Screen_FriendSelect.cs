@@ -91,9 +91,13 @@ public class Screen_FriendSelect : ViewBase
             var c = go.GetOrAddComponent<ListItem_HorizontalElementTab>();
             c.Init(category, CallbackSelectedElement);
         }
-        
-		// フレンドリストを作成.
-		this.RequestUserList(() => SelectElementCategory());
+
+        // フレンドリストを作成.
+        var friendSelectSortData = AwsModule.LocalData.FriendSelectSortData;
+        m_currentCategoryName = friendSelectSortData.CategoryName;
+        m_currentSort = (SortMode)friendSelectSortData.SortType;
+        m_bOrderDescend = friendSelectSortData.IsDescending;
+        this.RequestUserList(() => SelectElementCategory(m_currentCategoryName));
 
 		// 出現敵属性情報
 		var grid = this.GetScript<GridLayoutGroup>("StageInfoAttribute/ElementIconGrid");
@@ -167,8 +171,12 @@ public class Screen_FriendSelect : ViewBase
         // ボタン、ドロップダウン.
 		var dropdown = GetScript<TMP_Dropdown>("Sort/bt_PullDown");
 		dropdown.onValueChanged.AddListener(new UnityEngine.Events.UnityAction<int>(DidTapSort));
+        dropdown.value = friendSelectSortData.SortType;
+        dropdown.captionText.text = dropdown.options[friendSelectSortData.SortType].text;
 		this.SetCanvasCustomButtonMsg("bt_Ascentd", DidTapOrder);
 		this.SetCanvasCustomButtonMsg("bt_Descend", DidTapOrder);
+        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_bOrderDescend);
+        this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_bOrderDescend);
 
         // フェードを開ける.
         GetScript<ScreenBackground> ("BG").CallbackLoaded (() => {
@@ -240,7 +248,15 @@ public class Screen_FriendSelect : ViewBase
                 });
                 break;
 		}
-		this.UpdateSupportList(m_currentCategoryName);
+
+        // ソートデータの保存
+        var friendSelectSortData = AwsModule.LocalData.FriendSelectSortData;
+        friendSelectSortData.CategoryName = m_currentCategoryName;
+        friendSelectSortData.SortType = (int)sort;
+        friendSelectSortData.IsDescending = bDescend;
+        AwsModule.LocalData.FriendSelectSortData = friendSelectSortData;
+
+        this.UpdateSupportList(m_currentCategoryName);
 	}
     // ソートのみ
 	private void Sort(SortMode sort)
@@ -318,7 +334,16 @@ public class Screen_FriendSelect : ViewBase
             View_FadePanel.SharedInstance.FadeOutWithLoadingAnim (View_FadePanel.FadeColor.Black, () => {
                 ScreenChanger.SharedInstance.GoToDailyQuest (2);
             });
-        } else {
+        } else if (questType == 6) {
+            var eventQuest = AwsModule.ProgressData.CurrentQuest as EventQuestStageDetails;
+            View_FadePanel.SharedInstance.FadeOutWithLoadingAnim (View_FadePanel.FadeColor.Black, () => {
+                if(eventQuest.EventQuestData != null) {
+                    ScreenChanger.SharedInstance.GoToEventQuest (eventQuest.EventQuestData.id);
+                } else {
+                    ScreenChanger.SharedInstance.GoToEvent ();
+                }
+            });
+        }else {
             View_FadePanel.SharedInstance.FadeOutWithLoadingAnim (View_FadePanel.FadeColor.Black, () => {
                 ScreenChanger.SharedInstance.GoToMainQuestSelect (MainQuestBootEnum.Stage);
             });

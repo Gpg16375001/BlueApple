@@ -300,18 +300,18 @@ public class Screen_PartyEdit : ViewBase
         LockInputManager.SharedInstance.IsLock = true;
 
         // スキルによるドロップ率・経験値・クレド増加割合分を計算する。
-        int OverrideExpPercentage = 0;
-        int OverrideGoldPercentage = 0;
-        int OverrideItemDropPercentage = 0;
+        int OverrideExpPercentage = 999999;//0;
+        int OverrideGoldPercentage = 999999;//0;
+        int OverrideItemDropPercentage = 999999;//0;
         if (m_HelperCard != null) {
             if (m_HelperCard.Parameter.PassiveSkillList.Any (x => x.Skill.HasItemDropUpLogic ())) {
                 OverrideItemDropPercentage += m_HelperCard.Parameter.PassiveSkillList.Where (x => x.Skill.HasItemDropUpLogic ()).Sum (x => x.GetItemDropUp ());
             }
             if (m_HelperCard.Parameter.PassiveSkillList.Any (x => x.Skill.HasExpUpLogic ())) {
-                OverrideItemDropPercentage += m_HelperCard.Parameter.PassiveSkillList.Where (x => x.Skill.HasExpUpLogic ()).Sum (x => x.GetExpUp ());
+                OverrideExpPercentage += m_HelperCard.Parameter.PassiveSkillList.Where (x => x.Skill.HasExpUpLogic ()).Sum (x => x.GetExpUp ());
             }
             if (m_HelperCard.Parameter.PassiveSkillList.Any (x => x.Skill.HasMoneyUpLogic ())) {
-                OverrideItemDropPercentage += m_HelperCard.Parameter.PassiveSkillList.Where (x => x.Skill.HasMoneyUpLogic ()).Sum (x => x.GetMoneyUp ());
+                OverrideGoldPercentage += m_HelperCard.Parameter.PassiveSkillList.Where (x => x.Skill.HasMoneyUpLogic ()).Sum (x => x.GetMoneyUp ());
             }
         }
         for (int i = 1; i <= Party.PartyCardMax; ++i) {
@@ -324,10 +324,10 @@ public class Screen_PartyEdit : ViewBase
                 OverrideItemDropPercentage += cardData.Parameter.PassiveSkillList.Where (x => x.Skill.HasItemDropUpLogic ()).Sum (x => x.GetItemDropUp ());
             }
             if (cardData.Parameter.PassiveSkillList.Any (x => x.Skill.HasExpUpLogic ())) {
-                OverrideItemDropPercentage += cardData.Parameter.PassiveSkillList.Where (x => x.Skill.HasExpUpLogic ()).Sum (x => x.GetExpUp ());
+                OverrideExpPercentage += cardData.Parameter.PassiveSkillList.Where (x => x.Skill.HasExpUpLogic ()).Sum (x => x.GetExpUp ());
             }
             if (cardData.Parameter.PassiveSkillList.Any (x => x.Skill.HasMoneyUpLogic ())) {
-                OverrideItemDropPercentage += cardData.Parameter.PassiveSkillList.Where (x => x.Skill.HasMoneyUpLogic ()).Sum (x => x.GetMoneyUp ());
+                OverrideGoldPercentage += cardData.Parameter.PassiveSkillList.Where (x => x.Skill.HasMoneyUpLogic ()).Sum (x => x.GetMoneyUp ());
             }
         }
 

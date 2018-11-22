@@ -14,6 +14,13 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
     /// </summary>
     public OnUpdateItem OnUpdateItemEvent = new OnUpdateItem ();
 
+    [System.Serializable]
+    public class OnInitItem : UnityEngine.Events.UnityEvent<GameObject> {}
+    /// <summary>
+    /// アイテムの生成時に呼び出されるイベント
+    /// </summary>
+    public OnInitItem OnInitItemEvent = new OnInitItem ();
+
     /// <summary>
     /// 最大アイテム数の設定
     /// ロジック的に数を増やすことはできるが減らすことはできない。
@@ -73,6 +80,7 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
             if (index < 0) {
                 index = m_MaxItemCount + index;
             }
+            OnInitItemEvent.Invoke (item);
             OnUpdateItemEvent.Invoke (index, item);
         }
 
@@ -107,6 +115,7 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
             if (index < 0) {
                 index = m_MaxItemCount + index;
             }
+            OnInitItemEvent.Invoke (item);
             OnUpdateItemEvent.Invoke(index, item);         
 		}
 		
@@ -141,6 +150,39 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
         CalculateCellSize();
 
         m_IsInit = true;
+    }
+
+    public void UpdateList(GameObject itemPrototype, int maxItemCount)
+    {
+        //gameObject.DestroyChildren();
+        int InstantiateCount = m_LoopItem ? m_InstantateItemCount : Mathf.Min(m_InstantateItemCount, m_MaxItemCount);
+        if (InstantiateCount > m_ItemList.Count) {
+            for (int i = m_ItemList.Count; i < InstantiateCount; ++i) {
+                var item = GameObject.Instantiate (itemPrototype);
+                var rectTrans = item.transform as RectTransform;
+                rectTrans.SetParent (transform, false);
+
+                item.name = i.ToString ();
+                item.SetActive (true);
+                m_ItemList.AddLast (rectTrans);
+
+                OnInitItemEvent.Invoke (item);
+            }
+        } else if(InstantiateCount < m_ItemList.Count){
+            for (int i = InstantiateCount; i < m_ItemList.Count; ++i) {
+                m_ItemList.ElementAt(i).gameObject.SetActive (false);
+            }
+        }
+
+        ResetScrollPosition ();
+        for (int i = 0; i < InstantiateCount; ++i) {
+            var item = m_ItemList.ElementAt (i).gameObject;
+            int index = i % m_MaxItemCount;
+            if (index < 0) {
+                index = m_MaxItemCount + index;
+            }
+            OnUpdateItemEvent.Invoke (index, item);
+        }
     }
 
     /// <summary>
@@ -186,6 +228,7 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
             if (index < 0) {
                 index = m_MaxItemCount + index;
             }
+            OnInitItemEvent.Invoke (item);
             OnUpdateItemEvent.Invoke(index, item);
 
 			++createdCnt;
@@ -234,13 +277,25 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
     }
 
     // 数が減った場合などの時にスクロールポジションを初期のいちに戻す
-    public void ResetScrollPosition()
+    public void ResetScrollPosition(bool isItemUpdate=false)
     {
         m_CurrentItemNo = 0;
         m_DiffPreFramePosition = 0.0f;
         rectTransform.anchoredPosition = InitPos;
 
         SetDirty ();
+
+        if (isItemUpdate) {
+            // アイテムの状態も元に戻す
+            for (int i = 0; i < m_ItemList.Count; ++i) {
+                var item = m_ItemList.ElementAt (i).gameObject;
+                int index = i % m_MaxItemCount;
+                if (index < 0) {
+                    index = m_MaxItemCount + index;
+                }
+                OnUpdateItemEvent.Invoke (index, item);
+            }
+        }
     }
 
     // 共通初期化.

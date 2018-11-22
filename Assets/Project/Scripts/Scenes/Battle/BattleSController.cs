@@ -85,6 +85,10 @@ public class BattleSController : ScreenControllerBase
                     ScenarioProvider.CurrentSituation = ScenarioSituation.Other;
                     ScenarioProvider.CurrentScenarioState = ScenarioProgressState.InBattle;
                     AwsModule.ProgressData.CurrentQuest = MasterDataTable.quest_daily [AwsModule.BattleData.QuestID] as IQuestData;
+                } else if(AwsModule.BattleData.QuestType == 6) {
+                    ScenarioProvider.CurrentSituation = ScenarioSituation.Event;
+                    ScenarioProvider.CurrentScenarioState = ScenarioProgressState.InBattle;
+                    AwsModule.ProgressData.CurrentQuest = MasterDataTable.event_quest_stage_details [AwsModule.BattleData.QuestID] as IQuestData;
                 }
 
                 var utageProjectName = ScenarioProvider.GetUtageProject ();

@@ -38,9 +38,9 @@ public class View_WeaponSaleList : ViewBase
 		m_listView.DidLongTapIconEvent += DidLongTapIcon;
 		m_listView.DidUpdateList += CallbackUpdateList;
 		m_listView.DidCallbackUpateListItem += DidCallbackUpdateListItem;
-		m_listView.Init();
+		m_listView.Init(null, m_listView.sortType);
 
-		this.UpdateSaleInfo();
+        this.UpdateSaleInfo();
 
 		// ラベル.
         this.GetScript<TextMeshProUGUI>("txtp_WeaponLimit").text = string.Format("/ {0}", AwsModule.UserData.UserData.WeaponBagCapacity);
@@ -51,8 +51,8 @@ public class View_WeaponSaleList : ViewBase
 		this.GetScript<CustomButton>("Sale/bt_Common").onClick.AddListener(DidTapSale);
         this.SetCanvasCustomButtonMsg("bt_Ascentd", DidTapOrder);
         this.SetCanvasCustomButtonMsg("bt_Descend", DidTapOrder);
-        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(true);
-        this.GetScript<Image>("bt_Descend").gameObject.SetActive(false);
+        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.isDescending);
+        this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.isDescending);
     }
 
     // コールバック : リスト更新.
@@ -80,9 +80,9 @@ public class View_WeaponSaleList : ViewBase
     // 並び替え.
 	private void DidTapOrder()
     {
-        m_listView.Descending = !m_listView.Descending;
-        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.Descending);
-        this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.Descending);
+        m_listView.isDescending = !m_listView.isDescending;
+        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.isDescending);
+        this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.isDescending);
         m_listView.UpdateList();
     }
 

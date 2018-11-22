@@ -3,6 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum ResultTitle {
+    Clear,
+    Mission,
+    Event
+};
+
 /// <summary>
 /// interface : バトル結果画面のページ共通動作.
 /// </summary>
@@ -19,4 +26,6 @@ public interface IBattleResultPage
 	void Close(Action didEnd);
 	/// <summary>アニメーションを強制的に即時終了させる.</summary>
 	void ForceImmediateEndAnimation();
+
+    ResultTitle GetResultTitle();
 }

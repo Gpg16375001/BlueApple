@@ -43,14 +43,19 @@ public class Screen_WeaponList : ViewBase
 		View_GlobalMenu.DidSetEnableButton += bActive => this.IsEnableButton = bActive;
 		View_PlayerMenu.DidSetEnableButton += bActive => this.IsEnableButton = bActive;
 
+        var weaponSortData = AwsModule.LocalData.WeaponSortData;
+
         // リスト設定.
-		m_listView = this.GetComponent<WeaponListView>();
+        m_listView = this.GetComponent<WeaponListView>();
 		m_listView.DidUpdateList += CallbackUpdateList;
 		m_listView.DidTapIconEvent += DidTapIcon;
 		m_listView.DidLongTapIconEvent += DidLongTapIcon;
 		m_listView.Init(removeTarget: m_equipCard != null ? WeaponData.CacheGet(m_equipCard.EquippedWeaponBagId): null, 
-		                sortType: WeaponListView.SortType.Get,  // TODO: 今後ソートタイプを保存しときたくなるかもしれない？ > m_listView.CurrentSortType
+		                afterSortType: (WeaponListView.SortType)weaponSortData.SortType,
 		                invisibleWeapons: m_equipCard != null ? WeaponData.CacheGetAll().FindAll(w => !w.CanEquipped(m_equipCard)).ToArray(): new WeaponData[0]);
+        m_listView.UpdateWeaponSortData();
+        m_listView.UpdateFilterData();
+        m_listView.UpdateList();
 
 		// ラベル.
 		this.GetScript<TextMeshProUGUI>("txtp_WeaponLimit").text = string.Format("/ {0}", AwsModule.UserData.UserData.WeaponBagCapacity);
@@ -60,8 +65,8 @@ public class Screen_WeaponList : ViewBase
 		this.SetCanvasCustomButtonMsg("bt_Ascentd", DidTapOrder);
 		this.SetCanvasCustomButtonMsg("bt_Descend", DidTapOrder);
 		this.GetScript<CustomButton>("Sale/bt_Common").onClick.AddListener(DidTapSale);
-		this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(true);
-        this.GetScript<Image>("bt_Descend").gameObject.SetActive(false);
+		this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.isDescending);
+        this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.isDescending);
 
         GetScript<ScreenBackground> ("BG").CallbackLoaded (() => {
             View_FadePanel.SharedInstance.FadeIn (View_FadePanel.FadeColor.Black);
@@ -72,8 +77,12 @@ public class Screen_WeaponList : ViewBase
 	/// リスト更新.キャッシュの取り直しから行う.
 	/// </summary>
 	public void UpdateList()
-	{ 
-		m_listView.UpdateList();      
+	{
+        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.isDescending);
+        this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.isDescending);
+        m_listView.UpdateSortDropDownCaption();
+        m_listView.UpdateFilterData();
+        m_listView.UpdateList();      
 	}
 
 	// コールバック : リスト更新.
@@ -90,10 +99,10 @@ public class Screen_WeaponList : ViewBase
     // 並び替え.
 	private void DidTapOrder()
     {
-		m_listView.Descending = !m_listView.Descending;
-		this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.Descending);
-		this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.Descending);
-		m_listView.UpdateList();
+        m_listView.isDescending = !m_listView.isDescending;
+        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.isDescending);
+        this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.isDescending);
+        m_listView.UpdateList();
     }
 
     // 売却
@@ -144,7 +153,12 @@ public class Screen_WeaponList : ViewBase
 		}
 
         // 通常.
-        m_viewWeaponDetailsPop = WeaponSContoller.CreateWeaponDetailPop(weapon);
+        m_viewWeaponDetailsPop = WeaponSContoller.CreateWeaponDetailPop(weapon, true, () => {
+            m_listView.UpdateWeaponSortData();
+            this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.isDescending);
+            this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.isDescending);
+            this.m_listView.UpdateList();
+        });
     }
 
 	// アイコン長押し時の処理

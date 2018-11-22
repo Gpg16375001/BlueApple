@@ -41,18 +41,22 @@ public class View_WeaponLimitBreakResult : ViewBase
 		this.GetScript<TextMeshProUGUI>("BeforeWeaponDEF/txtp_DEF").text = m_currentData.Parameter.Defense.ToString();
 		this.GetScript<TextMeshProUGUI>("BeforeWeaponSPD/txtp_SPD").text = m_currentData.Parameter.Agility.ToString();
 		this.GetScript<TextMeshProUGUI>("BeforeWeaponLv/txtp_Lv").text = m_currentData.Level.ToString();
-        var currentSkill = current.Parameter.ActionSkillList[0];
-        this.GetScript<TextMeshProUGUI>("BeforeWeaponSkill/txtp_SkillName").text = currentSkill.Skill.display_name;
-        this.GetScript<TextMeshProUGUI>("BeforeWeaponSkill/txtp_SkillLv").text = currentSkill.Level.ToString();
+        if (current.IsHaveSkill) {
+            var currentSkill = current.Parameter.ActionSkillList != null && current.Parameter.ActionSkillList.Length > 0 ? current.Parameter.ActionSkillList[0] : current.Parameter.PassiveSkillList[0];
+            this.GetScript<TextMeshProUGUI>("BeforeWeaponSkill/txtp_SkillName").text = currentSkill.Skill.display_name;
+            this.GetScript<TextMeshProUGUI>("BeforeWeaponSkill/txtp_SkillLv").text = currentSkill.Level.ToString();
+        }
 
         this.GetScript<TextMeshProUGUI>("AfterWeaponHP/txtp_HP").text = m_resultData.Parameter.Hp.ToString();
 		this.GetScript<TextMeshProUGUI>("AfterWeaponATK/txtp_ATK").text = m_resultData.Parameter.Attack.ToString();
 		this.GetScript<TextMeshProUGUI>("AfterWeaponDEF/txtp_DEF").text = m_resultData.Parameter.Defense.ToString();
 		this.GetScript<TextMeshProUGUI>("AfterWeaponSPD/txtp_SPD").text = m_resultData.Parameter.Agility.ToString();
 		this.GetScript<TextMeshProUGUI>("AfterWeaponLv/txtp_Lv").text = m_resultData.Level.ToString();
-        var resultSkill = result.Parameter.ActionSkillList[0];
-        this.GetScript<TextMeshProUGUI>("AfterWeaponSkill/txtp_SkillName").text = resultSkill.Skill.display_name;
-        this.GetScript<TextMeshProUGUI>("AfterWeaponSkill/txtp_SkillLv").text = resultSkill.Level.ToString();
+        if (result.IsHaveSkill) {
+            var resultSkill = result.Parameter.ActionSkillList != null && result.Parameter.ActionSkillList.Length > 0 ? result.Parameter.ActionSkillList[0] : result.Parameter.PassiveSkillList[0];
+            this.GetScript<TextMeshProUGUI>("AfterWeaponSkill/txtp_SkillName").text = resultSkill.Skill.display_name;
+            this.GetScript<TextMeshProUGUI>("AfterWeaponSkill/txtp_SkillLv").text = resultSkill.Level.ToString();
+        }
 
         // ボタン.
         var trigger = this.gameObject.GetOrAddComponent<ObservableEventTrigger>();

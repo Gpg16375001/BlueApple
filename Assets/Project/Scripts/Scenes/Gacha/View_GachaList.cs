@@ -37,6 +37,8 @@ public class View_GachaList : ViewBase
     /// <summary>初期化済み？</summary>
 	public bool IsInit { get { return m_contents != null; } }
 
+	private Sprite saveSprite = null;
+
 	/// <summary>
 	/// 初期化.
 	/// </summary>
@@ -45,6 +47,11 @@ public class View_GachaList : ViewBase
 		m_contents = contents;
 		m_didDrawGacha = didDrawGacha;
 
+		//背景リセット
+		if( saveSprite == null )
+			saveSprite = this.GetScript<Image>("img_GachaBannerL").sprite;
+		else
+			this.GetScript<Image>("img_GachaBannerL").sprite = saveSprite;
 		// 背景ロード.あればロード.なければ何もしない.
 		this.DownloadBG(texture => { 
 			if(texture == null){
@@ -84,7 +91,7 @@ public class View_GachaList : ViewBase
     /// <summary>
     /// 指定データのガチャを引く.
     /// </summary>
-	public void Draw(GachaClientUseData.ContentsForView.RowData data)
+	public void Draw(GachaClientUseData.ContentsForView.RowData data, bool isRetry=false)
 	{
 		if (data.Type.Enum == GachaTypeEnum.weapon_gacha) {
             var haveCnt = WeaponData.CacheGetAll().Count;
@@ -93,8 +100,12 @@ public class View_GachaList : ViewBase
                 return;
             }
         }
-  
-		View_GachaPurchasePop.Create(data, (row, res) => {
+
+		Screen_Gacha controller = null;
+		if( !isRetry ) {
+			controller = GetComponentInParent<Screen_Gacha>();
+		}
+		View_GachaPurchasePop.Create(data, controller, (row, res) => {
             if (m_didDrawGacha != null) {
 				m_didDrawGacha(row, res);
             }         
@@ -224,7 +235,9 @@ public class View_GachaList : ViewBase
 
 		// 設定がない場合は非表示.
 		if (this.Exist<RectTransform>("BuyOneGacha/txtp_FreeGacha")) {
-            this.GetScript<RectTransform>("BuyOneGacha/txtp_FreeGacha").gameObject.SetActive(m_contents.DataFree != null && m_contents.DataFree.IsPurchasable);
+			var value = m_contents.DataFree != null && m_contents.DataFree.IsPurchasable;
+            this.GetScript<RectTransform>("BuyOneGacha/txtp_FreeGacha").gameObject.SetActive( value );
+            this.GetScript<RectTransform>("BuyOneGacha/Exclamation").gameObject.SetActive( value );
         }
 		this.GetScript<RectTransform>("OneGacha").gameObject.SetActive(m_contents.Data != null);
         this.GetScript<RectTransform>("Buy10Gacha").gameObject.SetActive(m_contents.Data10th != null);      

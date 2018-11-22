@@ -29,6 +29,10 @@ public class UnitListBase : ViewBase
         m_ElementFilter = null;
         m_DispOnlyElement = onlyElement;
 
+        var unitListSortData = AwsModule.LocalData.UnitListSortData;
+        sortType = (UnitListSortType)unitListSortData.SortType;
+        isDescending = unitListSortData.IsDescending;
+
         string onlyElementName = null;
         if (onlyElement.HasValue) {
             onlyElementName = MasterDataTable.element [onlyElement.Value].name;
@@ -75,6 +79,7 @@ public class UnitListBase : ViewBase
         // ドロップダウンの初期設定
         var dropdown = GetScript<TMP_Dropdown> ("Sort/bt_TypeB");
         dropdown.onValueChanged.AddListener (new UnityEngine.Events.UnityAction<int> (SortDropdownValueChange));
+		dropdown.value = (int)sortType;
 		dropdown.captionText.text = dropdown.options[(int)sortType].text;
 
         GetScript<CustomButton>("bt_Ascentd").gameObject.SetActive(!isDescending);
@@ -136,9 +141,12 @@ public class UnitListBase : ViewBase
 
     protected virtual void DidTapOrder()
     {
+        var unitListSortData = AwsModule.LocalData.UnitListSortData;
         isDescending = !isDescending;
 		GetScript<CustomButton>("bt_Ascentd").gameObject.SetActive(!isDescending);
 		GetScript<CustomButton>("bt_Descend").gameObject.SetActive(isDescending);
+        unitListSortData.IsDescending = isDescending;
+        AwsModule.LocalData.UnitListSortData = unitListSortData;
         SortAndFilter ();
         UpdateList ();
     }
@@ -149,7 +157,10 @@ public class UnitListBase : ViewBase
 		var type = (UnitListSortType)index;
 
 		if (sortType != type) {
-			sortType = type;
+            var unitListSortType = AwsModule.LocalData.UnitListSortData;
+            unitListSortType.SortType = index;
+            AwsModule.LocalData.UnitListSortData = unitListSortType;
+            sortType = type;
             SortAndFilter ();
             UpdateList ();
         }

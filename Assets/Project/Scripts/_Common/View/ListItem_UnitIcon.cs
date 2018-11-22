@@ -173,6 +173,15 @@ public class ListItem_UnitIcon : ViewBase
 		                                                                  !this.GetScript<Transform>("img_UnitRemove").gameObject.activeSelf && 
 		                                                                  !this.GetScript<Transform>("img_UnitOrganizing").gameObject.activeSelf &&
 		                                                                  m_CardData.EquippedWeaponBagId != 0);
+        // Bonus表示
+        if (MasterDataTable.event_quest_BonusUnit != null && MasterDataTable.event_quest != null) {
+            var bonusUnit = MasterDataTable.event_quest_BonusUnit.DataList;
+            var time = GameTime.SharedInstance.Now;
+            this.GetScript<Transform> ("img_EventBonus").gameObject.SetActive (bonusUnit.Count > 0 && bonusUnit.Any (r => r.unit_id == m_CardData.CardId &&
+                MasterDataTable.event_quest [r.event_id] != null &&
+                MasterDataTable.event_quest [r.event_id].start_at <= time &&
+                time < MasterDataTable.event_quest [r.event_id].end_at));
+        }
 
         var iconButton = GetScript<CustomButton> ("IconChDummy");
         if (m_DidTap == null && DidLongPress == null) {

@@ -58,10 +58,6 @@ public partial class BattleEnemyParameter
     [SerializeField]
     public int hp;
 
-    // MP
-    [SerializeField]
-    public int mp;
-
     // 攻撃力
     [SerializeField]
     public int attack;

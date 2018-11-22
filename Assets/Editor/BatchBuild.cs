@@ -67,8 +67,8 @@ public class BatchBuild
     {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android, "DEFINE_RELEASE;");
 		PlayerSettings.productName = "プレカトゥス";   // TODO : 仮タイトル
-		PlayerSettings.bundleVersion = "1.0.4";
-        PlayerSettings.Android.bundleVersionCode = 101000400;
+		PlayerSettings.bundleVersion = "1.0.5";
+        PlayerSettings.Android.bundleVersionCode = 101000500;
 		PlayerSettings.applicationIdentifier = "jp.fg.precatus";
 
         // URL Schemaの書き換えを行う
@@ -127,8 +127,8 @@ public class BatchBuild
     {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android, "DEFINE_RELEASE;");
 		PlayerSettings.productName = "プレカトゥス";
-        PlayerSettings.bundleVersion = "1.0.4";
-		PlayerSettings.Android.bundleVersionCode = 201000400;
+        PlayerSettings.bundleVersion = "1.0.5";
+		PlayerSettings.Android.bundleVersionCode = 201000500;
 		PlayerSettings.applicationIdentifier = "jp.fg.precatus";
         Build(BuildTargetGroup.Android, BuildTarget.Android, BuildOptions.None);
     }
@@ -143,7 +143,7 @@ public class BatchBuild
 		PlayerSettings.productName = "DevSeven";
 		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "0.0.1";
 		PlayerSettings.applicationIdentifier = "com.smilelab.devseven";
-		PlayerSettings.iOS.iOSManualProvisioningProfileID = "4f51f198-00c9-4ad5-b23b-1d6c24d1eb21";
+		PlayerSettings.iOS.iOSManualProvisioningProfileID = "f38f648f-d574-4ee2-a965-44671b63dfcb";
 		ProvisioningAtBuildTime = "seven_dev_adhoc";
 		IsReleaseBuild = false;
 		var buildOption = BuildOptions.Development;
@@ -165,7 +165,7 @@ public class BatchBuild
 		PlayerSettings.productName = "プレカトゥス";
 		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "0.1.0";
 		PlayerSettings.applicationIdentifier = "com.smilelab.seven";
-		PlayerSettings.iOS.iOSManualProvisioningProfileID = "24442b00-b1e1-4779-b37c-43c545ccda5d";
+		PlayerSettings.iOS.iOSManualProvisioningProfileID = "e38857c5-11a0-48fd-994b-4709dfe3d2b8";
 		ProvisioningAtBuildTime = "seven_adhoc";
 		IsReleaseBuild = false;
         Build(BuildTargetGroup.iOS, BuildTarget.iOS, BuildOptions.None);
@@ -178,7 +178,7 @@ public class BatchBuild
     {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, "DEFINE_RELEASE;");
 		PlayerSettings.productName = "プレカトゥス";
-		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "1.0.4";
+		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "1.0.5";
 		PlayerSettings.applicationIdentifier = "jp.fg.precatus";
 		PlayerSettings.iOS.iOSManualProvisioningProfileID = "225abe5b-bdb0-4bdc-9061-c2bd12a0558e";
 		ProvisioningAtBuildTime = "LIBRA OF PRECATUS_appstore";
@@ -193,7 +193,7 @@ public class BatchBuild
     {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, "DEFINE_RELEASE_ADHOC;");
         PlayerSettings.productName = "プレカトゥス";
-		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "1.0.4";
+		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "1.0.5";
 		PlayerSettings.applicationIdentifier = "com.smilelab.devseven";
         PlayerSettings.iOS.iOSManualProvisioningProfileID = "80f5086e-55b0-4a37-8c7f-486338111284";
 		ProvisioningAtBuildTime = "seven_dev_adhoc";

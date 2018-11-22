@@ -22,7 +22,13 @@ public class ListItem_GachaPage : ViewBase
     /// <summary>
     /// リンクしているガチャViewのオブジェクト.
     /// </summary>
-	public GameObject LinkViewObj { get; set; }
+	public GameObject LinkViewObj {
+		get { return linkViewObj; }
+		set {
+			linkViewObj = value;
+		}
+	}
+	[SerializeField] GameObject linkViewObj;
 
 	/// <summary>
     /// 強制ハイライト.
@@ -40,7 +46,7 @@ public class ListItem_GachaPage : ViewBase
 	/// <summary>
     /// 初期化.
     /// </summary>
-	public void Init(Gacha gacha, Action<GameObject> didTap, bool bLast = false)
+	public void Init(Gacha gacha, Action<GameObject, ListItem_GachaPage> didTap, bool bLast = false)
 	{
 		Gacha = gacha;
 		m_didTap = didTap;
@@ -55,9 +61,9 @@ public class ListItem_GachaPage : ViewBase
     void DidTapCategory()
 	{
 		if(m_didTap != null){
-			m_didTap(LinkViewObj);         
+			m_didTap(LinkViewObj, this);         
 		}
 	}
        
-	private Action<GameObject> m_didTap;   
+	private Action<GameObject, ListItem_GachaPage> m_didTap;   
 }

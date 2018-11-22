@@ -21,6 +21,7 @@ public class MainQuestListInDropDown : TMP_Dropdown
     /// <summary>ルートをタップした際のイベント.</summary>
 	public Action onClickRoot;   
 
+    public bool IsEnableToggle = true;
 
     /// <summary>クエストリスト追加.</summary>
 	public void AddOptions(IEnumerable<IQuestData> collection, Action didCreateAndOpenList = null)
@@ -50,6 +51,10 @@ public class MainQuestListInDropDown : TMP_Dropdown
 	/// ドロップダウンというより入れ子のリストアイテムとして使用するのでToggleの基本機能は無視してonValueChangedを呼ぶ.
 	public override void Select()
     {
+        if (!IsEnableToggle) {
+            return;
+        }
+
 		base.Select();
   
         // 必ずルートタップを確認してから.
@@ -71,16 +76,20 @@ public class MainQuestListInDropDown : TMP_Dropdown
 	// MEMO : Toggle.isOn=trueのアイテムをタップしてもOnPointer***は呼ばれない.
 	public override void OnPointerClick(PointerEventData eventData)
 	{
+        if (!IsEnableToggle) {
+            return;
+        }
+
 		var bTapRoot = !string.IsNullOrEmpty(RootButtonName) && eventData.pointerEnter.gameObject.name.Contains(RootButtonName);
 		if (!bTapRoot) {
 			isShow = false;
-			base.OnPointerClick(eventData);
+            Show ();
 			return;
 		}
 		isTouchRoot = true;
         
 		isShow = !isShow;
-        base.OnPointerClick(eventData);
+        Show ();
 
 		if(isShow){
 			SoundManager.SharedInstance.PlaySE(SoundClipName.se004);
@@ -132,9 +141,17 @@ public class MainQuestListInDropDown : TMP_Dropdown
 		// ミッション.
 		var bCompleteMission = true;
 		var mission = MasterDataTable.battle_mission_setting.DataList.Find(s => s.stage_id == info.BattleStageID);
+        var questArchive = QuestAchievement.CacheGetAll().Find(x => x.QuestType == info.QuestType && x.QuestId == info.ID);
 		viewBase.GetScript<Transform>("MissionGrid").gameObject.SetActive(mission != null);
 		if(mission != null){
-			var releaseMissions = QuestAchievement.CacheGet(info.ID).AchievedMissionIdList;
+            int[] releaseMissions = null;
+            if (info.QuestType == 6) {
+                releaseMissions = info.ReleaseMissions; 
+            }
+            else if (questArchive != null) {
+                releaseMissions = questArchive.AchievedMissionIdList;
+            }
+
             var missionList = new List<int>();
             missionList.Add(mission.condition_1 ?? -1);
             missionList.Add(mission.condition_2 ?? -1);
@@ -165,51 +182,97 @@ public class MainQuestListInDropDown : TMP_Dropdown
 			bCompleteMission = false;
 		}
         // 初回報酬.
-		var mainQuest = MasterDataTable.quest_main[info.ID];
-		var bAchived = QuestAchievement.CacheGet(info.ID) != null && QuestAchievement.CacheGet(info.ID).IsAchieved;
-		var iconInfo = mainQuest.reward_item_type.Enum.GetIconInfo(mainQuest.reward_item_id);
-		var sprite = viewBase.GetScript<uGUISprite>("ItemIcon");
-		viewBase.GetScript<Image>("img_RewardGet").gameObject.SetActive(bAchived);
-		viewBase.GetScript<Transform>("Item").gameObject.SetActive(iconInfo.IsEnableSprite);    // sprite設定ルート
-        if (iconInfo.IsEnableSprite) {
-            sprite.LoadAtlasFromResources(iconInfo.AtlasName, iconInfo.SpriteName);
-        } else if (iconInfo.IconObject != null) {
-			iconInfo.IconObject.transform.SetParent(viewBase.GetScript<Transform>("UnitWeaponRoot"));
-        }      
+        var bAchived = questArchive != null && questArchive.IsAchieved;
+        if (info.QuestType == 6) {
+            var eventDetails = info as EventQuestStageDetails;
+            bAchived = eventDetails.IsClear;
+        }
+        if(!info.HasClearReward) {
+            viewBase.GetScript<RectTransform> ("Reward").gameObject.SetActive(false);
+        } else {
+            viewBase.GetScript<RectTransform> ("Reward").gameObject.SetActive(true);
+            var iconInfo = info.ClearRewardType.Value.GetIconInfo(info.ClearRewardId);
+    		var sprite = viewBase.GetScript<uGUISprite>("ItemIcon");
+    		viewBase.GetScript<Image>("img_RewardGet").gameObject.SetActive(bAchived);
+    		viewBase.GetScript<Transform>("Item").gameObject.SetActive(iconInfo.IsEnableSprite);    // sprite設定ルート
+            if (iconInfo.IsEnableSprite) {
+                sprite.LoadAtlasFromResources(iconInfo.AtlasName, iconInfo.SpriteName);
+            } else if (iconInfo.IconObject != null) {
+    			iconInfo.IconObject.transform.SetParent(viewBase.GetScript<Transform>("UnitWeaponRoot"));
+            }
+        }
         // 強制ロックかどうか.
-		viewBase.GetComponentsInChildren<Toggle>(true)[0].interactable = !mainQuest.is_force_lock;
-		viewBase.GetScript<TextMeshProUGUI>("txtp_Quest").gameObject.SetActive(!mainQuest.is_force_lock);
-		viewBase.GetScript<SmileLab.UI.CustomButton>("bt_ForceLockQuestNote").gameObject.SetActive(mainQuest.is_force_lock);
-		viewBase.GetScript<SmileLab.UI.CustomButton>("bt_ForceLockQuestNote").enabled = viewBase.GetScript<SmileLab.UI.CustomButton>("bt_ForceLockQuestNote").interactable = mainQuest.is_force_lock;
+        var forceLock = info.ForceLock;
+        viewBase.GetComponentsInChildren<Toggle>(true)[0].interactable = !forceLock;
+        viewBase.GetScript<TextMeshProUGUI>("txtp_Quest").gameObject.SetActive(!forceLock);
+        viewBase.GetScript<SmileLab.UI.CustomButton>("bt_ForceLockQuestNote").gameObject.SetActive(forceLock);
+        viewBase.GetScript<SmileLab.UI.CustomButton>("bt_ForceLockQuestNote").enabled = viewBase.GetScript<SmileLab.UI.CustomButton>("bt_ForceLockQuestNote").interactable = forceLock;
 		viewBase.GetScript<SmileLab.UI.CustomButton>("bt_ForceLockQuestNote").onClick.RemoveAllListeners();
-		if(mainQuest.is_force_lock){
+        if(forceLock){
 			viewBase.SetCanvasCustomButtonMsg("bt_ForceLockQuestNote", () => PopupManager.OpenPopupOK("このクエストはまだ解放されておりません。\nアップデートされるまで\nお待ちください。"));
 		}
-        // バッジ.
-        var achiveQuests = QuestAchievement.CacheGetAll().Where(a => a.IsAchieved).ToList();
-		var latest = AwsModule.ProgressData.GetPlayableLatestMainQuest(info.Country);
 
-		if(achiveQuests.Exists(a => a.QuestId == info.ID)){
-			if (bCompleteMission) {
-				viewBase.GetScript<Image>("img_StoryIconClear").gameObject.SetActive(false);
-                viewBase.GetScript<Image>("img_StoryIconComplete").gameObject.SetActive(true);
-				viewBase.GetScript<Image>("img_StoryIconNew").gameObject.SetActive(false);
-				viewBase.GetScript<uGUISprite>("bt_Quest").ChangeSprite("bt_QuestComplete");
-            } else {
-				viewBase.GetScript<Image>("img_StoryIconClear").gameObject.SetActive(true);
-				viewBase.GetScript<Image>("img_StoryIconComplete").gameObject.SetActive(false);
-				viewBase.GetScript<Image>("img_StoryIconNew").gameObject.SetActive(false);
-				viewBase.GetScript<uGUISprite>("bt_Quest").ChangeSprite("bt_Quest");
-            }
-		}else{
-			viewBase.GetScript<Image>("img_StoryIconClear").gameObject.SetActive(false);
-            viewBase.GetScript<Image>("img_StoryIconComplete").gameObject.SetActive(false);
-			viewBase.GetScript<Image>("img_StoryIconNew").gameObject.SetActive(!mainQuest.is_force_lock && latest.id == info.ID);
-			if(!mainQuest.is_force_lock){
-				viewBase.GetScript<uGUISprite>("bt_Quest").ChangeSprite("bt_Quest");
-			}         
-		}  
+        // バッジ.
+        if (info.QuestType == 1) {
+            InitMainQuestSetting (viewBase, info, bCompleteMission);
+        } else if (info.QuestType == 6) {
+            InitEventQuestSetting(viewBase, info, bCompleteMission);
+        }
 	}
+
+    void InitMainQuestSetting(ViewBase viewBase, IQuestData info, bool bCompleteMission)
+    {
+        bool forceLock = info.ForceLock;
+        var achiveQuests = QuestAchievement.CacheGetAll().Where(a => a.IsAchieved).ToList();
+        var latest = AwsModule.ProgressData.GetPlayableLatestMainQuest (info.Country);
+        if (achiveQuests.Exists (a => a.QuestId == info.ID)) {
+            if (bCompleteMission) {
+                viewBase.GetScript<Image> ("img_StoryIconClear").gameObject.SetActive (false);
+                viewBase.GetScript<Image> ("img_StoryIconComplete").gameObject.SetActive (true);
+                viewBase.GetScript<Image> ("img_StoryIconNew").gameObject.SetActive (false);
+                viewBase.GetScript<uGUISprite> ("bt_Quest").ChangeSprite ("bt_QuestComplete");
+            } else {
+                viewBase.GetScript<Image> ("img_StoryIconClear").gameObject.SetActive (true);
+                viewBase.GetScript<Image> ("img_StoryIconComplete").gameObject.SetActive (false);
+                viewBase.GetScript<Image> ("img_StoryIconNew").gameObject.SetActive (false);
+                viewBase.GetScript<uGUISprite> ("bt_Quest").ChangeSprite ("bt_Quest");
+            }
+        } else {
+            viewBase.GetScript<Image> ("img_StoryIconClear").gameObject.SetActive (false);
+            viewBase.GetScript<Image> ("img_StoryIconComplete").gameObject.SetActive (false);
+            viewBase.GetScript<Image> ("img_StoryIconNew").gameObject.SetActive (!forceLock && latest.id == info.ID);
+            if (!forceLock) {
+                viewBase.GetScript<uGUISprite> ("bt_Quest").ChangeSprite ("bt_Quest");
+            }         
+        }
+    }
+
+    void InitEventQuestSetting(ViewBase viewBase, IQuestData info, bool bCompleteMission)
+    {
+        var eventDetails = info as EventQuestStageDetails;
+        bool forceLock = info.ForceLock;
+        var isClear = eventDetails.IsClear;
+        if (isClear) {
+            if (bCompleteMission) {
+                viewBase.GetScript<Image> ("img_StoryIconClear").gameObject.SetActive (false);
+                viewBase.GetScript<Image> ("img_StoryIconComplete").gameObject.SetActive (true);
+                viewBase.GetScript<Image> ("img_StoryIconNew").gameObject.SetActive (false);
+                viewBase.GetScript<uGUISprite> ("bt_Quest").ChangeSprite ("bt_EventQuestComplete");
+            } else {
+                viewBase.GetScript<Image> ("img_StoryIconClear").gameObject.SetActive (true);
+                viewBase.GetScript<Image> ("img_StoryIconComplete").gameObject.SetActive (false);
+                viewBase.GetScript<Image> ("img_StoryIconNew").gameObject.SetActive (false);
+                viewBase.GetScript<uGUISprite> ("bt_Quest").ChangeSprite ("bt_EventQuest");
+            }
+        } else {
+            viewBase.GetScript<Image> ("img_StoryIconClear").gameObject.SetActive (false);
+            viewBase.GetScript<Image> ("img_StoryIconComplete").gameObject.SetActive (false);
+            viewBase.GetScript<Image> ("img_StoryIconNew").gameObject.SetActive (!forceLock);
+            if (!forceLock) {
+                viewBase.GetScript<uGUISprite> ("bt_Quest").ChangeSprite ("bt_EventQuest");
+            }
+        }
+    }
 
 	// CreateDropDownListでは正確にDropDownListの生成を検知できないのでこうする.
 	IEnumerator WaitCreatedDropDownList()

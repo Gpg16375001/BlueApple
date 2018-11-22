@@ -90,15 +90,22 @@ public class Screen_Scenario_Top : ViewBase
         View_FadePanel.SharedInstance.FadeOutWithLoadingAnim(View_FadePanel.FadeColor.Black, () => {
             if (AwsModule.ProgressData.CurrentQuest == null) { 
 				AwsModule.ProgressData.PrevSelectedQuest = null;
-				ScreenChanger.SharedInstance.GoToMainQuestSelect();
+                ScreenChanger.SharedInstance.GoToMyPage();
                 return;
             }
             var current = AwsModule.ProgressData.CurrentQuest;
+            if(current.QuestType == 6){
+                var eventQuest = MasterDataTable.event_quest_stage_details[current.ID].EventQuestData;
+                var stageType = MasterDataTable.event_quest_stage_details[current.ID].EventQuestStageData.stage_type;
+                ScreenChanger.SharedInstance.GoToEventQuest(eventQuest.id, stageType);
+                return;
+            }
+
             // TODO :サブシーンは更新も移動しない.なんらか考えておいた方が良さそう.
-            if(current.QuestType != 1){
+            if(current.QuestType == 2){
                 ScreenChanger.SharedInstance.GoToMainQuestSelect(MainQuestBootEnum.SubScene, false);
                 return;
-            }         
+            }
 			var next = MasterDataTable.quest_main.GetNextQuestInfo(current.ID);         
 			// 次のクエストが見つからない=その国のクエスト全クリア.スキップする起動シーンも次の国の最初のクエストに切り替えておく.
 			if(next == null){

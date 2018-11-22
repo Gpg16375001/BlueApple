@@ -94,6 +94,9 @@ namespace Utage
 		public override void Unload()
 		{
 			// 特に何もしない.
+            if (m_loader != null) {
+                m_loader.Dispose ();
+            }
 		}
   
         // 通常ダウンロード.

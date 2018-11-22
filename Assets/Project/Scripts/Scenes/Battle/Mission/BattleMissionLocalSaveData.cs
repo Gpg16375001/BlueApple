@@ -50,7 +50,9 @@ public class BattleMissionLocalSaveData
         public BattleMissionSetting MissionSetting {
             get {
                 int stageId;
-                if (QuestType == 4 || QuestType == 5) {
+                if(QuestType == 6) {
+                    stageId = MasterDataTable.event_quest_stage_details[ID].battle_stage_id;
+                } else if (QuestType == 4 || QuestType == 5) {
                     stageId = MasterDataTable.quest_daily[ID].stage_id;
                 } else if (QuestType == 3) {
                     stageId = MasterDataTable.quest_unit[ID].stage_id;

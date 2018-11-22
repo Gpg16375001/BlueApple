@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -101,6 +102,21 @@ public class ListItem_PartyEditUnit : ViewBase
                 UpdateWeapon (weapon);
             } else {
                 UpdateWeapon (null);
+            }
+        }
+
+        // Bonus表示
+        if (MasterDataTable.event_quest_BonusUnit != null && MasterDataTable.event_quest != null) {
+            if (Exist<RectTransform> ("img_EventBonus")) {
+                var bonusUnit = MasterDataTable.event_quest_BonusUnit.DataList;
+                var time = GameTime.SharedInstance.Now;
+                this.GetScript<RectTransform> ("img_EventBonus").gameObject.SetActive (
+                    bonusUnit.Any (
+                        r => r.unit_id == m_CardData.CardId &&
+                        MasterDataTable.event_quest [r.event_id] != null &&
+                        MasterDataTable.event_quest [r.event_id].start_at <= time &&
+                        time < MasterDataTable.event_quest [r.event_id].end_at)
+                );
             }
         }
     }

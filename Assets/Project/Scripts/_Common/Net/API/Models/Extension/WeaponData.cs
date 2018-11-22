@@ -179,6 +179,7 @@ namespace SmileLab.Net.API
 			WeaponId = source.id;
 			BagId = 0;
 			Exp = 0;
+            Level = 1;
             LimitBreakGrade = 0;
             Rarity = source.rarity.rarity;
             IsEquipped = bEquipped;

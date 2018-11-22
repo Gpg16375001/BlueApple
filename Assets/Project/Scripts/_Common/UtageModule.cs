@@ -90,7 +90,7 @@ public class UtageModule : ViewBase
 	public void LoadUseChapter(string projectName, Action didLoad, params string[] chapters)
     {
         m_core = AdvCore.CreateOrGet(projectName, chapters);
-		m_core.LoadScenario(didLoad, true);      
+		m_core.LoadScenario(didLoad, true);
     }
 	/// <summary>
     /// 章分けを使用したシナリオロード.プログレス表示あり/なし指定.
@@ -231,6 +231,18 @@ public class UtageModule : ViewBase
 		}
 	}
 
+    public Camera GetCamera(string name)
+    {
+        if (m_core == null) {
+            return null;
+        }
+        var cameraRoot = m_core.Engine.CameraManager.FindCameraRoot (name);
+        if (cameraRoot == null) {
+            return null;
+        }
+        return cameraRoot.LetterBoxCamera.CachedCamera;
+    }
+
     private void OnEnable()
     {
         if (m_core == null || m_core.Engine == null || !m_core.Engine.isActiveAndEnabled) {
@@ -294,7 +306,11 @@ public class UtageModule : ViewBase
                 var go = GameObjectEx.LoadAndCreateObject("_Common/UtageAdvCore");
                 instance = go.GetOrAddComponent<AdvCore>();
             }
-			instance.InitInternal(projectName, chapters);
+            if (chapters != null && chapters.Length > 1) {
+                instance.InitInternal (projectName, chapters);
+            } else {
+                instance.InitInternal (projectName);
+            }
             return instance;
         }
         private static AdvCore instance;
@@ -312,6 +328,7 @@ public class UtageModule : ViewBase
             m_starter.RootResourceDir = projectName;
             m_starter.ServerUrl = DLCManager.URL_ASSET_UTAGE;
             m_starter.UseChapter = chapters.Length > 0;
+            m_starter.ChapterNames.Clear ();
             if (m_starter.UseChapter) {
                 foreach (var c in chapters) {
                     if (m_starter.ChapterNames.Contains(c)) {
@@ -467,6 +484,8 @@ public class UtageModule : ViewBase
         }
         IEnumerator SkipToSelectionWait()
         {
+            var prevAuto = Engine.Config.IsAutoBrPage;  //スキップフラグを取得
+            Engine.Config.IsAutoBrPage = false;         //スキップ中はオートをオフ
             do {
                 if (Engine.IsEndScenario) {
                     break;
@@ -474,9 +493,13 @@ public class UtageModule : ViewBase
                 if (Engine.SelectionManager.IsWaitInput) {
                     break;
                 }
+                if(!Engine.Config.IsSkip) { //外的要因でスキップが解除されていた場合
+                    break;                              
+                }
                 yield return null;
             } while (true);
             Engine.Config.IsSkip = false;
+            Engine.Config.IsAutoBrPage = prevAuto;  //オートフラグを戻す
             this.PlaySkipFade(false);
         }
         // スキップ専用フェード再生.

@@ -356,7 +356,7 @@ public class AwsBattleProgressData : AwsCognitoDatasetBase
         var questType = Get<int> ("QuestType");
         var questID = Get<int> ("QuestID");
 
-        BattleLogic.Calculation.Init(Get<UnityEngine.Random.State> ("RandomState"));
+        BattleLogic.Calculation.Init (Get<UnityEngine.Random.State> ("RandomState"));
 
         if (BattleEntryData.StageId != stageID || questID != QuestID || questType != QuestType) {
             // 初期化して始める
@@ -623,7 +623,8 @@ public class AwsBattleProgressData : AwsCognitoDatasetBase
         if (IsPVP) {
             return;
         }
-        Put ("RandomState", BattleLogic.Calculation.GetRandomState ());
+        RandomState = BattleLogic.Calculation.GetRandomState ();
+        Put ("RandomState", RandomState);
         Put ("StageID", StageID);
         Put ("QuestType", QuestType);
         Put ("QuestID", QuestID);
@@ -657,7 +658,8 @@ public class AwsBattleProgressData : AwsCognitoDatasetBase
         if (IsPVP) {
             return;
         }
-        Put ("RandomState", BattleLogic.Calculation.GetRandomState ());
+        RandomState = BattleLogic.Calculation.GetRandomState ();
+        Put ("RandomState", RandomState);
         Put ("WaveCount", WaveCount);
 
         foreach (var unit in SallyAllyParameterList) {

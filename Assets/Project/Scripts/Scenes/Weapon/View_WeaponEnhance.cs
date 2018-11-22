@@ -39,7 +39,7 @@ public class View_WeaponEnhance : ViewBase
         m_listView.DidTapIconEvent += DidTapMaterialIcon;
         m_listView.DidLongTapIconEvent += DidLongTapMaterialIcon;
         m_listView.Init(removeTarget: null,
-                        sortType: WeaponListView.SortType.Rarity,  // TODO: 今後ソートタイプを保存しときたくなるかもしれない？ > m_listView.CurrentSortType
+                        afterSortType: m_listView.sortType,
                         invisibleWeapons: WeaponData.CacheGetAll().Where(w => w.BagId == m_weapon.BagId || w.WeaponId == m_weapon.WeaponId).ToArray());
 
         // 初回情報表示
@@ -51,8 +51,8 @@ public class View_WeaponEnhance : ViewBase
         this.GetScript<CustomButton>("Deselect/bt_TopLineGray").onClick.AddListener(DidTapSelectAllClear);
         this.SetCanvasCustomButtonMsg("bt_Ascentd", DidTapOrder);
         this.SetCanvasCustomButtonMsg("bt_Descend", DidTapOrder);
-        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(true);
-        this.GetScript<Image>("bt_Descend").gameObject.SetActive(false);
+        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.isDescending);
+        this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.isDescending);
         for (var i = 0; i < 10; ++i) {
             var btnName = string.Format("bt_SelectMaterialBase{0}", i + 1);
             var btIdx = i + 0;
@@ -185,10 +185,16 @@ public class View_WeaponEnhance : ViewBase
     /// </summary>
 	public override void Dispose()
     {
-        base.Dispose();
-        if (m_didClose != null) {
-            m_didClose(m_weapon);
-        }
+        LockInputManager.SharedInstance.IsLock = true;
+        View_FadePanel.SharedInstance.IsLightLoading = true;
+        AwsModule.LocalData.Sync((bSuccess, sender, eArgs) => {
+            LockInputManager.SharedInstance.IsLock = false;
+            View_FadePanel.SharedInstance.IsLightLoading = false;
+            base.Dispose();
+            if (m_didClose != null) {
+                m_didClose(m_weapon);
+            }
+        });
     }
 
     #region ButtonDelegate.
@@ -196,9 +202,9 @@ public class View_WeaponEnhance : ViewBase
     // 並び替え.
     private void DidTapOrder()
     {
-        m_listView.Descending = !m_listView.Descending;
-        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.Descending);
-        this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.Descending);
+        m_listView.isDescending = !m_listView.isDescending;
+        this.GetScript<Image>("bt_Ascentd").gameObject.SetActive(!m_listView.isDescending);
+        this.GetScript<Image>("bt_Descend").gameObject.SetActive(m_listView.isDescending);
         m_listView.UpdateList();
     }
 

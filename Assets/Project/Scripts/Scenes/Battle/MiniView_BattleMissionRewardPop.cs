@@ -22,12 +22,16 @@ public class MiniView_BattleMissionRewardPop : ViewBase, IBattleResultPage
     public bool IsEffecting { get { return m_bEffecting; } }
     private bool m_bEffecting = false;
 
+    public ResultTitle GetResultTitle()
+    {
+        return ResultTitle.Mission;
+    }
+
     /// <summary>
     /// 初期化.
     /// </summary>
-    public void Init(int index, ReceiveQuestsCloseQuest questResult, Action didOpen)
+    public void Init(int index, ReceiveQuestsCloseQuest questResult)
     {
-        DidOpen = didOpen;
         m_index = index;
         var dropItem = questResult.MissionRewardItemList [0];
         var itemType = (ItemTypeEnum)dropItem.ItemType;
@@ -71,9 +75,6 @@ public class MiniView_BattleMissionRewardPop : ViewBase, IBattleResultPage
             this.gameObject.SetActive(true);
         }
 
-        if(DidOpen != null) {
-            DidOpen();
-        }
         m_bEffecting = true;
         StartCoroutine(PlayOpenClose (true,
             () => {
@@ -105,6 +106,4 @@ public class MiniView_BattleMissionRewardPop : ViewBase, IBattleResultPage
     {
         //m_bEffecting = false;
     }
-
-    Action DidOpen;
 }

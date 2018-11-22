@@ -39,7 +39,7 @@ public class View_WeaponLimitBreak : ViewBase
 		m_listView.DidTapIconEvent += DidTapWeaponMaterial;
 		m_listView.DidLongTapIconEvent += DidLongTapWeaponMaterial;
 		m_listView.Init(removeTarget: null, 
-		                sortType: WeaponListView.SortType.LimitBreak,
+		                afterSortType: m_listView.sortType,
 		                invisibleWeapons: WeaponData.CacheGetAll().Where(w => w.BagId == m_weapon.BagId || w.WeaponId != m_weapon.WeaponId).ToArray());
 
 		// 初回情報表示.
@@ -116,7 +116,7 @@ public class View_WeaponLimitBreak : ViewBase
 		var totalCost = m_materialList.Sum(m => m.CostUsedMaterial);
 		this.GetScript<TextMeshProUGUI>("txtp_WeaponName").text = m_weapon.Weapon.name;
 		this.GetScript<TextMeshProUGUI>("txtp_GetEnhance").text = m_materialList.Sum(m => m.ExpGainedMaterial).ToString();
-		this.GetScript<TextMeshProUGUI>("txtp_Coin").text = totalCost.ToString();
+		//this.GetScript<TextMeshProUGUI>("txtp_Coin").text = totalCost.ToString();
 		this.GetScript<TextMeshProUGUI>("txtp_SelectNum").text = m_materialList.Count.ToString();
 		this.GetScript<Image>("img_IconUpArrow").gameObject.SetActive(bExistChooseMaterial);
 		this.GetScript<CustomButton>("Deselect/bt_TopLineGray").interactable = bExistChooseMaterial;
@@ -172,12 +172,14 @@ public class View_WeaponLimitBreak : ViewBase
     // ボタン : 上限突破.
     void DidTapLimitBreak()
     {
+/*
         // クレドの不足
 		var cost = m_materialList.Sum(m => m.CostUsedMaterial);
 		if(AwsModule.UserData.UserData.GoldCount < cost) {
 			PopupManager.OpenPopupOK("限界突破に必要なクレドが足りません。");
 			return;
 		}
+*/
 
         // 確認ポップアップ      
         if (m_materialList.Any(x => x.Weapon.rarity.rarity >= 3 || x.LimitBreakGrade >= 1)) {

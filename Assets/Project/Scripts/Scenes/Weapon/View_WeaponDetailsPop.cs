@@ -66,7 +66,7 @@ public class View_WeaponDetailsPop : PopupViewBase
 	public override void Dispose()
     {
         m_weaponResourceLoader.Dispose();
-        base.Dispose ();
+        base.Dispose();
     }
 
     // 情報更新処理.
@@ -91,7 +91,7 @@ public class View_WeaponDetailsPop : PopupViewBase
         // スキル
         this.GetScript<RectTransform>("SkillStatus").gameObject.SetActive(m_data.IsHaveSkill);
         if (m_data.IsHaveSkill) {
-            var skill = m_data.Parameter.ActionSkillList[0] ?? m_data.Parameter.PassiveSkillList[0];
+            var skill = m_data.Parameter.ActionSkillList != null && m_data.Parameter.ActionSkillList.Length > 0 ? m_data.Parameter.ActionSkillList[0] : m_data.Parameter.PassiveSkillList[0];
             this.GetScript<TextMeshProUGUI>("txtp_SkillName").text = skill.Skill.display_name;
             this.GetScript<TextMeshProUGUI>("txtp_SkillLv").text = skill.Level.ToString();
 			this.GetScript<TextMeshProUGUI>("txtp_SkillNotes").text = skill.Skill.flavor;
@@ -237,11 +237,17 @@ public class View_WeaponDetailsPop : PopupViewBase
             return;
         }
 
-        m_viewWeaponEnhance = WeaponSContoller.CreateWeaponEnhanceView(m_data, weapon => {
-			this.UpdateInfo(weapon);
-            if (m_didUpdateInfo != null) {
-                m_didUpdateInfo();
-            }
+        LockInputManager.SharedInstance.IsLock = true;
+		View_FadePanel.SharedInstance.IsLightLoading = true;
+        AwsModule.LocalData.Sync((bSuccess, sender, eArgs) => {
+            LockInputManager.SharedInstance.IsLock = false;
+            View_FadePanel.SharedInstance.IsLightLoading = false;
+            m_viewWeaponEnhance = WeaponSContoller.CreateWeaponEnhanceView(m_data, weapon => {
+			    this.UpdateInfo(weapon);
+                if (m_didUpdateInfo != null) {
+                    m_didUpdateInfo();
+                }
+		    });
 		});
 	}
 

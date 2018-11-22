@@ -9,7 +9,7 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>com.smilelab.devseven</key>
-		<string>4f51f198-00c9-4ad5-b23b-1d6c24d1eb21</string>
+		<string>f38f648f-d574-4ee2-a965-44671b63dfcb</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>iOS Distribution</string>

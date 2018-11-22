@@ -63,7 +63,11 @@ public class Screen_MainQuest_Top : ViewBase
 
 		// TODO : フェードを開ける.ローンチ段階ではサブクエストは入らない.
         m_viewCtrl.ChangeView(fixBoot, () => {
-            View_FadePanel.SharedInstance.FadeIn(View_FadePanel.FadeColor.Black, CheckBootMainQuestFromRoot);
+            if(m_bBoot) {
+                View_FadePanel.SharedInstance.FadeIn(View_FadePanel.FadeColor.Black, CheckBootMainQuestFromRoot);
+            } else {
+                View_FadePanel.SharedInstance.FadeIn(View_FadePanel.FadeColor.Black, CheckBackToMainQuest);
+            }
         });
 	}
 	// 起動Viewのモードを修正.

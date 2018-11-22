@@ -70,7 +70,13 @@ public static class MasterDataManager
                 return;
             }
         }
-            
+#if USE_LOCAL_DATA
+        var assetBundle = DLCManager.AssetBundleFromFile(DLCManager.DLC_FOLDER.Master, partitionName);
+        T obj = assetBundle.assetbundle.LoadAsset<T>(partitionName);
+        refs [partitionName] = new WeakReference (obj);
+        didLoad(obj);
+        assetBundle.Unload(false);
+#else
         DLCManager.AssetBundleFromDownloadOrCache(DLCManager.DLC_FOLDER.Master, partitionName,
             (assetBundle) => {
                 T obj = assetBundle.assetbundle.LoadAsset<T>(partitionName);
@@ -81,5 +87,6 @@ public static class MasterDataManager
                 assetBundle.Unload(false);
             }
         );
+#endif
     }
 }

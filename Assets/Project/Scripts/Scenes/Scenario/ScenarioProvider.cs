@@ -31,6 +31,8 @@ public static class ScenarioProvider
         switch (CurrentSituation) {
             case ScenarioSituation.MainQuest:
                 return GetUtageProjectFromMainQuest();
+            case ScenarioSituation.Event:
+                return GetUtageProjectFromEventQuest ();
         }
         return null;
     }
@@ -41,6 +43,17 @@ public static class ScenarioProvider
             return null;
         }
         var item = MasterDataTable.scenario_setting.DataList.Find(s => s.id == AwsModule.ProgressData.CurrentQuest.ID);
+        if (item == null) {
+            return null;
+        }
+        return item.adv_project_name;
+    }
+    private static string GetUtageProjectFromEventQuest()
+    {
+        if (AwsModule.ProgressData.CurrentQuest == null) { 
+            return null;
+        }
+        var item = MasterDataTable.event_quest_stage_scenario_setting.DataList.Find(s => s.id == AwsModule.ProgressData.CurrentQuest.ID);
         if (item == null) {
             return null;
         }
@@ -57,6 +70,9 @@ public static class ScenarioProvider
         switch (CurrentSituation) {
             case ScenarioSituation.MainQuest:
                 rtn = GetActListFromMainQuest();
+                break;
+            case ScenarioSituation.Event:
+                rtn = GetActListFromEventQuest();
                 break;
         }
         return rtn;
@@ -90,6 +106,37 @@ public static class ScenarioProvider
         return rtn;
     }
 
+    private static List<string> GetActListFromEventQuest()
+    {
+        var rtn = new List<string>();
+        var progressData = AwsModule.ProgressData;
+        if (progressData.CurrentQuest == null) {
+            return rtn;
+        }
+
+        // 最新話の幕.
+        var info = MasterDataTable.event_quest_stage_scenario_setting.DataList.Find(s => s.id == progressData.CurrentQuest.ID);
+        if (info == null) {
+            return rtn;
+        }
+        var allScenarios = MasterDataTable.event_quest_stage_scenario_setting.DataList.FindAll(s => s.adv_project_name == info.adv_project_name);
+        foreach(var scenario in allScenarios){
+            if (!string.IsNullOrEmpty(scenario.scenario_pre_battle)) {
+                rtn.Add(scenario.scenario_pre_battle);
+            }
+            if (!string.IsNullOrEmpty(scenario.scenario_in_battle)) {
+                rtn.Add(scenario.scenario_in_battle);
+            }
+            if (!string.IsNullOrEmpty(scenario.scenario_out_battle)) {
+                rtn.Add(scenario.scenario_out_battle);
+            }
+            if (!string.IsNullOrEmpty(scenario.scenario_aft_battle)) {
+                rtn.Add(scenario.scenario_aft_battle);
+            }
+        }
+        return rtn;
+    }
+
     /// <summary>
     /// 様々な状況を加味して現在再生すべきシナリオ名を返す.
     /// </summary>
@@ -98,6 +145,8 @@ public static class ScenarioProvider
         switch (CurrentSituation) {
             case ScenarioSituation.MainQuest:
                 return GetMainQuestScenario();
+            case ScenarioSituation.Event:
+            return GetEventQuestScenario();
         }
         return null;
     }
@@ -120,6 +169,35 @@ public static class ScenarioProvider
         }
 		if (CurrentScenarioState == ScenarioProgressState.OutBattle) {
 			return info.scenario_out_battle;
+        }
+        if (CurrentScenarioState == ScenarioProgressState.AfterBattle) {
+            return info.scenario_aft_battle;
+        }
+        return null;
+    }
+
+    private static string GetEventQuestScenario()
+    {
+        var progressData = AwsModule.ProgressData;
+        if(progressData.CurrentQuest == null){
+            return null;
+        }
+        if (progressData.CurrentQuest.QuestType != 6) {
+            return null;
+        }
+
+        var info = MasterDataTable.event_quest_stage_scenario_setting.DataList.Find(s => s.id == progressData.CurrentQuest.ID);
+        if(info == null){
+            return null;
+        }
+        if(CurrentScenarioState == ScenarioProgressState.PrevBattle){
+            return info.scenario_pre_battle;
+        }
+        if (CurrentScenarioState == ScenarioProgressState.InBattle) {
+            return info.scenario_in_battle;
+        }
+        if (CurrentScenarioState == ScenarioProgressState.OutBattle) {
+            return info.scenario_out_battle;
         }
         if (CurrentScenarioState == ScenarioProgressState.AfterBattle) {
             return info.scenario_aft_battle;

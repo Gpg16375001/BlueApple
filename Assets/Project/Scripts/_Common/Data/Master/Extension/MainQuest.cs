@@ -56,4 +56,38 @@ public partial class MainQuest : IQuestData
     /// 消費AP.
     /// </summary>
 	public int NeedAP { get { return this.cost_ap; } }
+
+    /// <summary>
+    /// 初回クリア報酬があるか？
+    /// </summary>
+    public bool HasClearReward { get { return reward_item_type != null; } }
+
+    /// <summary>
+    /// 初回クリア報酬タイプ
+    /// </summary>
+    public ItemTypeEnum? ClearRewardType { 
+        get { 
+            if (reward_item_type == null) {
+                return null;
+            }
+            return reward_item_type.Enum;
+        }
+    }
+
+    /// <summary>
+    /// 初回クリア報酬ID
+    /// </summary>
+    public int ClearRewardId { get { return reward_item_id; } }
+
+    /// <summary>
+    /// 初回クリア報酬数
+    /// </summary>
+    public int ClearRewardQuantity { get { return reward_item_count; }  }
+
+    /// <summary>
+    /// 強制ロックか？
+    /// </summary>
+    public bool ForceLock { get { return is_force_lock; } }
+
+    public int[] ReleaseMissions { get { return new int[0]; } }
 }

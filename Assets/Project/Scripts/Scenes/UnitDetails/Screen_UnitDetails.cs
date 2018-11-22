@@ -271,6 +271,7 @@ public class Screen_UnitDetails : ViewBase
         var actionSkill = displayCard.Parameter.UnitActionSkillList.FirstOrDefault(x => !x.IsNormalAction);
         if (actionSkill != null) {
             this.GetScript<TextMeshProUGUI> ("Skill/txtp_SkillName").SetText (actionSkill.Skill.display_name);
+            this.GetScript<TextMeshProUGUI>("Skill/txtp_SkillLv").SetText(actionSkill.Level);
 			this.GetScript<CustomButton>("Skill/bt_Info").onClick.RemoveAllListeners();
             this.SetCanvasCustomButtonMsg("Skill/bt_Info", () => PopupManager.OpenPopupOK(actionSkill.Skill.flavor));
         } else {
@@ -280,6 +281,7 @@ public class Screen_UnitDetails : ViewBase
         var passiveSkill = displayCard.Parameter.UnitPassiveSkillList.FirstOrDefault();
         if (passiveSkill != null) {
             this.GetScript<TextMeshProUGUI>("Skill2/txtp_SkillName").SetText(passiveSkill.Skill.display_name);
+            this.GetScript<TextMeshProUGUI>("Skill2/txtp_SkillLv").SetText(passiveSkill.Level);
 			this.GetScript<CustomButton>("Skill2/bt_Info").onClick.RemoveAllListeners();
             this.SetCanvasCustomButtonMsg("Skill2/bt_Info", () => PopupManager.OpenPopupOK(passiveSkill.Skill.flavor));
         } else {
@@ -288,6 +290,7 @@ public class Screen_UnitDetails : ViewBase
 
         if (displayCard.Parameter.SpecialSkill != null) {
             this.GetScript<TextMeshProUGUI> ("txtp_SPName").SetText (displayCard.Parameter.SpecialSkill.Skill.display_name);
+            this.GetScript<TextMeshProUGUI>("SP/txtp_SkillLv").SetText(displayCard.Parameter.SpecialSkill.Level);
 			this.GetScript<CustomButton>("SP/bt_Info").onClick.RemoveAllListeners();
             this.SetCanvasCustomButtonMsg("SP/bt_Info", () => PopupManager.OpenPopupOK(displayCard.Parameter.SpecialSkill.Skill.flavor));
         } else {

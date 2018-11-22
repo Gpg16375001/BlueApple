@@ -27,6 +27,10 @@ public class MiniView_BattleRewardResult : ViewBase, IBattleResultPage
 	public bool IsEffecting { get { return m_bEffecting; } }
 	private bool m_bEffecting = false;
 
+    public ResultTitle GetResultTitle()
+    {
+        return ResultTitle.Clear;
+    }
 
 	/// <summary>
 	/// 初期化.
@@ -56,9 +60,12 @@ public class MiniView_BattleRewardResult : ViewBase, IBattleResultPage
                 GetScript<RectTransform>("Mission" + i).gameObject.SetActive(false);
             }
         }
+            
 
-        if (m_result.QuestAchievement != null) {
-            var currentReleaseQuest = new BattleMissionLocalSaveData.QuestMissionInfo (m_result.QuestAchievement);
+        if (AwsModule.BattleData.MissionProgress != null) {
+            var questData = AwsModule.ProgressData.CurrentQuest;
+            var currentReleaseQuest = new BattleMissionLocalSaveData.QuestMissionInfo (questData.QuestType, questData.ID,
+                AwsModule.ProgressData.CurrentQuestAchievedMissionIdList.Length, AwsModule.ProgressData.CurrentQuestAchievedMissionIdList.ToList());
             if (currentReleaseQuest.MissionSetting != null && currentReleaseQuest.MissionSetting.item_type_3.HasValue) {
                 //Debug.Log ("既に貰っている報酬の数 : " + currentReleaseQuest.RewardCount + "/" + currentReleaseQuest.MaxRewardCount);
                 var bAlreadyGet = currentReleaseQuest.IsAchivedReward;
@@ -112,8 +119,6 @@ public class MiniView_BattleRewardResult : ViewBase, IBattleResultPage
             } else {
                 GetScript<RectTransform>("MissionReward").gameObject.SetActive(false);
             }
-        } else {
-            GetScript<RectTransform>("MissionReward").gameObject.SetActive(false);
         }
 
 		var battleResult = m_result.BattleEntryData;
@@ -121,8 +126,12 @@ public class MiniView_BattleRewardResult : ViewBase, IBattleResultPage
             // スクロールアイテム設定
             var dropItemScroll = GetScript<ScrollRect>("DropItemScrollView");
             foreach (var dropItemID in battleResult.DropItemIdList) {
+                var dropItem = MasterDataTable.battle_drop_item [dropItemID];
+                if (dropItem == null || dropItem.reward_type == ItemTypeEnum.event_point) {
+                    continue;
+                }
                 var item = GameObjectEx.LoadAndCreateObject("Battle/ListItem_DropItem", dropItemScroll.content.gameObject);
-                item.GetOrAddComponent<ListItem_DropItem>().Init(MasterDataTable.battle_drop_item[dropItemID]);
+                item.GetOrAddComponent<ListItem_DropItem>().Init(dropItem);
             }         
         }
 	}

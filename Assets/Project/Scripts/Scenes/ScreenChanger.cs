@@ -436,6 +436,22 @@ namespace SmileLab
             ScreenChanger.SharedInstance.Exec("PartyEditTop", ctrl, didProcEnd);
         }
 
+        /// <summary>
+        /// Gos to event quest.
+        /// </summary>
+        /// <param name="eventId">Event identifier.</param>
+        /// <param name="didProcEnd">Did proc end.</param>
+        public void GoToEventQuest(int eventId, EventQuestStageTypeEnum? stageType = null, Action didProcEnd = null)
+        {
+            View_GlobalMenu.IsVisible = true;
+            View_PlayerMenu.IsVisible = true;
+
+            var ctrl = ScreenControllerBase.Create<EventQuestSController>();
+            ctrl.EventId = eventId;
+            ctrl.StageType = stageType;
+            ScreenChanger.SharedInstance.Exec("EventQuest", ctrl, didProcEnd);
+        }
+
         #endregion
     }
 }

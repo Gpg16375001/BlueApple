@@ -10,6 +10,11 @@ using Amazon.CognitoSync.SyncManager;
 /// </summary>
 public class AwsLocalSaveData : AwsCognitoDatasetBase
 {
+    private WeaponSortData weaponSortData;
+    private UnitListSortData unitListSortData;
+    private FriendSelectSortData friendSelectSortData;
+    private OptionSupportSortData optionSupportSortData;
+
 	/// <summary>AP回復時の通知が有効かどうか.</summary>
     public bool IsNotificateAP
     {
@@ -47,9 +52,41 @@ public class AwsLocalSaveData : AwsCognitoDatasetBase
 		get { return Get<bool> ("Scenario_Auto"); }
 		set { Put ("Scenario_Auto", value); }
 	}
+    /// <summary>武器ソート・フィルターデータ.</summary>
+    public WeaponSortData WeaponSortData {
+        get { return Get<WeaponSortData>("WeaponSortData"); }
+        set { Put("WeaponSortData", value); }
+    }
+    /// <summary>ユニットソートデータ.</summary>
+    public UnitListSortData UnitListSortData {
+        get { return Get<UnitListSortData>("UnitListSortData"); }
+        set { Put("UnitListSortData", value); }
+    }
+    /// <summary>フレンドセレクトソート・フィルターデータ.</summary>
+    public FriendSelectSortData FriendSelectSortData {
+        get { return Get<FriendSelectSortData>("FriendSelectSortData"); }
+        set { Put("FriendSelectSortData", value); }
+    }
+    /// <summary>オプションサポートソートデータ.</summary>
+    public OptionSupportSortData OptionSupportSortData {
+        get { return Get<OptionSupportSortData>("OptionSupportSortData"); }
+        set { Put("OptionSupportSortData", value); }
+    }
+
+    public bool IsModify {
+        get {
+            return weaponSortData.IsModify;
+        }
+    }
 
     // コンストラクタ.
-    public AwsLocalSaveData(CognitoSyncManager mng) : base(mng, "PlayerData") {}
+    public AwsLocalSaveData(CognitoSyncManager mng) : base(mng, "PlayerData")
+    {
+        LoadWeaponSortData();
+        LoadUnitListSortData();
+        LoadFriendSelectSortData();
+        LoadOptionSupportSortData();
+    }
 
     // 全値のリセット.
     protected override void ClearValues()
@@ -60,5 +97,318 @@ public class AwsLocalSaveData : AwsCognitoDatasetBase
         this.Volume_SE = 1f;
         this.Volume_Voice = 1f;
 		this.Scenario_Auto = false;
+    }
+
+    private void LoadWeaponSortData()
+    {
+        weaponSortData = new WeaponSortData(0, false);
+        string key = "WeaponSortData";
+        if (ExistKey (key)) {
+            weaponSortData = Get<WeaponSortData> (key);
+        } else {
+            Put("WeaponSortData", weaponSortData);
+        }
+        weaponSortData.Commit ();
+    }
+
+    private void LoadUnitListSortData()
+    {
+        unitListSortData = new UnitListSortData(0, false);
+        string key = "UnitListSortData";
+        if (ExistKey (key)) {
+            unitListSortData = Get<UnitListSortData> (key);
+        } else {
+            Put("UnitListSortData", unitListSortData);
+        }
+        unitListSortData.Commit ();
+    }
+
+    private void LoadFriendSelectSortData()
+    {
+        friendSelectSortData = new FriendSelectSortData(0, false, "火");
+        string key = "FriendSelectSortData";
+        if (ExistKey (key)) {
+            friendSelectSortData = Get<FriendSelectSortData> (key);
+        } else {
+            Put("FriendSelectSortData", friendSelectSortData);
+        }
+        friendSelectSortData.Commit ();
+    }
+
+    private void LoadOptionSupportSortData()
+    {
+        optionSupportSortData = new OptionSupportSortData(0, false);
+        string key = "OptionSupportSortData";
+        if (ExistKey (key)) {
+            optionSupportSortData = Get<OptionSupportSortData> (key);
+        } else {
+            Put("OptionSupportSortData", optionSupportSortData);
+        }
+        optionSupportSortData.Commit ();
+    }
+}
+
+[Serializable]
+public class WeaponSortData
+{
+    /// <summary>
+    /// ソートの種類
+    /// </summary>
+    public int SortType;
+    /// <summary>
+    /// 降順かどうか
+    /// </summary>
+    public bool IsDescending;
+
+    /// <summary>
+    /// 内容を持っているか？
+    /// </summary>
+    public bool IsHaveContents;
+    /// <summary>
+    /// レアリティ設定.フィルター設定しているもののリスト.
+    /// </summary>
+    public int[] RarityList;
+    /// <summary>
+    /// 武器種index設定.フィルター設定しているもののリスト.
+    /// </summary>
+    public int[] WeaponTypeIndexList;
+    /// <summary>
+    /// ロック中を表示するか.
+    /// </summary>
+    public bool IsVisibleLock;
+    /// <summary>
+    /// ロック中以外を表示するか.
+    /// </summary>
+    public bool IsVisibleWithoutLock;
+    /// <summary>
+    /// 素材武器を表示するか.
+    /// </summary>
+    public bool IsVisibleMaterial;
+
+
+    private int backupSortType;
+    private bool backupIsDescending;
+
+    private bool backupIsHaveContents;
+    private int[] backupRarityList;
+    private int[] backupWeaponTypeIndexList;
+    private bool backupIsVisibleLock;
+    private bool backupIsVisibleWithoutLock;
+    private bool backupIsVisibleMaterial;
+
+
+    public void ApplyFilterData(WeaponFilterSetting.Data data)
+    {
+        RarityList = data.RarityList;
+        WeaponTypeIndexList = data.WeaponTypeIndexList;
+        IsVisibleLock = data.IsVisibleLock;
+        IsVisibleWithoutLock = data.IsVisibleWithoutLock;
+        IsVisibleMaterial = data.IsVisibleMaterial;
+        IsHaveContents = data.IsHaveContents;
+
+        Commit();
+    }
+
+    public void ClearFilterData()
+    {
+        RarityList = null;
+        WeaponTypeIndexList = null;
+        IsVisibleLock = false;
+        IsVisibleWithoutLock = false;
+        IsVisibleMaterial = false;
+        IsHaveContents = false;
+
+        Commit();
+    }
+
+    public WeaponSortData(int sortType, bool isDescending)
+    {
+        SortType = sortType;
+        IsDescending = isDescending;
+
+        RarityList = null;
+        WeaponTypeIndexList = null;
+        IsVisibleLock = false;
+        IsVisibleWithoutLock = false;
+        IsVisibleMaterial = false;
+        IsHaveContents = false;
+    }
+
+    public bool IsModify {
+        get;
+        private set;
+    }
+
+    public void Reset()
+    {
+        SortType = backupSortType;
+        IsDescending = backupIsDescending;
+
+        RarityList = backupRarityList;
+        WeaponTypeIndexList = backupWeaponTypeIndexList;
+        IsVisibleLock = backupIsVisibleLock;
+        IsVisibleWithoutLock = backupIsVisibleWithoutLock;
+        IsVisibleMaterial = backupIsVisibleMaterial;
+        IsHaveContents = backupIsHaveContents;
+
+        IsModify = false;
+    }
+
+    public void Commit()
+    {
+        IsModify = false;
+
+        backupSortType = SortType;
+        backupIsDescending = IsDescending;
+
+        backupRarityList = RarityList;
+        backupWeaponTypeIndexList = WeaponTypeIndexList;
+        backupIsVisibleLock = IsVisibleLock;
+        backupIsVisibleWithoutLock = IsVisibleWithoutLock;
+        backupIsVisibleMaterial = IsVisibleMaterial;
+        backupIsHaveContents = IsHaveContents;
+    }
+}
+
+[Serializable]
+public class UnitListSortData
+{
+    /// <summary>
+    /// ソートの種類
+    /// </summary>
+    public int SortType;
+    /// <summary>
+    /// 降順かどうか
+    /// </summary>
+    public bool IsDescending;
+
+
+    private int backupSortType;
+    private bool backupIsDescending;
+
+
+    public UnitListSortData(int sortType, bool isDescending)
+    {
+        SortType = sortType;
+        IsDescending = isDescending;
+    }
+
+    public bool IsModify {
+        get;
+        private set;
+    }
+
+    public void Reset()
+    {
+        SortType = backupSortType;
+        IsDescending = backupIsDescending;
+
+        IsModify = false;
+    }
+
+    public void Commit()
+    {
+        IsModify = false;
+
+        backupSortType = SortType;
+        backupIsDescending = IsDescending;
+    }
+}
+
+[Serializable]
+public class FriendSelectSortData
+{
+    /// <summary>
+    /// ソートの種類
+    /// </summary>
+    public int SortType;
+    /// <summary>
+    /// 降順かどうか
+    /// </summary>
+    public bool IsDescending;
+    /// <summary>
+    /// 属性
+    /// </summary>
+    public string CategoryName;
+
+
+    private int backupSortType;
+    private bool backupIsDescending;
+    private string backupCategoryName;
+
+
+    public FriendSelectSortData(int sortType, bool isDescending, string categoryName)
+    {
+        SortType = sortType;
+        IsDescending = isDescending;
+        CategoryName = categoryName;
+    }
+
+    public bool IsModify {
+        get;
+        private set;
+    }
+
+    public void Reset()
+    {
+        SortType = backupSortType;
+        IsDescending = backupIsDescending;
+        CategoryName = backupCategoryName;
+
+        IsModify = false;
+    }
+
+    public void Commit()
+    {
+        IsModify = false;
+
+        backupSortType = SortType;
+        backupIsDescending = IsDescending;
+        backupCategoryName = CategoryName;
+    }
+}
+
+[Serializable]
+public class OptionSupportSortData
+{
+    /// <summary>
+    /// ソートの種類
+    /// </summary>
+    public int SortType;
+    /// <summary>
+    /// 降順かどうか
+    /// </summary>
+    public bool IsDescending;
+
+
+    private int backupSortType;
+    private bool backupIsDescending;
+
+
+    public OptionSupportSortData(int sortType, bool isDescending)
+    {
+        SortType = sortType;
+        IsDescending = isDescending;
+    }
+
+    public bool IsModify {
+        get;
+        private set;
+    }
+
+    public void Reset()
+    {
+        SortType = backupSortType;
+        IsDescending = backupIsDescending;
+
+        IsModify = false;
+    }
+
+    public void Commit()
+    {
+        IsModify = false;
+
+        backupSortType = SortType;
+        backupIsDescending = IsDescending;
     }
 }

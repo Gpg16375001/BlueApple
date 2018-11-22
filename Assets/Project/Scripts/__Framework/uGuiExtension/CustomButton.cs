@@ -113,6 +113,17 @@ namespace SmileLab.UI {
             }
         }
 
+        protected override void Start ()
+        {
+            base.Start ();
+
+            if (interactable) {
+                DoStateTransition (currentSelectionState, true);
+            } else {
+                DoStateTransition (SelectionState.Disabled, true);
+            }
+        }
+
         private void Press()
         {
             if (!IsActive() || !IsInteractable() || m_IsCallLongPress)
@@ -258,7 +269,7 @@ namespace SmileLab.UI {
             m_IsPressing = false;
             m_PressSec = 0.0f;
 
-            if (currentSelectionState != SelectionState.Normal) {
+            if (currentSelectionState != SelectionState.Normal && interactable) {
                 DoStateTransition (SelectionState.Normal, false);
             }
         }

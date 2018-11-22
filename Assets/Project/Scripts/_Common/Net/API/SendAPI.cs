@@ -420,6 +420,96 @@ public static class SendAPI
 	}
 
 	/// <summary>
+	/// URL: /api/event/get_product_list
+	/// - 購入（交換）可能な商品の一覧所得
+	/// - リクエスト
+	///   EventQuestId:
+	///     指定したイベント交換所を利用するために指定する
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   EventShopProductDataList:
+	///     ShopProductDataのリスト
+	///   UserData:
+	///     ユーザデータ
+	///   EventPoint:
+	///     戦績コイン数（EventQuestId毎に個別管理）
+	/// - EventShopProductData
+	///   ShopProductId:
+	///     商品ID
+	///   ExchangeQuantity:
+	///     必要戦績コイン数
+	///   UpperLimit:
+	///     購入上限数（無制限は0）
+	///   StartDate:
+	///     開始日時
+	///   EndDate:
+	///     終了日時
+	///   IsPurchasable:
+	///     購入可否
+	///   MaxPurchaseQuantity:
+	///     最大購入可能数（＝購入上限数ー既購入数、ただし購入上限数が無制限の場合は999）
+	///   StockItemDataList:
+	///     StockItemDataのリスト、商品に含まれるアイテムの所持数や最大所持数の確認
+	/// - StockItemData
+	///   ItemType:
+	///     アイテムタイプ
+	///   ItemId:
+	///     アイテムID
+	///   Quantity:
+	///     所持数
+	///   Capacity:
+	///     最大所持数
+	///   CardData:
+	///     CardData
+	///   MagikiteData:
+	///     MagikiteData
+	///   WeaponData:
+	///     WeaponData
+	/// </summary>
+	public static void EventGetProductList(int EventQuestId, Action<bool, ReceiveEventGetProductList> didLoad)
+	{
+		SendEventGetProductList request = new SendEventGetProductList ();
+		request.EventQuestId = EventQuestId;
+		AwsModule.Request.Exec<ReceiveEventGetProductList> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveEventGetProductList>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/event/purchase_product
+	/// - 商品を購入する
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID
+	///   EventQuestId:
+	///     指定したイベント交換所を利用するために指定する
+	///   ShopProductId:
+	///     商品ID
+	///   Quantity:
+	///     個数
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   EventShopProductDataList:
+	///     ShopProductData
+	///   UserData:
+	///     ユーザデータ
+	///   EventPoint:
+	///     戦績コイン数（EventQuestId毎に個別管理）
+	/// </summary>
+	public static void EventPurchaseProduct(int EventQuestId, int ShopProductId, int Quantity, Action<bool, ReceiveEventPurchaseProduct> didLoad)
+	{
+		SendEventPurchaseProduct request = new SendEventPurchaseProduct ();
+		request.EventQuestId = EventQuestId;
+		request.ShopProductId = ShopProductId;
+		request.Quantity = Quantity;
+		AwsModule.Request.Exec<ReceiveEventPurchaseProduct> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveEventPurchaseProduct>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
 	/// URL: /api/fgid/get_login_info
 	/// - ＜アプリ開始済みユーザのみ＞FGIDにログインするための情報を所得する
 	/// - リクエスト
@@ -1134,6 +1224,32 @@ public static class SendAPI
 	}
 
 	/// <summary>
+	/// URL: /api/payments/submit_receipt_with_timeout
+	/// - ストアのレシートを提出する（60秒間スリープしてServerErrorを返却）
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID
+	///   Receipt:
+	///     レシート
+	///   Signature:
+	///     署名（androidの場合）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   UserData:
+	///     ユーザデータ
+	/// </summary>
+	public static void PaymentsSubmitReceiptWithTimeout(string Receipt, string Signature, Action<bool, ReceivePaymentsSubmitReceiptWithTimeout> didLoad)
+	{
+		SendPaymentsSubmitReceiptWithTimeout request = new SendPaymentsSubmitReceiptWithTimeout ();
+		request.Receipt = Receipt;
+		request.Signature = Signature;
+		AwsModule.Request.Exec<ReceivePaymentsSubmitReceiptWithTimeout> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceivePaymentsSubmitReceiptWithTimeout>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
 	/// URL: /api/payments/submit_receipt
 	/// - ストアのレシートを提出する
 	/// - リクエスト
@@ -1490,6 +1606,44 @@ public static class SendAPI
 	}
 
 	/// <summary>
+	/// URL: /api/quests/get_event_quest_achievement
+	/// イベントクエストの達成リストを所得する
+	/// - リクエスト
+	///   EventQuestId:
+	///     イベントクエストID
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   EventQuestAchievementList:
+	///     EventQuestAchievementのリスト
+	/// - EventQuestAchievement
+	///   StageDetailId:
+	///     ステージ詳細ID
+	///   StageType:
+	///     1:シナリオ、2:チャレンジ
+	///   IsAchieved:
+	///     true:達成済み、false:未達成
+	///   AchievedMissionIdList:
+	///     達成済みMissionIdのリスト
+	///   ReceivedMissionRewardCount:
+	///     受取済みMission情報の個数（Mission全達成で1）
+	///   IsOpen:
+	///     true:プレイ可能、false:プレイ不可（開放条件および開始・終了日時で判定）
+	///   StartDate:
+	///     開始日時
+	///   EndDate:
+	///     終了日時
+	/// </summary>
+	public static void QuestsGetEventQuestAchievement(int EventQuestId, Action<bool, ReceiveQuestsGetEventQuestAchievement> didLoad)
+	{
+		SendQuestsGetEventQuestAchievement request = new SendQuestsGetEventQuestAchievement ();
+		request.EventQuestId = EventQuestId;
+		AwsModule.Request.Exec<ReceiveQuestsGetEventQuestAchievement> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsGetEventQuestAchievement>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
 	/// URL: /api/quests/get_daily_achievement
 	/// 曜日クエストの達成リストを所得する
 	/// - リクエスト
@@ -1685,7 +1839,7 @@ public static class SendAPI
 	///   RequestId:
 	///     リクエストID（多重処理防止用）
 	///   QuestId:
-	///     クエストID
+	///     クエストID（イベントクエストの場合はステージ詳細ID）
 	///   StageId:
 	///     ＜バトル時のみ＞ステージID
 	///   MemberCardIdList:
@@ -1796,6 +1950,10 @@ public static class SendAPI
 	///     プレイヤー獲得経験値
 	///   GainGold:
 	///     獲得ゲーム内通貨
+	///   GainEventPoint:
+	///     獲得イベントポイント（総数）
+	///   GainBonusEventPoint:
+	///     獲得ボーナスイベントポイント
 	/// </summary>
 	public static void QuestsCloseQuest(int QuestId, bool IsAchieved, int EntryId, int[] SelectionIdList, int[] MissionIdList, Action<bool, ReceiveQuestsCloseQuest> didLoad)
 	{

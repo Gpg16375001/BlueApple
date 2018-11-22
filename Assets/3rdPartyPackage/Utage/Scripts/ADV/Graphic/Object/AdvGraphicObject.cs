@@ -271,6 +271,10 @@ namespace Utage
 			//パーティクルのDestory対策
 			this.gameObject.SetActive (false);
 			GameObject.Destroy(gameObject);
+
+            GC.Collect ();
+
+            Resources.UnloadUnusedAssets ();
 		}
 
 		protected virtual void OnDestroy()

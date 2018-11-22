@@ -56,15 +56,16 @@ public class uGUIPageScrollRect : ScrollRect
     /// </summary>
 	public GameObject GetCurrentCenterObject()
 	{
-		Debug.Log("[uGUIPageScrollRect] GetCurrentCenterObject : currentPageIndex="+currentPageIndex+ "%"+ "maxPage="+maxPage+" => "+Math.Abs(currentPageIndex % maxPage));
-		var idx = Math.Abs(currentPageIndex % maxPage);   // 無限スクロール対策
+		// 無限スクロール対策
+		int idx = DispTransformIndex;
+		Debug.Log("uGUIPageScrollRect:GetCurrentCenterObject()  currentPageIndex="+currentPageIndex+" % "+"maxPage="+maxPage+" => "+idx);
 		return content.transform.GetChild(idx).gameObject;
 	}
 
     /// <summary>
     /// 指定GameObjectをセンタリングする.
     /// </summary>
-	public void CenterOn(GameObject obj)
+	public void CenterOn(GameObject obj, bool immediate=false)
 	{
 		if(obj.transform.parent.GetInstanceID() != content.transform.GetInstanceID()){
 			return;
@@ -72,7 +73,7 @@ public class uGUIPageScrollRect : ScrollRect
   
 		currentPageIndex = Mathf.FloorToInt(obj.transform.localPosition.x / pageWidth)*-1;
 		Debug.Log("CenterOn : page "+currentPageIndex);
-		PagingProc();
+		PagingProc( immediate );
 	}
 
     /// <summary>
@@ -80,6 +81,9 @@ public class uGUIPageScrollRect : ScrollRect
     /// </summary>
     public void Paging(int plusPageNum)
 	{
+		if(bProcessing){
+			return;
+		}
         if (m_autoRotateRoutine != null) {
             StopCoroutine (m_autoRotateRoutine);
             m_autoRotateRoutine = null;
@@ -169,12 +173,13 @@ public class uGUIPageScrollRect : ScrollRect
         m_autoRotateRoutine = this.StartCoroutine(this.AutoRotation());
     }
 
-    private void PagingProc()
+    private void PagingProc(bool immediate=false)
     {
 		if(bProcessing){
 			return;
 		}
 		bProcessing = true;
+		var time = immediate ? 0f : 0.3f;
 
         SwitchLed();
         // Contentをスクロール位置を決定する.
@@ -183,7 +188,7 @@ public class uGUIPageScrollRect : ScrollRect
                 "from", content.anchoredPosition.x,
                 "to", currentPageIndex * pageWidth,
                 "delay", 0,
-                "time", 0.3f,
+                "time", time,
                 "easeType", iTween.EaseType.easeInOutSine,
                 "onupdatetarget", this.gameObject,
                 "onupdate", "OnUpdatePos", 
@@ -225,16 +230,28 @@ public class uGUIPageScrollRect : ScrollRect
         }
     }
 
+    public int DispTransformIndex {
+		get { return GetDispTransformIndex( currentPageIndex ); }
+	}
+
+    public int GetDispTransformIndex( int pageIndex ) {
+		return (pageIndex < 0) ?
+			Math.Abs(pageIndex % maxPage) :
+			(maxPage - (pageIndex % maxPage)) % maxPage;
+	}
+
+	public bool IsBusy { get { return bProcessing; } }
+
 	private bool bProcessing = false;
     // 1ページの幅.
     private float pageWidth;
     // 前回のページIndex. 最も左を0とする.
     private int prevPageIndex = 0;
     // 現在のページIndex.
-    private int currentPageIndex = 0;
+    [SerializeField] private int currentPageIndex = 0;
     // ページ量.
-    private int maxPage = 0;
-    private bool isInfinite = false;
+    [SerializeField] private int maxPage = 0;
+    [SerializeField] private bool isInfinite = false;
 
     // ページランプ用のgrid.
     private GridLayoutGroup gridLed;

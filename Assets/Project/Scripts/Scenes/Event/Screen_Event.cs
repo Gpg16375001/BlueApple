@@ -52,26 +52,9 @@ public class Screen_Event : ViewBase {
             GetScript<RectTransform> ("Main").gameObject.SetActive(false);
             return;
         }
-
         if (topAtlas != null) {
             GetScript<Image> ("img_BnrLargeMain").overrideSprite = topAtlas.GetSprite (info.id.ToString());
         }
-
-        if (info.event_type == EventTypeEnum.Main) {
-            GetScript<RectTransform> ("Shop").gameObject.SetActive(true);
-            SetCanvasCustomButtonMsg ("Shop/bt_CommonS02", DidTapShop);
-        } else {
-            GetScript<RectTransform> ("Shop").gameObject.SetActive(false);
-        }
-    }
-
-    void DidTapShop()
-    {
-        LockInputManager.SharedInstance.IsLock = true;
-        View_FadePanel.SharedInstance.FadeOutWithLoadingAnim(View_FadePanel.FadeColor.Black, () => {
-            ScreenChanger.SharedInstance.GoToShop();
-            LockInputManager.SharedInstance.IsLock = false;
-        }); 
     }
 
     void DidTapBack()

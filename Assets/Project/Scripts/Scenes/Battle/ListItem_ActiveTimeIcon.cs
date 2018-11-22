@@ -91,10 +91,6 @@ public class ListItem_ActiveTimeIcon : ViewBase
             RequestIcon ();
             SetPositionNum ();
 
-            // ボタン.
-            //this.SetCanvasCustomButtonMsg ("img_FrameCountTimeEnemy", DidTapIcon);
-            //this.SetCanvasCustomButtonMsg ("img_FrameCountTimeBoss", DidTapIcon);
-
             var conditionIcon = this.GetScript<Image> ("Condition");
             conditionIcon.gameObject.SetActive (false);
         } else if (item.ItemType == ActionOrderItemType.Condition) {
@@ -112,6 +108,15 @@ public class ListItem_ActiveTimeIcon : ViewBase
             conditionIcon.gameObject.SetActive (true);
             conditionIcon.sprite = IconLoader.LoadConditionIcon(m_conditionTiming.parent.ConditionData);
         }
+
+        // ボタン.
+        this.SetCanvasCustomButtonMsg ("img_FrameCountTimeEnemy", DidTapIcon);
+        this.SetCanvasCustomButtonMsg ("img_FrameCountTimeBoss", DidTapIcon);
+        //this.SetCanvasCustomButtonMsg ("img_FrameCountTimePlayer", DidTapIcon);
+        //アルファの閾値(1だと不透明なピクセルのみ反応する)
+        this.GetScript<Image> ("img_FrameCountTimeEnemy").alphaHitTestMinimumThreshold = 1.0f;
+        this.GetScript<Image> ("img_FrameCountTimeBoss").alphaHitTestMinimumThreshold = 1.0f;
+        //this.GetScript<Image> ("img_FrameCountTimePlayer").alphaHitTestMinimumThreshold = 1.0f;
     }
 
     // 通信リクエスト : アイコン差し替え.

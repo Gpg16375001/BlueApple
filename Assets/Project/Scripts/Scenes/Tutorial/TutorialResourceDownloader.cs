@@ -113,7 +113,7 @@ public class TutorialResourceDownloader
     public static void LoadUtageChapters()
 	{      
 		IsDownloadEndUtage = false;
-		var chapters = AwsModule.ProgressData.TutorialStageNum < 3 ? ACT_LIST_FIRST : ACT_LIST_LATER;
+		var chapters = AwsModule.ProgressData.TutorialStageNum <= 3 ? ACT_LIST_FIRST : ACT_LIST_LATER;
 		// 初回起動でDLを悟られないようにプログレス表示なし.
         View_FadePanel.SharedInstance.DeativeProgress();      
         UtageModule.SharedInstance.LoadUseChapter("Tutorial", () => {

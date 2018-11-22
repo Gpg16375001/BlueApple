@@ -77,7 +77,6 @@ public class ListItem_FormationSquare : ViewBase
                 else if (skillEffectSetting.skill_effect.effect == SkillEffectLogicEnum.debuff) {
                     footer = "Down";
                 }
-
                 var targetparam = skillEffectSetting.skill_effect.GetValue<SkillTargetParameter> (SkillEffectLogicArgEnum.TargetParameter);
                 string spriteName = string.Format("img_FormationEffect{0}{1}", targetparam.short_name, footer);
                 sprite.ChangeSprite (spriteName);
@@ -88,7 +87,7 @@ public class ListItem_FormationSquare : ViewBase
             }
         }
         for (int i = count; i <= 4; ++i) {
-            var sprite = GetScript<uGUISprite> (string.Format("FormationEffectIcon{0}", count));
+            var sprite = GetScript<uGUISprite> (string.Format("FormationEffectIcon{0}", i));
             sprite.gameObject.SetActive (false);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,6 +43,9 @@ public class MiniView_OptionSupport : OptionMiniViewBase
 		this.GetScript<TextMeshProUGUI>("txtp_NoItem").SetText("ユーザーが一人もいません。");
 
         // リスト初期化.
+        var optionSupportData = AwsModule.LocalData.OptionSupportSortData;
+        currentSort = (SortType)optionSupportData.SortType;
+        isDescend = optionSupportData.IsDescending;
 		this.RequestList(currentSort, isDescend);
 
 		// 検索
@@ -52,6 +56,8 @@ public class MiniView_OptionSupport : OptionMiniViewBase
 
         // ソート.
 		var dropdown = GetScript<TMP_Dropdown>("Sort/bt_PullDown");
+        dropdown.value = optionSupportData.SortType;
+        dropdown.captionText.text = dropdown.options[optionSupportData.SortType].text;
         dropdown.onValueChanged.AddListener(new UnityEngine.Events.UnityAction<int>(SortDropdownValueChange));      
 
         // ボタン.
@@ -68,8 +74,16 @@ public class MiniView_OptionSupport : OptionMiniViewBase
         View_FadePanel.SharedInstance.IsLightLoading = true;
         LockInputManager.SharedInstance.IsLock = true;
 
-		currentSort = type;
-		isDescend = bDescend;
+        var OptionSupportSortData = AwsModule.LocalData.OptionSupportSortData;
+        if (OptionSupportSortData.SortType != (int)type) {
+            OptionSupportSortData.SortType = (int)type;
+            currentSort = type;
+        }
+        if (OptionSupportSortData.IsDescending != bDescend) {
+            OptionSupportSortData.IsDescending = bDescend;
+            isDescend = bDescend;
+        }
+        AwsModule.LocalData.OptionSupportSortData = OptionSupportSortData;
 
         // リスト生成.通信終了で共通で呼ばれる.
         Action<UserData[]> didLoadEx = (list) => {
@@ -106,6 +120,7 @@ public class MiniView_OptionSupport : OptionMiniViewBase
         if(m_menu.Enum == OptionMenuEnum.Forllow){
 			SendAPI.UsersGetFollowList(0, AwsModule.UserData.UserData.FollowCount, (int)reqSortType, (bSuccess, res) => {
                 if(!bSuccess || res == null){
+                    View_FadePanel.SharedInstance.IsLightLoading = false;
                     LockInputManager.SharedInstance.IsLock = false;
                     Debug.LogError("[MiniView_OptionSupport] FollowRequestList Error!! : Response error. res="+res);
                     return;
@@ -128,6 +143,7 @@ public class MiniView_OptionSupport : OptionMiniViewBase
         else if(m_menu.Enum == OptionMenuEnum.Forllower){
 			SendAPI.UsersGetFollowerList(0, AwsModule.UserData.UserData.FollowerCount, (int)reqSortType, (bSuccess, res) => {
                 if(!bSuccess || res == null){
+                    View_FadePanel.SharedInstance.IsLightLoading = false;
                     LockInputManager.SharedInstance.IsLock = false;
                     Debug.LogError("[MiniView_OptionSupport] FollowerRequestList Error!! : Response error. res=" + res);
                     return;
@@ -169,15 +185,20 @@ public class MiniView_OptionSupport : OptionMiniViewBase
         Debug.Log("index="+index+"/length="+m_userList.Length);
 		c.InitFromOption(m_userList[index], m_menu, () => {
 			this.GetScript<Text>("txt_InputID").text = this.GetScript<InputField>("InputID").text = "";
-			RequestList();
+            this.RequestList(currentSort, isDescend);
 		});
     }
 
     // ドロップダウンからのソート.   
 	private void SortDropdownValueChange(int sortVal)
 	{
-		currentSort = (SortType)sortVal;
-		this.RequestList(currentSort, isDescend);
+        // 並び替え
+        var type = (SortType)sortVal;
+
+        if (currentSort != type) {
+            currentSort = type;
+	        this.RequestList(currentSort, isDescend);
+        }
 	}
     #region ButtonDelegate.
 
@@ -248,14 +269,14 @@ public class MiniView_OptionSupport : OptionMiniViewBase
         this.GetScript<Text>("InputID/Placeholder").text = m_searchMode == SearchMode.UserID ? "プレイヤーIDで検索" : "プレイヤー名で検索";      
 	}
 
-	// ボタン : 昇順と降順の切り替え.
+    // ボタン : 昇順と降順の切り替え.
     void DidTapOrder()
-	{
-		isDescend = !isDescend;
-		this.GetScript<CustomButton>("bt_Ascentd").gameObject.SetActive(!isDescend);
-		this.GetScript<CustomButton>("bt_Descend").gameObject.SetActive(isDescend);
+    {
+        isDescend = !isDescend;
+        GetScript<CustomButton>("bt_Ascentd").gameObject.SetActive(!isDescend);
+        GetScript<CustomButton>("bt_Descend").gameObject.SetActive(isDescend);
 		this.RequestList(currentSort, isDescend);
-	}
+    }
     #endregion
 
     // 破棄処理.インプット内容やリストをクリアする.

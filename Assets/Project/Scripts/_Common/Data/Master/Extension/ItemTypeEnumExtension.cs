@@ -16,6 +16,7 @@ public static class ItemTypeEnumExtension {
         case ItemTypeEnum.paid_gem:
         case ItemTypeEnum.weapon_exp:
         case ItemTypeEnum.card_exp:
+        case ItemTypeEnum.event_point:
             return MasterDataTable.item_type.DataList.Find(i => i.Enum == type).display_name;
         case ItemTypeEnum.formation:
             return MasterDataTable.formation[id].name;
@@ -25,7 +26,7 @@ public static class ItemTypeEnumExtension {
             return MasterDataTable.magikite[id].name;
 		case ItemTypeEnum.consumer:
             return MasterDataTable.consumer_item[id].name;    // TODO
-		case ItemTypeEnum.material:
+        case ItemTypeEnum.material:
             return MasterDataTable.chara_material[id].name;
         }
         return string.Empty;
@@ -39,6 +40,7 @@ public static class ItemTypeEnumExtension {
 		case ItemTypeEnum.pvp_medal:
         case ItemTypeEnum.card_exp:
         case ItemTypeEnum.weapon_exp:
+        case ItemTypeEnum.event_point:
 			return !string.IsNullOrEmpty(itemName) ? string.Format("{1}{0}", itemName, quantity) : string.Empty;    // 100クレド
 		default:
 			return !string.IsNullOrEmpty(itemName) ? string.Format("{0}x{1}", itemName, quantity) : string.Empty;   // エクスカリバーx10
@@ -82,6 +84,8 @@ public static class ItemTypeEnumExtension {
 				}
             case ItemTypeEnum.pvp_medal:
                 return iconName+"PVPMedal";
+            case ItemTypeEnum.event_point:
+                return iconName+"EventPoint";
         }
         return null;
     }
@@ -111,6 +115,8 @@ public static class ItemTypeEnumExtension {
             case ItemTypeEnum.paid_gem:
             case ItemTypeEnum.free_gem:
 				return new ItemIconInfo { AtlasName = "CurrencyIcon", SpriteName = "IconGem" };
+            case ItemTypeEnum.event_point:
+                return new ItemIconInfo { AtlasName = "CurrencyIcon", SpriteName = "IconEventPoint" };
             case ItemTypeEnum.material: // 素材
                 {
 					ItemIconInfo info = new ItemIconInfo();

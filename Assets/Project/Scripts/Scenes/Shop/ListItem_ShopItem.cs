@@ -41,6 +41,7 @@ public class ListItem_ShopItem : ViewBase
 		}
 		shopItem.product.LoadProductIcon(spt => this.GetScript<Image>("Icon").sprite = spt);
 
+#if false //1.0.4 初期化通らない場合がある
 		var purchaseLimitation = (PurchaseLimitationEnum)m_res.PurchaseLimitation;
 		var bNumLimitaion = purchaseLimitation != PurchaseLimitationEnum.unlimited && purchaseLimitation != PurchaseLimitationEnum.timelimit;
 		this.GetScript<RectTransform>("NumberLimit").gameObject.SetActive(bNumLimitaion);
@@ -55,9 +56,26 @@ public class ListItem_ShopItem : ViewBase
 			}
 			this.GetScript<Transform>("Disable").gameObject.SetActive( !m_res.IsPurchasable );	//購入できません表示
         }
+#else //1.0.5以降
+		this.GetScript<SmileLab.UI.CustomButton>("bt_ListItemBase").interactable = m_res.IsPurchasable;	//タップ禁止
+		this.GetScript<Transform>("Disable").gameObject.SetActive( !m_res.IsPurchasable );	//購入できません表示
+
+		var purchaseLimitation = (PurchaseLimitationEnum)m_res.PurchaseLimitation;
+		var bNumLimitaion = purchaseLimitation != PurchaseLimitationEnum.unlimited && purchaseLimitation != PurchaseLimitationEnum.timelimit;
+		this.GetScript<RectTransform>("NumberLimit").gameObject.SetActive(bNumLimitaion);
+		if (bNumLimitaion) {	//個数限定
+			var limitaion = new PurchaseLimitation() { index=m_data.limitaion.index, Enum=(PurchaseLimitationEnum)m_res.PurchaseLimitation };
+			this.GetScript<TextMeshProUGUI>("txtp_NumberLimit").text = limitaion.Denominator().ToString();
+			if( m_res.IsPurchasable ) {
+				this.GetScript<TextMeshProUGUI>("txtp_Number").text = Mathf.Clamp( limitaion.Denominator() - m_res.MaxPurchaseQuantity, 0, Int32.MaxValue ).ToString();
+			}else{
+				this.GetScript<TextMeshProUGUI>("txtp_Number").text = limitaion.Denominator().ToString();
+			}
+        }
+#endif
 		var bTimeLimitaion = purchaseLimitation == PurchaseLimitationEnum.timelimit;
 		this.GetScript<RectTransform>("TimeLimit").gameObject.SetActive(bTimeLimitaion);
-		if (bTimeLimitaion) {
+		if (bTimeLimitaion) {	//期限限定
 			this.GetScript<TextMeshProUGUI>("txtp_TimeLimitDate").text = m_data.end_date.ToString( "MM/dd" );
 			this.GetScript<TextMeshProUGUI>("txtp_TimeLimitTime").text = m_data.end_date.ToString( "HH:mm" );
 		}

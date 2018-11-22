@@ -40,6 +40,7 @@ public static class DLCManager
         BattleEffect,
         ScreenBG,
         Icon,
+        EventQuest,
 
         MAX
     }
@@ -83,7 +84,48 @@ public static class DLCManager
         string platform = NamePathPlatform;
 
         DLCFolderPaths = new string[(int)DLC_FOLDER.MAX];
+#if USE_LOCAL_DATA
+        baseUrl = "file:///Users/tsuyoshi.kukino/works/seven/glare-assets/UnityProject/";
+        var s3_asset_ui_path = "AssetBundle/_ExportUI/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.UI] = s3_asset_ui_path;
+        var s3_asset_utage_path = "AssetBundle/_ExportUtage/";
+        DLCFolderPaths[(int)DLC_FOLDER.Utage] = s3_asset_utage_path;
+        var s3_asset_master_path = "AssetBundle/_ExportMaster/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.Master] = s3_asset_master_path;
+        var s3_asset_sound_path = "Assets/StreamingAssets/_ExportSound/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.Sound] = s3_asset_sound_path;
+        var s3_asset_font_path = "AssetBundle/_ExportFont/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.Font] = s3_asset_font_path;
+        var s3_asset_unit_path = "AssetBundle/_ExportUnit/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.Unit] = s3_asset_unit_path;
+        var s3_asset_enemy_path = "AssetBundle/_ExportEnemy/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.Enemy] = s3_asset_enemy_path;
+        var s3_asset_npc_path = "AssetBundle/_ExportNPC/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.NPC] = s3_asset_npc_path;
+        var s3_asset_scenariosprite_path = "AssetBundle/_ExportScenarioSprite/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.ScenarioSprite] = s3_asset_scenariosprite_path;
+        var s3_asset_scenariobg_path = "AssetBundle/_ExportScenarioBG/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.ScenarioBG] = s3_asset_scenariobg_path;
+        var s3_asset_gachabg_path = "AssetBundle/_ExportGachaBG/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.GachaBG] = s3_asset_gachabg_path;
+        var s3_asset_battlebg_path = "AssetBundle/_ExportBattleBG/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.BattleBG] = s3_asset_battlebg_path;
+        var s3_asset_weapon_path = "AssetBundle/_ExportWeapon/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.Weapon] = s3_asset_weapon_path;
+        var s3_asset_battleeffect_path = "AssetBundle/_ExportBattleEffect/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.BattleEffect] = s3_asset_battleeffect_path;
+        var s3_asset_screenbg_path = "AssetBundle/_ExportScreenBG/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.ScreenBG] = s3_asset_screenbg_path;
+        var s3_asset_icon_path = "AssetBundle/_ExportIcon/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.Icon] = s3_asset_icon_path;
+        var s3_asset_eventquest_path = "AssetBundle/_ExportEventQuest/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.EventQuest] = s3_asset_eventquest_path;
 
+        _url_asset_utage = baseUrl + s3_asset_utage_path;
+        _url_base = baseUrl;//string.Format ("{0}/{1}", baseUrl, platform);
+
+        Debug.Log(_url_base);
+#else
         var s3_asset_ui_path = "UI/" + platform;
         DLCFolderPaths[(int)DLC_FOLDER.UI] = s3_asset_ui_path;
         var s3_asset_utage_path = "Utage/";
@@ -114,13 +156,14 @@ public static class DLCManager
         DLCFolderPaths[(int)DLC_FOLDER.BattleEffect] = s3_asset_battleeffect_path;
         var s3_asset_screenbg_path = "ScreenBG/" + platform;
         DLCFolderPaths[(int)DLC_FOLDER.ScreenBG] = s3_asset_screenbg_path;
-        var s3_asset_magikite_path = "Icon/" + platform;
-        DLCFolderPaths[(int)DLC_FOLDER.Icon] = s3_asset_magikite_path;
+        var s3_asset_icon_path = "Icon/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.Icon] = s3_asset_icon_path;
+        var s3_asset_eventquest_path = "EventQuest/" + platform;
+        DLCFolderPaths[(int)DLC_FOLDER.EventQuest] = s3_asset_eventquest_path;
 
         _url_asset_utage = baseUrl + s3_asset_utage_path;
-
         _url_base = string.Format ("{0}Contents/{1}", baseUrl, platform);
-
+#endif
         coInfo = null;
     }
 
@@ -174,7 +217,7 @@ public static class DLCManager
             // FileList生成.ファイル名(MD5ハッシュ),CRCでリストアップされているのでこれをデータ化してセーブする.
             VersionDataList = new Dictionary<Hash128, DLCVersionData>();
             var fileName = string.Format("{0}_{1}.dat", FileListHash, GetRuntimePlatformID()).ToHashMD5();
-            var url = string.Format("{0}FileList/{1}?v={2}", ClientDefine.URL_DLC, fileName, FileListHash);
+            var url = string.Format("{0}FileList/{1}?v={2}{3}", ClientDefine.URL_DLC, fileName, FileListHash, result.Key.ToHashMD5());
 #if DEBUG
             Debug.Log("FileListHash: " + FileListHash);
 			Debug.Log("cipher: " + result.Key);
@@ -295,7 +338,11 @@ public static class DLCManager
     /// <param name="version">Version.</param>
     public static string GetDownloadUrl(string s3Path, Hash128 version)
     {
+        #if USE_LOCAL_DATA
+        return string.Format ("{0}{1}", _url_base, s3Path);
+        #else
         return string.Format ("{0}{1}.{2}", _url_base, s3Path.ToHashMD5(), version);
+        #endif
     }
 
     public static string GetDownloadUrl(Hash128 fileNameHash, Hash128 version)
@@ -341,8 +388,12 @@ public static class DLCManager
     /// <param name="s3Path">S3 path.</param>
     public static string GetDownloadPath(string s3Path)
     {
+        #if USE_LOCAL_DATA
+        return string.Format ("{0}/{1}", System.IO.Path.Combine(Application.dataPath, "../../glare-assets/UnityProject"), s3Path);
+        #else
         // S3のパスをMD5Hashとして保存する。
         return string.Format ("{0}/{1}", GameSystem.DownloadDirectoryPath, s3Path.ToHashMD5());
+        #endif
     }
 
     public static string GetDownloadPath(Hash128 fileHash)
@@ -433,12 +484,16 @@ public static class DLCManager
     /// </summary>
 	public static string AddUrlMasterVersion(string url)
     {
+        #if USE_LOCAL_DATA
+        return url;
+        #else
         var parameters = url.Split('?');
         if (parameters.Any(p => p.Contains("v="))) {
             return url;
         }
         var rtn = string.Format("{0}?v={1}", url, MasterVersion);
         return rtn;
+        #endif
     }
     #endregion
 
@@ -478,6 +533,9 @@ public static class DLCManager
 
     public static bool IsNeedDownload(string s3Path)
     {
+#if USE_LOCAL_DATA
+        return false;
+#else
         var versionData = GetVersionDataFromS3Path (s3Path);
         if (versionData == null) {
             return false;
@@ -485,10 +543,14 @@ public static class DLCManager
         var path = GetDownloadPath (s3Path);
 
         return IsNeedDownload (path, s3Path, versionData);
+#endif
     }
 
     public static bool IsNeedDownload(string path, string s3Path, DLCVersionData versionData)
     {
+#if USE_LOCAL_DATA
+        return false;
+#else
         // ローカルファイルのバージョン判定
         if (FileUtility.Exists (path)) {
             var localVestionData = DLCVersionData.Get (SqliteConnectionManager.ShardInstanse.GetConnection(DBConnectionName), s3Path.ToHash128MD5 ());
@@ -500,6 +562,7 @@ public static class DLCManager
             }
         }
         return true;
+#endif
     }
 
     public static bool IsNeedDownload(Hash128 fileNameHash)
@@ -541,13 +604,21 @@ public static class DLCManager
     private static Dictionary<string, FileDownloadRequest> DownloadFileRequestCache = new Dictionary<string, FileDownloadRequest>();
     public static void DownloadFile(string s3Path, FileDownloadRequest.OnSuccess didDownload, FileDownloadRequest.OnError didError = null, FileDownloadRequest.OnProgress progress = null)
     {
+#if USE_LOCAL_DATA
+        DLCVersionData versionData = null;
+        var url = GetDownloadUrl (s3Path, new Hash128());
+        var path = GetDownloadPath (s3Path);
+#else
         var versionData = GetVersionDataFromS3Path (s3Path);
+
         if (versionData == null) {
             didError (new System.IO.FileNotFoundException ("Not Found in DLC", s3Path));
             return;
         }
         var url = GetDownloadUrl (s3Path, versionData.FileHash);
         var path = GetDownloadPath (s3Path);
+
+#endif
 
         if (IsNeedDownload (path, s3Path, versionData)) {
             if (DownloadFileRequestCache.ContainsKey (url)) {
@@ -570,10 +641,12 @@ public static class DLCManager
                 AddLoadProgress (DownloadFileRequestCache [url]);
                 NetRequestManager.Download (url, path, null,
                     (result) => {
+#if !USE_LOCAL_DATA
                         var connection = SqliteConnectionManager.ShardInstanse.GetConnection (DBConnectionName);
                         connection.MakeTransaction ((conn, transaction) => {
                             versionData.Save (conn, transaction);
                         });
+#endif
                         DownloadFileRequestCache [url].Success(result);
                         DownloadFileRequestCache.Remove(url);
                     },
@@ -716,8 +789,12 @@ public static class DLCManager
 
     public static long DownloadMinimumContentsFilesSize()
     {
+#if USE_LOCAL_DATA
+        return 0;
+#else
         var downloadFileSize = VersionDataList.Where (x => x.Value.IsMinimumContents && IsNeedDownload (x.Key)).Sum (x => x.Value.FileSize);
         return downloadFileSize;
+#endif
     }
 
     public static void DownloadMinimumContentsFiles(Action<bool> didDownload,
@@ -740,8 +817,12 @@ public static class DLCManager
 
     public static long DownloadAllFilesSize()
     {
+#if USE_LOCAL_DATA
+          return 0;
+#else
         var downloadFileSize = VersionDataList.Where (x => !x.Value.IsExcludeDownload && IsNeedDownload (x.Key)).Sum (x => x.Value.FileSize);
         return downloadFileSize;
+#endif
     }
 
     public static void DownloadAllFiles(Action<bool> didDownload,
@@ -918,7 +999,7 @@ public static class DLCManager
     /// <param name="folderType">Folder type.</param>
     /// <param name="fileName">File name.</param>
     /// <param name="didLoad">Did load.</param>
-    public static void AssetBundleFromFileOrDownload(DLC_FOLDER folderType, string fileName, AssetBundleLoadRequest.OnSuccess didLoad, FileDownloadRequest.OnError didError = null)
+    public static void AssetBundleFromFileOrDownload(DLC_FOLDER folderType, string fileName, AssetBundleLoadRequest.OnSuccess didLoad, FileDownloadRequest.OnError didError = null, FileDownloadRequest.OnProgress progress = null)
     {
         var path = GetDownloadPath (folderType, fileName);
         // ファイルが存在しない場合はダウンロードを行いロードして返す。
@@ -932,7 +1013,7 @@ public static class DLCManager
                     didLoad(abref);
                 }));
             }
-        }, didError);
+        }, didError, progress);
     }
 
     public static void AssetBundleFromFileOrDownload(string s3path, AssetBundleLoadRequest.OnSuccess didLoad, FileDownloadRequest.OnError didError = null)

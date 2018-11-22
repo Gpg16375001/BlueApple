@@ -735,9 +735,65 @@ public static class MasterDataTable {
     }
 
 
+    public static EventQuestScheduleTable event_quest_schedule {
+        get {
+            return MasterDataManager.LoadMasterData<EventQuestScheduleTable> ("event_quest_schedule");
+        }
+    }
+
+
+    public static EventQuestTable event_quest {
+        get {
+            return MasterDataManager.LoadMasterData<EventQuestTable> ("event_quest");
+        }
+    }
+
+
     public static EventInfoTable event_info {
         get {
             return MasterDataManager.LoadMasterData<EventInfoTable> ("event_info");
+        }
+    }
+
+
+    public static EventQuestStageDetailsTable event_quest_stage_details {
+        get {
+            return MasterDataManager.LoadMasterData<EventQuestStageDetailsTable> ("event_quest_stage_details");
+        }
+    }
+
+
+    public static EventQuestExchangeSettingTable event_quest_exchange_setting {
+        get {
+            return MasterDataManager.LoadMasterData<EventQuestExchangeSettingTable> ("event_quest_exchange_setting");
+        }
+    }
+
+
+    public static EventQuestStageTable event_quest_stage {
+        get {
+            return MasterDataManager.LoadMasterData<EventQuestStageTable> ("event_quest_stage");
+        }
+    }
+
+
+    public static EventQuestStageScenarioSettingTable event_quest_stage_scenario_setting {
+        get {
+            return MasterDataManager.LoadMasterData<EventQuestStageScenarioSettingTable> ("event_quest_stage_scenario_setting");
+        }
+    }
+
+
+    public static EventQuestBonusUnitTable event_quest_BonusUnit {
+        get {
+            return MasterDataManager.LoadMasterData<EventQuestBonusUnitTable> ("event_quest_BonusUnit");
+        }
+    }
+
+
+    public static EventQuestScenarioSettingTable event_quest_scenario_setting {
+        get {
+            return MasterDataManager.LoadMasterData<EventQuestScenarioSettingTable> ("event_quest_scenario_setting");
         }
     }
 

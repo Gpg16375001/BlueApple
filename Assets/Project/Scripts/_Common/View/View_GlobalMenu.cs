@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -101,6 +102,7 @@ public class View_GlobalMenu : ViewBase
         this.SetCanvasCustomButtonMsg("bt_GlobalMenuShop", DidTapShop);
 
         this.GetScript<RectTransform> ("bt_GlobalMenuHome").gameObject.SetActive (false);
+        SetEventBalloon ();
     }
     // コールバック：シーン切り替え直前
     void WillChangeScene(string sceneName)
@@ -116,6 +118,7 @@ public class View_GlobalMenu : ViewBase
         m_bOpen = sceneName != "MyPage";
         this.GetScript<RectTransform> ("bt_GlobalMenuHome").gameObject.SetActive(sceneName != "MyPage");
 		this.GetScript<CustomButton>("bt_GlobalMenuHome").interactable = sceneName != "MyPage";
+        SetEventBalloon ();
         this.StartCoroutine(this.PlayOpenClose(true));
     }
     // コールバック：シーン切り替え直後
@@ -126,6 +129,33 @@ public class View_GlobalMenu : ViewBase
         DidTapMenuEvent = null;
         DidTapButton = null;
     }
+
+    void SetEventBalloon()
+    {
+        var now = GameTime.SharedInstance.Now;
+        var display = MasterDataTable.event_quest != null && MasterDataTable.event_quest.DataList.Any (x => x.start_at <= now && x.end_at >= now);
+        GetScript<RectTransform> ("Balloon").gameObject.SetActive (display);
+    }
+
+	public static void Setup( GachaClientUseData data=null )
+	{
+		Action<GachaClientUseData> proc = (_data) => {
+			var value = (_data.WeaponContent.DataFree != null) && (_data.WeaponContent.DataFree.IsPurchasable);
+			instance.GetScript<RectTransform>("bt_GlobalMenuGacha").transform.Find("Exclamation").gameObject.SetActive( value );
+		};
+
+		if( instance != null ) {
+			if( data == null ) {
+				SendAPI.GachaGetProductList((bSuccess, res) => {
+					if (bSuccess && res != null) {
+						proc( new GachaClientUseData( res ) );
+					}
+				});
+			}else{
+				proc( data );
+			}
+		}
+	}
 
     #region ButtonDelegate.
 
@@ -304,6 +334,7 @@ public class View_GlobalMenu : ViewBase
     {
 		IsEnableButtons = false;
 		View_FadePanel.SharedInstance.FadeOutWithLoadingAnim(View_FadePanel.FadeColor.Black, () => { 
+			Screen_Gacha.Reset(); //初期化
 			ScreenChanger.SharedInstance.GoToGacha();
             IsEnableButtons = true;
 		});

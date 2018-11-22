@@ -58,7 +58,15 @@ public class GachaClientUseData
 				continue;
             }
 			var master = MasterDataTable.gacha[d.GachaId];
+#if UNITY_EDITOR
+			if( master == null ) {
+				PopupManager.OpenPopupSystemOK( string.Format("MasterDataTable.gacha から GachaId={0}が見つかりません",d.GachaId), () => ScreenChanger.SharedInstance.Reboot());
+			}else{
+				this.ContentsAllList.Add(new ContentsForView(d, data.RarestCardMissCount, data.RarestCardMissGachaTriggerCount, master.priority_view));
+			}
+#else
 			this.ContentsAllList.Add(new ContentsForView(d, data.RarestCardMissCount, data.RarestCardMissGachaTriggerCount, master.priority_view));
+#endif
 		}
 		this.ContentsAllList.Sort((x, y) => x.PriorityView - y.PriorityView);
 

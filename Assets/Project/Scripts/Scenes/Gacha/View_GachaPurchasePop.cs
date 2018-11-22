@@ -18,7 +18,7 @@ public class View_GachaPurchasePop : PopupViewBase
 	/// <summary>
     /// 生成.シングルトン.重複生成時は前回生成したものを強制破棄する.
     /// </summary>
-	public static View_GachaPurchasePop Create(GachaClientUseData.ContentsForView.RowData data, Action<GachaClientUseData.ContentsForView.RowData, ReceiveGachaPurchaseProduct> didClose)
+	public static View_GachaPurchasePop Create(GachaClientUseData.ContentsForView.RowData data, Screen_Gacha controller, Action<GachaClientUseData.ContentsForView.RowData, ReceiveGachaPurchaseProduct> didClose)
 	{
 		if(instance != null){
 			instance.Dispose();
@@ -26,6 +26,7 @@ public class View_GachaPurchasePop : PopupViewBase
 		var go = GameObjectEx.LoadAndCreateObject("Gacha/View_Popup_GachaPurchase");
         instance = go.GetOrAddComponent<View_GachaPurchasePop>();
 		instance.InitInternal(data, didClose);
+		instance.m_controller = controller;
 		return instance;
 	}
 	private void InitInternal(GachaClientUseData.ContentsForView.RowData data, Action<GachaClientUseData.ContentsForView.RowData, ReceiveGachaPurchaseProduct> didClose)
@@ -122,6 +123,21 @@ public class View_GachaPurchasePop : PopupViewBase
             return;
         }
 
+		//ページ記憶
+		if( m_controller != null ) {
+			Screen_Gacha.s_PageIndex = m_controller.GetScript<uGUIPageScrollRect>("Scroll").DispTransformIndex;
+
+			if( (m_controller.GetScript<RectTransform>("Contents/TabView").gameObject.activeSelf == true) &&
+				(m_controller.GetScript<RectTransform>("Contents/SingleView").gameObject.activeSelf == false) )
+			{
+				Screen_Gacha.s_SubPageIndex = 0;
+			}else if( (m_controller.GetScript<RectTransform>("Contents/TabView").gameObject.activeSelf == false) &&
+				(m_controller.GetScript<RectTransform>("Contents/SingleView").gameObject.activeSelf == true) )
+			{
+				Screen_Gacha.s_SubPageIndex = 1;
+			}
+		}
+
 		// 時間チェック.
 		Debug.Log(m_data.ContentsName+" "+m_data.DrawLimitaionType.ToString()+" : start="+m_data.StartDate+" ~ end="+m_data.EndDate);
 		if(!GameTime.SharedInstance.IsWithinPeriod(m_data.StartDate, m_data.EndDate)){
@@ -160,6 +176,7 @@ public class View_GachaPurchasePop : PopupViewBase
                 break;
             case GachaTypeEnum.weapon_gacha:
                 CreateWeaponGacha (res);
+				View_GlobalMenu.Setup();
                 break;
             default:
                 LockInputManager.SharedInstance.IsLock = false;
@@ -369,6 +386,7 @@ public class View_GachaPurchasePop : PopupViewBase
 
 	private float m_dlMaxCnt;
 	private float m_dlCurrentCnt;
+	private Screen_Gacha m_controller;
 
 	static View_GachaPurchasePop instance;
 }

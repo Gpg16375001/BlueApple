@@ -23,6 +23,8 @@ namespace SmileLab.Net.API
 		public int GainUnitExp;
 		public int GainUserExp;
 		public int GainGold;
+		public int GainEventPoint;
+		public int GainBonusEventPoint;
 
 		class ReceiveQuestsCloseQuestFormatter : IMessagePackFormatter<ReceiveQuestsCloseQuest>
 		{
@@ -32,7 +34,7 @@ namespace SmileLab.Net.API
 				}
 
 				var startOffset = offset;
-				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 17);
+				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 19);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "ResultCode");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.ResultCode);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "QuestAchievement");
@@ -167,6 +169,10 @@ namespace SmileLab.Net.API
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GainUserExp);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "GainGold");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GainGold);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "GainEventPoint");
+				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GainEventPoint);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "GainBonusEventPoint");
+				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GainBonusEventPoint);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "MasterVersion");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.MasterVersion);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "ErrorMessage");
@@ -392,6 +398,16 @@ namespace SmileLab.Net.API
 					}
 					if (key == "GainGold") {
 						ret.GainGold = MessagePackBinary.ReadInt32(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
+					if (key == "GainEventPoint") {
+						ret.GainEventPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
+					if (key == "GainBonusEventPoint") {
+						ret.GainBonusEventPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
 						isRead = true;
 					}

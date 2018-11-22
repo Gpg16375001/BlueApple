@@ -10,6 +10,7 @@ public interface IQuestData
     /// 3: ユニットクエスト
     /// 4: 強化クエスト
     /// 5: 進化クエスト
+    /// 6: イベントクエスト
     /// </summary>
     int QuestType { get; }
 
@@ -52,4 +53,34 @@ public interface IQuestData
     /// 開始に必要なAP.
     /// </summary>
 	int NeedAP { get; }
+
+    /// <summary>
+    /// 初回クリア報酬があるか？
+    /// </summary>
+    bool HasClearReward { get; }
+
+    /// <summary>
+    /// 初回クリア報酬タイプ
+    /// </summary>
+    ItemTypeEnum? ClearRewardType { get; }
+
+    /// <summary>
+    /// 初回クリア報酬ID
+    /// </summary>
+    int ClearRewardId { get; }
+
+    /// <summary>
+    /// 初回クリア報酬数
+    /// </summary>
+    int ClearRewardQuantity { get; }
+
+    /// <summary>
+    /// 強制ロックか？
+    /// </summary>
+    bool ForceLock { get; }
+
+    /// <summary>
+    /// リリース済みミッションデータ
+    /// </summary>
+    int[] ReleaseMissions { get; }
 }

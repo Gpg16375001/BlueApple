@@ -55,17 +55,19 @@ public class View_BattleResult : ViewBase
 	{
         m_bClose = false;
 		m_bLatestQuestClear = bLatestQuestClear;
+
+        int count = 0;
 		// 経験値.
 		var rootObj = GetScript<CanvasGroup>("Contents").gameObject;
 		var go = GameObjectEx.LoadAndCreateObject("Battle/View_BattleExpResult", rootObj);
 		var viewExp = go.GetOrAddComponent<MiniView_BattleExpResult>();
-		viewExp.Init(0, questResult);
+        viewExp.Init(count++, questResult);
 		go.SetActive(false);
 		pages.Add(viewExp);
         // リワード系.
 		go = GameObjectEx.LoadAndCreateObject("Battle/View_BattleRewardResult", rootObj);
 		var viewReward = go.GetOrAddComponent<MiniView_BattleRewardResult>();
-		viewReward.Init(1, questResult);
+        viewReward.Init(count++, questResult);
 		go.SetActive(false);
 		pages.Add(viewReward);
 
@@ -73,9 +75,17 @@ public class View_BattleResult : ViewBase
         if (questResult.MissionRewardItemList != null && questResult.MissionRewardItemList.Length > 0) {
             go = GameObjectEx.LoadAndCreateObject ("Battle/View_BattleMissionRewardPop", rootObj);
             var viewMisionReward = go.GetOrAddComponent<MiniView_BattleMissionRewardPop> ();
-            viewMisionReward.Init (2, questResult, MissionClearAnim);
+            viewMisionReward.Init (count++, questResult);
             go.SetActive (false);
             pages.Add (viewMisionReward);
+        }
+
+        if (questResult.GainEventPoint > 0) {
+            go = GameObjectEx.LoadAndCreateObject("Battle/View_BattleEventRewardPop", rootObj);
+            var viewEvent = go.GetOrAddComponent<MiniView_BattleEventResult>();
+            viewEvent.Init(count++, questResult);
+            go.SetActive(false);
+            pages.Add(viewEvent);
         }
 
 		// ページ設定.
@@ -91,12 +101,43 @@ public class View_BattleResult : ViewBase
         this.SetCanvasButtonMsg("bt_Close", DidTapNext);
 
 		NextResult(bExistNext => Open());
+
+        currentTitle = ResultTitle.Clear;
 	}
-    private void MissionClearAnim()
+
+    private void BattleClearAnim(ResultTitle current, ResultTitle? next = null)
     {
         var anim = GetScript<Animation> ("eff_BattleClear");
-        anim.Play ("BattleResultMissionIn");
+        if (current == ResultTitle.Clear) {
+            anim.Play ("BattleResultClearOut");
+        } else if (current == ResultTitle.Mission) {
+            anim.Play ("BattleResultMissionOut");
+        } else if (current == ResultTitle.Event) {
+            anim.Play ("BattleResultEvent01Out");
+        }
+
+        if (next.HasValue) {
+            if (waitAndPlay != null) {
+                StopCoroutine (waitAndPlay);
+            }
+            waitAndPlay = StartCoroutine (WaitAndPlay (anim, next.Value));
+        }
     }
+
+    Coroutine waitAndPlay;
+    IEnumerator WaitAndPlay(Animation anim, ResultTitle next)
+    {
+        yield return new WaitUntil (() => !anim.isPlaying);
+        if (next == ResultTitle.Clear) {
+            anim.Play ("BattleResultClearIn");
+        } else if (next == ResultTitle.Mission) {
+            anim.Play ("BattleResultMissionIn");
+        } else if (next == ResultTitle.Event) {
+            anim.Play ("BattleResultEvent01In");
+        }
+        waitAndPlay = null;
+    }
+
 	// 終了時の処理だけを登録した単調な初期化.クリア演出だけ見たいときなど.
 	private void InitInternal(List<CardCard> allys, Action didEnd)
 	{
@@ -125,11 +166,19 @@ public class View_BattleResult : ViewBase
 		Action nextOpen = () => { 
 			var next = pages.Find(p => p.Index == page);
 			if (next == null) {
+                BattleClearAnim(currentTitle);
                 if (didNext != null) {
                     didNext(false);
                 }
 				LockInputManager.SharedInstance.IsLock = false;
                 return;
+            }
+
+            var nextTitle = next.GetResultTitle();
+
+            if(nextTitle != currentTitle) {
+                BattleClearAnim(currentTitle, nextTitle);
+                currentTitle = nextTitle;
             }
             next.Open();
             if (didNext != null) {
@@ -253,4 +302,6 @@ public class View_BattleResult : ViewBase
 
     bool m_bClose;
 	bool m_bLatestQuestClear;
+
+    ResultTitle currentTitle = ResultTitle.Clear;
 }
