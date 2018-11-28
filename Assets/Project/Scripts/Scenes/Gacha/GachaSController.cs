@@ -28,7 +28,6 @@ public class GachaSController : ScreenControllerBase
 			}
 			AwsModule.UserData.UserData = res.UserData;
 			m_data = new GachaClientUseData(res);
-			View_GlobalMenu.Setup( m_data );
 			didConnectEnd(true);
 		});
 	}

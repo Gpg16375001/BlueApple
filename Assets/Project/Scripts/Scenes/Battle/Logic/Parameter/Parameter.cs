@@ -244,7 +244,7 @@ namespace BattleLogic {
 
         public float SpProgress {
             get {
-                return (float)Sp / (float)MaxSp;
+                return 1f;
             }
         }
 
@@ -721,7 +721,7 @@ namespace BattleLogic {
             int maxLevel = ratiryData.max_level;
             int coefficient = maxLevel / 20; //ratiryData.coefficient;
             // ベースパラメータの計算
-            BaseMaxHp = 99999999;// CalcParameter (cardData.initial_hp, cardData.max_hp, _level, maxLevel, coefficient, cardData.hp_growth_type) + Weapon.Hp + _magikite.Select(x => x.Hp).Sum() + growthBoardHp;
+            BaseMaxHp = 99999999;//CalcParameter (cardData.initial_hp, cardData.max_hp, _level, maxLevel, coefficient, cardData.hp_growth_type) + Weapon.Hp + _magikite.Select(x => x.Hp).Sum() + growthBoardHp;
             BaseAttack = 99999999;//CalcParameter (cardData.initial_attack, cardData.max_attack, _level, maxLevel, coefficient, cardData.attack_growth_type) + Weapon.Attack + _magikite.Select(x => x.Attack).Sum() + growthBoardAtk;
             BaseDefense = 99999999;//CalcParameter (cardData.initial_defence, cardData.max_defence, _level, maxLevel, coefficient, cardData.defence_growth_type) + Weapon.Defense + _magikite.Select(x => x.Defense).Sum() + growthBoardDef;
             BaseAgility = CalcParameter (cardData.initial_agility, cardData.max_agility, _level, maxLevel, coefficient, cardData.agility_growth_type) + Weapon.Agility + _magikite.Select(x => x.Agility).Sum() + growthBoardAgi;
@@ -736,7 +736,7 @@ namespace BattleLogic {
                 ).
                 Select (
                     x => {
-                        int skillLevel = 999999;//1;
+                        int skillLevel = 99999999;
                         var skill = MasterDataTable.skill [x.skill_id];
                         if(skill.skill_type == SkillTypeEnum.special) {
                             skillLevel += _growthBoardSpLv;

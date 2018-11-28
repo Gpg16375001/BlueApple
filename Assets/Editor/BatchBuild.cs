@@ -67,8 +67,8 @@ public class BatchBuild
     {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android, "DEFINE_RELEASE;");
 		PlayerSettings.productName = "プレカトゥス";   // TODO : 仮タイトル
-		PlayerSettings.bundleVersion = "1.0.5";
-        PlayerSettings.Android.bundleVersionCode = 101000500;
+		PlayerSettings.bundleVersion = "1.0.6";
+        PlayerSettings.Android.bundleVersionCode = 101000600;
 		PlayerSettings.applicationIdentifier = "jp.fg.precatus";
 
         // URL Schemaの書き換えを行う
@@ -127,8 +127,8 @@ public class BatchBuild
     {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android, "DEFINE_RELEASE;");
 		PlayerSettings.productName = "プレカトゥス";
-        PlayerSettings.bundleVersion = "1.0.5";
-		PlayerSettings.Android.bundleVersionCode = 201000500;
+        PlayerSettings.bundleVersion = "1.0.6";
+		PlayerSettings.Android.bundleVersionCode = 201000600;
 		PlayerSettings.applicationIdentifier = "jp.fg.precatus";
         Build(BuildTargetGroup.Android, BuildTarget.Android, BuildOptions.None);
     }
@@ -178,7 +178,7 @@ public class BatchBuild
     {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, "DEFINE_RELEASE;");
 		PlayerSettings.productName = "プレカトゥス";
-		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "1.0.5";
+		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "1.0.6";
 		PlayerSettings.applicationIdentifier = "jp.fg.precatus";
 		PlayerSettings.iOS.iOSManualProvisioningProfileID = "225abe5b-bdb0-4bdc-9061-c2bd12a0558e";
 		ProvisioningAtBuildTime = "LIBRA OF PRECATUS_appstore";
@@ -193,7 +193,7 @@ public class BatchBuild
     {
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, "DEFINE_RELEASE_ADHOC;");
         PlayerSettings.productName = "プレカトゥス";
-		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "1.0.5";
+		PlayerSettings.bundleVersion = PlayerSettings.iOS.buildNumber = "1.0.6";
 		PlayerSettings.applicationIdentifier = "com.smilelab.devseven";
         PlayerSettings.iOS.iOSManualProvisioningProfileID = "80f5086e-55b0-4a37-8c7f-486338111284";
 		ProvisioningAtBuildTime = "seven_dev_adhoc";

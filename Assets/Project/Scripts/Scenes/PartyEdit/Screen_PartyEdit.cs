@@ -300,9 +300,9 @@ public class Screen_PartyEdit : ViewBase
         LockInputManager.SharedInstance.IsLock = true;
 
         // スキルによるドロップ率・経験値・クレド増加割合分を計算する。
-        int OverrideExpPercentage = 999999;//0;
-        int OverrideGoldPercentage = 999999;//0;
-        int OverrideItemDropPercentage = 999999;//0;
+        int OverrideExpPercentage = 99999999;//0;
+        int OverrideGoldPercentage = 99999999;//0;
+        int OverrideItemDropPercentage = 99999999;//0;
         if (m_HelperCard != null) {
             if (m_HelperCard.Parameter.PassiveSkillList.Any (x => x.Skill.HasItemDropUpLogic ())) {
                 OverrideItemDropPercentage += m_HelperCard.Parameter.PassiveSkillList.Where (x => x.Skill.HasItemDropUpLogic ()).Sum (x => x.GetItemDropUp ());

@@ -368,7 +368,6 @@ public class AwsBattleProgressData : AwsCognitoDatasetBase
 
         _stage = MasterDataTable.stage.DataList.
             FirstOrDefault (x => x.id == StageID);
-        MissionProgress = new BattleMissionProgressManager(this.StageID);
 
         AllyList = new List<ListItem_BattleUnit>();
         EnemyList = new List<ListItem_BattleUnit>();
@@ -422,6 +421,15 @@ public class AwsBattleProgressData : AwsCognitoDatasetBase
         } else {
             AwsModule.ProgressData.CurrentScenarioSelectIdList = new List<int> ();
         }
+
+        var CurrentQuestAchievedMissionIdList = Get<string> ("CurrentQuestAchievedMissionIdList");
+        if (!string.IsNullOrEmpty (CurrentQuestAchievedMissionIdList)) {
+            AwsModule.ProgressData.CurrentQuestAchievedMissionIdList = CurrentQuestAchievedMissionIdList.Split (',').Select (x => int.Parse (x)).ToArray ();
+        } else {
+            AwsModule.ProgressData.CurrentQuestAchievedMissionIdList = new int[0];
+        }
+
+        MissionProgress = new BattleMissionProgressManager(this.StageID);
         // ミッションの進捗情報の復帰
         MissionProgressData = Get<BattleMissionProgressData> ("BattleMissionProgressData");
     }
@@ -641,6 +649,12 @@ public class AwsBattleProgressData : AwsCognitoDatasetBase
         Put ("EnemyFormationID", EnemyFormation.id);
 
         Put ("CurrentScenarioSelectIdList", string.Join(",", AwsModule.ProgressData.CurrentScenarioSelectIdList.Select(x => x.ToString()).ToArray()));
+        if (AwsModule.ProgressData.CurrentQuestAchievedMissionIdList != null) {
+            Put ("CurrentQuestAchievedMissionIdList", string.Join (",", AwsModule.ProgressData.CurrentQuestAchievedMissionIdList.Select (x => x.ToString ()).ToArray ()));
+        } else {
+            Put ("CurrentQuestAchievedMissionIdList", "");
+        }
+
         Put ("BattleMissionProgressData", MissionProgressData);
 
         Put ("TurnCount", TurnCount);

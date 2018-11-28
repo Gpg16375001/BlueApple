@@ -37,12 +37,12 @@ SpriteAtlas:
       enableTightPacking: 0
     packedHash:
       serializedVersion: 2
-      Hash: aee0c93381c6940c220839a89db52604
+      Hash: a12ecb3cda9a24816660f7a127709b9f
     variantMultiplier: 1
     bindAsDefault: 1
     finalFormat: 4
-    hashString: aee0c93381c6940c220839a89db52604
-    totalSpriteSurfaceArea: 1877714
+    hashString: a12ecb3cda9a24816660f7a127709b9f
+    totalSpriteSurfaceArea: 1873022
     packables:
     - {fileID: 102900000, guid: 5e792753470597946904303555b1c1a0, type: 3}
     packedSpriteRenderDataKeys:
@@ -77,9 +77,9 @@ SpriteAtlas:
     - 294f31dad9c662242aaf6f08b8d6226c: 21300000
     - c890ad8068ba7b14590c3d51a65a7cc4: 21300000
     - 8dfa15feaf2af8a4d889018d19bd2504: 21300000
-    - a2dc454814ae20648b67b8c8b0419ff3: 21300000
-    - 74cb5ba8dc5cde24a88ef00e7d4764f9: 21300000
-    - 496a5c52e4fac4249bbffa88ed2bfa1d: 21300000
+    - 6d06b9b9ce4d7354fabdfdf454b80898: 21300000
+    - 31c6788f1590684458436839d5fdd554: 21300000
+    - 8a7b5093ceba58443b3aae6837f3df6a: 21300000
     - fcca164a36a46ec4e898dffb79e9ad49: 21300000
     - ffa3e19e28add8a4c94d7c61289ed971: 21300000
     - 5e6fc5bdbe450224ea8645005aaaffe2: 21300000
@@ -126,14 +126,11 @@ SpriteAtlas:
     - 800148a79dc22cf4f8149decbef4477d: 21300000
     - 20b15b2ec4ee4f144933ed0a88db6d02: 21300000
     - 75e446b6b8bd3db42a9b829e19a36357: 21300000
-    - e4f84c9f74f80264c9b4305b69af85a3: 21300000
-    - 9ec9359531b71894eafca50aad589215: 21300000
     - 50c9bc04ad34a4048be34d6b1c4336a2: 21300000
     - 8954cba0636cc1b49a13cacffdccbd0e: 21300000
     - 5a522b88128fe4a4a868c944ca609fe5: 21300000
     - 2f5f2b4414c4b9c4e95cc8510066fd30: 21300000
     - 7d08059b0dcec8b4e9d3b97917b41ad2: 21300000
-    - 1fcc5a0a307042248aa66d216c2f48d2: 21300000
     - f40c5ac4d133fad4880d97d75f886289: 21300000
     - 4e952674f42eaa7498053603ab087155: 21300000
     - 83de51a34b6787b4cbd3fad4e5a0c750: 21300000
@@ -186,9 +183,9 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 294f31dad9c662242aaf6f08b8d6226c, type: 3}
   - {fileID: 21300000, guid: c890ad8068ba7b14590c3d51a65a7cc4, type: 3}
   - {fileID: 21300000, guid: 8dfa15feaf2af8a4d889018d19bd2504, type: 3}
-  - {fileID: 21300000, guid: a2dc454814ae20648b67b8c8b0419ff3, type: 3}
-  - {fileID: 21300000, guid: 74cb5ba8dc5cde24a88ef00e7d4764f9, type: 3}
-  - {fileID: 21300000, guid: 496a5c52e4fac4249bbffa88ed2bfa1d, type: 3}
+  - {fileID: 21300000, guid: 6d06b9b9ce4d7354fabdfdf454b80898, type: 3}
+  - {fileID: 21300000, guid: 31c6788f1590684458436839d5fdd554, type: 3}
+  - {fileID: 21300000, guid: 8a7b5093ceba58443b3aae6837f3df6a, type: 3}
   - {fileID: 21300000, guid: fcca164a36a46ec4e898dffb79e9ad49, type: 3}
   - {fileID: 21300000, guid: ffa3e19e28add8a4c94d7c61289ed971, type: 3}
   - {fileID: 21300000, guid: 5e6fc5bdbe450224ea8645005aaaffe2, type: 3}
@@ -235,14 +232,11 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 800148a79dc22cf4f8149decbef4477d, type: 3}
   - {fileID: 21300000, guid: 20b15b2ec4ee4f144933ed0a88db6d02, type: 3}
   - {fileID: 21300000, guid: 75e446b6b8bd3db42a9b829e19a36357, type: 3}
-  - {fileID: 21300000, guid: e4f84c9f74f80264c9b4305b69af85a3, type: 3}
-  - {fileID: 21300000, guid: 9ec9359531b71894eafca50aad589215, type: 3}
   - {fileID: 21300000, guid: 50c9bc04ad34a4048be34d6b1c4336a2, type: 3}
   - {fileID: 21300000, guid: 8954cba0636cc1b49a13cacffdccbd0e, type: 3}
   - {fileID: 21300000, guid: 5a522b88128fe4a4a868c944ca609fe5, type: 3}
   - {fileID: 21300000, guid: 2f5f2b4414c4b9c4e95cc8510066fd30, type: 3}
   - {fileID: 21300000, guid: 7d08059b0dcec8b4e9d3b97917b41ad2, type: 3}
-  - {fileID: 21300000, guid: 1fcc5a0a307042248aa66d216c2f48d2, type: 3}
   - {fileID: 21300000, guid: f40c5ac4d133fad4880d97d75f886289, type: 3}
   - {fileID: 21300000, guid: 4e952674f42eaa7498053603ab087155, type: 3}
   - {fileID: 21300000, guid: 83de51a34b6787b4cbd3fad4e5a0c750, type: 3}
@@ -343,14 +337,11 @@ SpriteAtlas:
   - img_BattleRecord
   - img_TotalPoint
   - img_PVPClass
-  - img_EventTotalTitle
-  - img_EventRwardTitle
   - img_SpecialOn
   - img_Wave
   - img_SpecialOff
   - img_GaugeBgSP01
   - img_GaugeBgHP01
-  - img_EventBounsTitle
   - img_Turn
   - img_CharacterSkillOn
   - img_CharacterSkillOff

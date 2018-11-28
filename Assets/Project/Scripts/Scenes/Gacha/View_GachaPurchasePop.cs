@@ -176,7 +176,6 @@ public class View_GachaPurchasePop : PopupViewBase
                 break;
             case GachaTypeEnum.weapon_gacha:
                 CreateWeaponGacha (res);
-				View_GlobalMenu.Setup();
                 break;
             default:
                 LockInputManager.SharedInstance.IsLock = false;

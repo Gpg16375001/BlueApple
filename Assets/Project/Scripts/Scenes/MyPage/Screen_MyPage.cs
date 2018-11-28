@@ -37,8 +37,6 @@ public class Screen_MyPage : ViewBase
             GetScript<TextMeshProUGUI> ("BadgePresent/txtp_Num").SetText(AwsModule.UserData.UserData.ReceivablePresentCount.ToString());
         }
 
-		View_GlobalMenu.Setup();	//ガチャ誘導
-
 		var missionBadge = GetScript<RectTransform>("BadgeMission");
 		bool hasMission = AwsModule.UserData.UserData.ReceivableMissionCount > 0;
 		missionBadge.gameObject.SetActive(hasMission);

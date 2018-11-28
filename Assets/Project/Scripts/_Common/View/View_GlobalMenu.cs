@@ -137,26 +137,6 @@ public class View_GlobalMenu : ViewBase
         GetScript<RectTransform> ("Balloon").gameObject.SetActive (display);
     }
 
-	public static void Setup( GachaClientUseData data=null )
-	{
-		Action<GachaClientUseData> proc = (_data) => {
-			var value = (_data.WeaponContent.DataFree != null) && (_data.WeaponContent.DataFree.IsPurchasable);
-			instance.GetScript<RectTransform>("bt_GlobalMenuGacha").transform.Find("Exclamation").gameObject.SetActive( value );
-		};
-
-		if( instance != null ) {
-			if( data == null ) {
-				SendAPI.GachaGetProductList((bSuccess, res) => {
-					if (bSuccess && res != null) {
-						proc( new GachaClientUseData( res ) );
-					}
-				});
-			}else{
-				proc( data );
-			}
-		}
-	}
-
     #region ButtonDelegate.
 
     // ボタン：メニューボタン押下.

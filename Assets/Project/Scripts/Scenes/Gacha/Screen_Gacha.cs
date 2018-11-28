@@ -35,11 +35,6 @@ public class Screen_Gacha : ViewBase
 		this.GetScript<CustomButton>("bt_ArrowPage_2").onClick.AddListener(DidTapRight);
 		this.SetCanvasCustomButtonMsg("Character/bt_GachaCategory", DidTapCharaGacha);
 		this.SetCanvasCustomButtonMsg("Weapon/bt_GachaCategory", DidTapWeaponGacha);      
-		{
-			var value = (m_data.WeaponContent.DataFree != null) && (m_data.WeaponContent.DataFree.IsPurchasable);
-			this.GetScript<RectTransform>("Weapon/txtp_WeaponGacha").transform.Find("Exclamation").gameObject.SetActive( value );
-		}
-
 		DidTapCharaGacha();
 
 #if false
