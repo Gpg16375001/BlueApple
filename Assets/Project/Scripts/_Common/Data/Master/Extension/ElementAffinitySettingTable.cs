@@ -19,4 +19,11 @@ public partial class ElementAffinitySettingTable {
         }
         return _dict[key];
     }
+
+	//elementに対する弱点属性
+	public List<ElementEnum> GetWeakElements(ElementEnum element)
+	{
+		return DataList.FindAll( eas => (eas.affinity.Enum == ElementAffinityEnum.disadvantage) && (eas.element == element) )
+			.ConvertAll<ElementEnum>( eas => eas.targe_element );
+	}
 }

@@ -27,6 +27,7 @@ public class Screen_PartyEditTop : ViewBase {
     {
         View_FadePanel.SharedInstance.FadeOutWithLoadingAnim (View_FadePanel.FadeColor.Black,
             () => {
+				View_PartyEditAutoSelect.Reset();
                 ScreenChanger.SharedInstance.GoToPartyEdit();
             }
         );
@@ -36,6 +37,7 @@ public class Screen_PartyEditTop : ViewBase {
     {
         View_FadePanel.SharedInstance.FadeOutWithLoadingAnim (View_FadePanel.FadeColor.Black,
             () => {
+				View_PartyEditAutoSelect.Reset();
                 ScreenChanger.SharedInstance.GoToPVPPartyEdit();
             }
         );

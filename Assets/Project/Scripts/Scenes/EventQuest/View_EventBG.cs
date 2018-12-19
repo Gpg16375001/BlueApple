@@ -7,7 +7,7 @@ using SmileLab;
 public class View_EventBG : ViewBase {
     // Live2Dの作成
 
-    public void Init(EventQuest questData)
+	public void Init(int? top_display_card_1, int? top_display_card_2)
     {
         // 位置のずれ対応
         var rect = gameObject.GetComponent<RectTransform> ();
@@ -15,15 +15,15 @@ public class View_EventBG : ViewBase {
         rect.offsetMin = Vector2.zero;
         rect.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
 
-        if (questData.top_display_card_1.HasValue) {
-            m_UnitResource1 = new UnitResourceLoader (questData.top_display_card_1.Value);
+        if (top_display_card_1.HasValue) {
+            m_UnitResource1 = new UnitResourceLoader (top_display_card_1.Value);
             m_UnitResource1.LoadFlagReset ();
             m_UnitResource1.IsLoadLive2DModel = true;
             m_UnitResource1.LoadResource (LoadUnitResource1);
         }
 
-        if (questData.top_display_card_2.HasValue) {
-            m_UnitResource2 = new UnitResourceLoader (questData.top_display_card_2.Value);
+        if (top_display_card_2.HasValue) {
+            m_UnitResource2 = new UnitResourceLoader (top_display_card_2.Value);
             m_UnitResource2.LoadFlagReset ();
             m_UnitResource2.IsLoadLive2DModel = true;
             m_UnitResource2.LoadResource (LoadUnitResource2);

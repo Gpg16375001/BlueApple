@@ -73,6 +73,10 @@ public partial class EventQuest
     // ショップ交換期限
     public DateTime exchange_time_limit;
 
+    // 背景Prefab
+    [SerializeField]
+    public string background_prefab;
+
     [SerializeField]
     private bool top_display_card_1_has_value;
     [SerializeField]

@@ -171,6 +171,7 @@ public class Screen_Title : ViewBase
 
     private void ScreenChange()
     {
+		View_GemShop.Reset();
         if(AwsModule.BattleData.IsProgressing) {
             // クエストの解放状態を確認
             SendAPI.QuestsGetOpenBattle((result, response) => {
@@ -242,6 +243,12 @@ public class Screen_Title : ViewBase
 	IEnumerator WaitResourceLoading()
 	{
 		var bFadeing = true;
+
+        // Boot後にTutorialStageNumがリセットされる可能性があるのでここでもロード処理を投げておく
+        if (AwsModule.ProgressData.TutorialStageNum >= 0) {
+            TutorialResourceDownloader.StartDownload();
+        }
+
 		View_FadePanel.SharedInstance.FadeOutWithLoadingAnim(View_FadePanel.FadeColor.Black, () => bFadeing = false);
 		while (bFadeing || !TutorialResourceDownloader.IsDownloadEndForInit) {
             yield return null;

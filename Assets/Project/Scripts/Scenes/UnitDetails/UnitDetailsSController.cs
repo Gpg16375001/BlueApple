@@ -15,6 +15,7 @@ public class UnitDetailsSController : ScreenControllerBase
 
     private UnitResourceLoader m_CardResource;
     private WeaponResourceLoader m_WeaponResource;
+	private bool m_CheckReleaseFlavor2;
 
     public override void Init (System.Action<bool> didConnectEnd)
     {
@@ -43,24 +44,51 @@ public class UnitDetailsSController : ScreenControllerBase
         loader.IsLoadTimeLine = false;
         loader.IsLoadOriginalImage = true;
 
-        loader.LoadResource ((resource) => {
-            m_CardResource = resource;
-            weaponLoader.LoadResource(
-                (weaponResource) => {
-                    m_WeaponResource = weaponResource;
+        loader.LoadResource (
+			(resource) => {
+	            m_CardResource = resource;
+				CheckConnectEnd(didConnectEnd);
+        	},
+			this
+		);
+		weaponLoader.LoadResource(
+			(weaponResource) => {
+				m_WeaponResource = weaponResource;
+				CheckConnectEnd(didConnectEnd);
+			},
+			this
+		);
 
-                    if(DisplayCard != null) {
-    					// カードごとの変更データも都度確認しておく
-    					AwsModule.CardModifiedData.UpdateData(DisplayCard);
-    					AwsModule.CardModifiedData.Sync((success, sender, e) => didConnectEnd(true));
-                    } else {
-                        didConnectEnd(true);
-                    }
-                },
-                this
-            );
-        }, this);
+		m_CheckReleaseFlavor2 = false;
+		if(DisplayCard != null) {
+			// フレーバーの解放をチェックする。
+			// カードごとの変更データも都度確認しておく
+			var modifiedData = AwsModule.CardModifiedData.List.Find (x => x.CardId == DisplayCard.CardId);
+			if (!DisplayCard.IsReleaseFlavor2) {
+				m_CheckReleaseFlavor2 = true;
+				DisplayCard.CheckReleaseFlavor2 (
+					(res) => {
+						m_CheckReleaseFlavor2 = false;
+
+						AwsModule.CardModifiedData.UpdateData (DisplayCard);
+						AwsModule.CardModifiedData.Sync ();
+
+						CheckConnectEnd(didConnectEnd);
+					}
+				);
+			} else {
+				AwsModule.CardModifiedData.UpdateData (DisplayCard);
+				AwsModule.CardModifiedData.Sync ();
+			}
+		}
     }
+
+	private void CheckConnectEnd(System.Action<bool> didConnectEnd)
+	{
+		if (m_CardResource != null && m_WeaponResource != null && !m_CheckReleaseFlavor2) {
+			didConnectEnd (true);
+		}
+	}
 
     public override void CreateBootScreen ()
     {

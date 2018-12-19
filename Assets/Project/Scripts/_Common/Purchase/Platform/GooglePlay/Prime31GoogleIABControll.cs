@@ -4,6 +4,7 @@ using UnityEngine;
 using SmileLab;
 using Prime31;
 using System;
+using System.Linq;
 
 #if UNITY_ANDROID
 
@@ -213,7 +214,7 @@ public class Prime31GoogleIABControll : IPurchaseControll
             return false;
         }
 
-        return nonConsumePurchaseList != null && nonConsumePurchaseList.Count > 0;
+        return nonConsumePurchaseList != null && nonConsumePurchaseList.Count(x => x.purchaseState == GooglePurchase.GooglePurchaseState.Purchased) > 0;
     }
 
     /// <summary>
@@ -413,7 +414,10 @@ public class Prime31GoogleIABControll : IPurchaseControll
     IEnumerator CoValidateNotValidatedPurchase(Action didValidate)
     {
         foreach (var purchase in nonConsumePurchaseList) {
-            yield return CoVerify (purchase.originalJson, purchase.signature);
+            // 購入済みのものだけやる。
+            if (purchase.purchaseState == GooglePurchase.GooglePurchaseState.Purchased) {
+                yield return CoVerify (purchase.originalJson, purchase.signature);
+            }
         }
         nonConsumePurchaseList.Clear ();
         didValidate ();

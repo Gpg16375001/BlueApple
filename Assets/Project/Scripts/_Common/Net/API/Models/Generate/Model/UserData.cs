@@ -44,7 +44,10 @@ namespace SmileLab.Net.API
 		public int WeaponBagCapacity;
 		public int MagikiteBagCapacity;
 		public int RarestCardMissCount;
+		public int ActionPointHealCost;
+		public int BattlePointHealCost;
 		public string CreationDate;
+		public int GainFriendPointOnSupport;
 
 		class UserDataFormatter : IMessagePackFormatter<UserData>
 		{
@@ -54,7 +57,7 @@ namespace SmileLab.Net.API
 				}
 
 				var startOffset = offset;
-				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 34);
+				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 37);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "UserId");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.UserId);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "CustomerId");
@@ -157,8 +160,14 @@ namespace SmileLab.Net.API
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.MagikiteBagCapacity);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "RarestCardMissCount");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.RarestCardMissCount);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "ActionPointHealCost");
+				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.ActionPointHealCost);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "BattlePointHealCost");
+				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.BattlePointHealCost);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "CreationDate");
 				offset += MessagePackBinary.WriteString(ref bytes, offset, value.CreationDate);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "GainFriendPointOnSupport");
+				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GainFriendPointOnSupport);
 				return offset - startOffset;
 			}
 
@@ -388,8 +397,23 @@ namespace SmileLab.Net.API
 						offset += readed;
 						isRead = true;
 					}
+					if (key == "ActionPointHealCost") {
+						ret.ActionPointHealCost = MessagePackBinary.ReadInt32(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
+					if (key == "BattlePointHealCost") {
+						ret.BattlePointHealCost = MessagePackBinary.ReadInt32(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
 					if (key == "CreationDate") {
 						ret.CreationDate = MessagePackBinary.ReadString(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
+					if (key == "GainFriendPointOnSupport") {
+						ret.GainFriendPointOnSupport = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
 						isRead = true;
 					}

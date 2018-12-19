@@ -185,10 +185,8 @@ public class View_WeaponEnhance : ViewBase
     /// </summary>
 	public override void Dispose()
     {
-        LockInputManager.SharedInstance.IsLock = true;
         View_FadePanel.SharedInstance.IsLightLoading = true;
         AwsModule.LocalData.Sync((bSuccess, sender, eArgs) => {
-            LockInputManager.SharedInstance.IsLock = false;
             View_FadePanel.SharedInstance.IsLightLoading = false;
             base.Dispose();
             if (m_didClose != null) {
@@ -272,6 +270,7 @@ public class View_WeaponEnhance : ViewBase
         // 演出終了後の共通情報更新処理定義.
 		Action didUpdateInfo = () => { 
 			LockInputManager.SharedInstance.IsLock = false;
+            if (m_viewEnhanceResult != null) return;
 
             // レベルアップ時はリザルトを表示.
             if (m_weapon.Level < targetData.Level) {

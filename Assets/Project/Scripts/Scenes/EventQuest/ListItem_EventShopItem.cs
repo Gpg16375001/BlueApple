@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using TMPro;
 
@@ -24,10 +25,14 @@ public class ListItem_EventShopItem : ViewBase {
         SetIcon (setting);
 
         // 
+		GetScript<Image>("IconEventPoint").overrideSprite = null; 
+		IconLoader.LoadEventPoint (setting.event_quest_id, DidLoadEventPointIcon);
         GetScript<TextMeshProUGUI> ("txtp_ShopItemName").SetText (setting.item_type.GetNameAndQuantity(setting.item_id, setting.quantity));
         GetScript<TextMeshProUGUI> ("txtp_Price").SetText (setting.use_point);
         GetScript<TextMeshProUGUI> ("txtp_ShopItemText").SetText (setting.details);
 
+        var saleInfoGrid = GetScript<HorizontalLayoutGroup> ("SaleInfoGrid");
+        saleInfoGrid.gameObject.SetActive (false);
         // 購入可否
         bool isLimit = false;
         bool isNeedItemLimit = releaseProductData != null && releaseProductData.MaxPurchaseQuantity > 0;
@@ -41,24 +46,44 @@ public class ListItem_EventShopItem : ViewBase {
             NumberLimitGo.SetActive (false);
         }
 
+		var eventQuest = MasterDataTable.event_quest [setting.event_quest_id];
+		var TimerLimitGo = GetScript<RectTransform> ("TimeLimit").gameObject;
+		if (productData != null && setting.end_date.HasValue && eventQuest.exchange_time_limit != setting.end_date.Value) {
+			TimerLimitGo.SetActive (true);
+			GetScript<TextMeshProUGUI> ("txtp_TimeLimitDate").SetTextFormat ("{0}/{1}", setting.end_date.Value.Month, setting.end_date.Value.Day);
+			GetScript<TextMeshProUGUI> ("txtp_TimeLimitTime").SetTextFormat ("{0}:{1}", setting.end_date.Value.Hour, setting.end_date.Value.Minute);
+		} else {
+			TimerLimitGo.SetActive (false);
+		}
+        saleInfoGrid.gameObject.SetActive (true);
+
         var DisableSet = GetScript<RectTransform> ("DisableSet").gameObject;
-        if (isLimit || isNeedItemLimit) {
+		if (isLimit || isNeedItemLimit || !productData.IsPurchasable) {
             DisableSet.SetActive (true);
             if(isLimit) {
                 GetScript<TextMeshProUGUI> ("txtp_DisableNotes").SetText ("売り切れ");
             } else if(isNeedItemLimit) {
                 var releaseItem = MasterDataTable.event_quest_exchange_setting.DataList.Find(x => x.id == releaseProductData.ShopProductId);
                 if (releaseItem != null) {
-                    GetScript<TextMeshProUGUI> ("txtp_DisableNotes").SetTextFormat ("{0}の購入後に購入可能になります", releaseItem.item_type.GetNameAndQuantity (releaseItem.item_id, releaseItem.quantity));
+                    GetScript<TextMeshProUGUI> ("txtp_DisableNotes").SetTextFormat ("{0}の売り切れ後に購入可能になります", releaseItem.item_type.GetNameAndQuantity (releaseItem.item_id, releaseItem.quantity));
                 } else {
                     GetScript<TextMeshProUGUI> ("txtp_DisableNotes").SetText("購入不可");
                 }
-            }
+			} else {
+				GetScript<TextMeshProUGUI> ("txtp_DisableNotes").SetText("購入不可");
+			}
         } else {
             DisableSet.SetActive (false);
         }
         GetScript<CustomButton>("bt_ListItemBase").interactable = !isLimit && !isNeedItemLimit;
     }
+
+	void DidLoadEventPointIcon(IconLoadSetting data, Sprite icon)
+	{
+		if (data.type == ItemTypeEnum.event_point && data.id == exchangeSetting.event_quest_id) {
+			GetScript<Image> ("IconEventPoint").overrideSprite = icon;
+		}
+	}
         
     void SetIcon(EventQuestExchangeSetting setting)
     {

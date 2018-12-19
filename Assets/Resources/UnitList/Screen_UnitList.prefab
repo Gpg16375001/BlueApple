@@ -569,6 +569,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: SPD
       m_Image: {fileID: 0}
+    - m_Text: "\u6240\u5C5E\u56FD"
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

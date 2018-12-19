@@ -20,27 +20,21 @@ namespace SmileLab.Net.API
 		public List<CardModifiedSaveData> List
 		{
 			get {
-				var dat = Get<Serialization<CardModifiedSaveData>>("CardModifiedList");
-				if (dat == null) {
-					var listEmpty = new List<CardModifiedSaveData>();
-					Put("CardModifiedList", new Serialization<CardModifiedSaveData>(listEmpty));
-					return listEmpty;
-                }
-				return dat.ToList();
+				return _list;
 			}
 		}
+		private List<CardModifiedSaveData> _list;
 
         /// <summary>
         /// データ更新.
         /// </summary>
 		public void UpdateData(CardData card)
 		{
-			var list = List;
-			var target = list.Find(c => c.CardId == card.CardId);
+			var target = _list.Find(c => c.CardId == card.CardId);
 			if(target == null){
 				target = new CardModifiedSaveData();
 			}
-			list.RemoveAll(c => c.CardId == target.CardId);
+			_list.RemoveAll(c => c.CardId == target.CardId);
    
 			target.CardId = card.CardId;
 			// フレーバー.
@@ -74,8 +68,8 @@ namespace SmileLab.Net.API
 				}
 			}         
 
-			list.Add(target);
-            Put("CardModifiedList", new Serialization<CardModifiedSaveData>(list));
+			_list.Add(target);
+			Put("CardModifiedList", new Serialization<CardModifiedSaveData>(_list));
 		}
 
 		/// <summary>
@@ -84,12 +78,11 @@ namespace SmileLab.Net.API
 		public void ConfirmedVoiceOnly(CardData card)
         {
 			Debug.Log("ConfirmedVoiceOnly");
-			var list = List;
-            var target = list.Find(c => c.CardId == card.CardId);
+			var target = _list.Find(c => c.CardId == card.CardId);
             if (target == null) {
                 target = new CardModifiedSaveData();
 			}else{
-				list.RemoveAll(c => c.CardId == target.CardId);
+				_list.RemoveAll(c => c.CardId == target.CardId);
 			}         
             target.CardId = card.CardId;
 			
@@ -113,8 +106,8 @@ namespace SmileLab.Net.API
                 }
             }
 
-            list.Add(target);
-            Put("CardModifiedList", new Serialization<CardModifiedSaveData>(list));
+			_list.Add(target);
+			Put("CardModifiedList", new Serialization<CardModifiedSaveData>(_list));
         }
 
 		/// <summary>
@@ -123,26 +116,33 @@ namespace SmileLab.Net.API
         public void ConfirmedFlavorOnly(CardData card)
         {	         
 			Debug.Log("ConfirmedFlavorOnly");
-            var list = List;
-            var target = list.Find(c => c.CardId == card.CardId);
+			var target = _list.Find(c => c.CardId == card.CardId);
             if (target == null) {
                 target = new CardModifiedSaveData();
-            } else {
-                list.RemoveAll(c => c.CardId == target.CardId);
             }
 			if (!target.IsNeedSeeReleaseFlavor2) {
                 return;
             }
 
+			_list.RemoveAll(c => c.CardId == target.CardId);
             target.CardId = card.CardId;         
             target.IsSeenReleaseFlavor2 = true;
             target.IsNeedSeeReleaseFlavor2 = false;
-
-            list.Add(target);
-            Put("CardModifiedList", new Serialization<CardModifiedSaveData>(list));
+			_list.Add(target);
+			Put("CardModifiedList", new Serialization<CardModifiedSaveData>(_list));
         }
 
-		public AwsCardModifiedData(CognitoSyncManager mng) : base(mng, "CardModifiedData"){}
+		public AwsCardModifiedData(CognitoSyncManager mng) : base(mng, "CardModifiedData")
+        {
+            var dat = Get<Serialization<CardModifiedSaveData>> ("CardModifiedList");
+            if (dat == null) {
+                var listEmpty = new List<CardModifiedSaveData> ();
+                Put ("CardModifiedList", new Serialization<CardModifiedSaveData> (listEmpty));
+                _list = listEmpty;
+            } else {
+                _list = dat.ToList ();
+            }
+        }
   
 		protected override void ClearValues(){}
 

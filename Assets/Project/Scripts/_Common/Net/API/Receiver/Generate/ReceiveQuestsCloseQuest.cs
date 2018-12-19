@@ -25,6 +25,7 @@ namespace SmileLab.Net.API
 		public int GainGold;
 		public int GainEventPoint;
 		public int GainBonusEventPoint;
+		public int GainFriendPoint;
 
 		class ReceiveQuestsCloseQuestFormatter : IMessagePackFormatter<ReceiveQuestsCloseQuest>
 		{
@@ -34,7 +35,7 @@ namespace SmileLab.Net.API
 				}
 
 				var startOffset = offset;
-				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 19);
+				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 20);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "ResultCode");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.ResultCode);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "QuestAchievement");
@@ -173,6 +174,8 @@ namespace SmileLab.Net.API
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GainEventPoint);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "GainBonusEventPoint");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GainBonusEventPoint);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "GainFriendPoint");
+				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GainFriendPoint);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "MasterVersion");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.MasterVersion);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "ErrorMessage");
@@ -408,6 +411,11 @@ namespace SmileLab.Net.API
 					}
 					if (key == "GainBonusEventPoint") {
 						ret.GainBonusEventPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
+					if (key == "GainFriendPoint") {
+						ret.GainFriendPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
 						isRead = true;
 					}

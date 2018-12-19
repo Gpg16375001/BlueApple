@@ -19,16 +19,16 @@ public class View_PlayerInfoPop : PopupViewBase
     /// <summary>
     /// 生成.
     /// </summary>
-	public static View_PlayerInfoPop Create(Action<bool,CardData> didChange)
+	public static View_PlayerInfoPop Create(Action<bool> didClose)
 	{
 		var go = GameObjectEx.LoadAndCreateObject("MyPage/View_PlayerInfoPop");
 		var c = go.GetOrAddComponent<View_PlayerInfoPop>();
-		c.InitInternal(didChange);
+		c.InitInternal(didClose);
 		return c;
 	}
-    private void InitInternal(Action<bool,CardData> didChange)
+    private void InitInternal(Action<bool> didClose)
 	{
-		m_didClose = didChange;
+        m_didClose = didClose;
 
 		// メニュー押せないように.
 		View_GlobalMenu.IsEnableButtons = false;      
@@ -159,7 +159,7 @@ public class View_PlayerInfoPop : PopupViewBase
         this.PlayOpenCloseAnimation(false,
             () => {
                 if (m_didClose != null) {
-                    m_didClose(true,null);
+                    m_didClose(true);
                 }
                 this.Dispose();
                 View_GlobalMenu.IsEnableButtons = true;
@@ -197,6 +197,7 @@ public class View_PlayerInfoPop : PopupViewBase
             return;
         }
 
+#if false
         View_FadePanel.SharedInstance.FadeOutWithLoadingAnim (View_FadePanel.FadeColor.Black,
             () => {
                 Dispose();
@@ -229,7 +230,49 @@ public class View_PlayerInfoPop : PopupViewBase
                 );
             }
         );
+#else
+		CharacterChange(
+			() => {
+				if(m_didClose != null)
+					m_didClose(false);
+			},
+			() => {
+				ScreenChanger.SharedInstance.GoToMyPage( () => View_PlayerMenu.CreateIfMissing().OpenPlayerInfoPop() );
+			}
+		);
+#endif
 	}
+
+	public static void CharacterChange(Action didChangeCard=null, Action didEndFade=null)
+	{
+        View_FadePanel.SharedInstance.FadeOutWithLoadingAnim (View_FadePanel.FadeColor.Black,
+            () => {
+                ScreenChanger.SharedInstance.GoToSelectUnit(
+                    false,
+                    false,
+                    false,
+                    false,
+                    0, 0, 
+                    null,
+                    false,
+                    (card) => {
+						AwsModule.UserData.MainCardID = card.CardId;
+						if( didChangeCard != null )
+							didChangeCard();
+					},
+                    () => {
+                        View_FadePanel.SharedInstance.FadeOutWithLoadingAnim (View_FadePanel.FadeColor.Black,
+                            () => {
+								if( didEndFade != null )
+									didEndFade();
+                            }
+                        );
+                    }
+                );
+            }
+        );
+	}
+
 	// ボタン : サポート編成.
     void DidTapSupportChange()
 	{
@@ -256,5 +299,5 @@ public class View_PlayerInfoPop : PopupViewBase
     }
     #endregion
 
-	private Action<bool,CardData> m_didClose;
+	private Action<bool> m_didClose;
 }

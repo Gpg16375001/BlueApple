@@ -127,7 +127,7 @@ public class MiniView_BattleRewardResult : ViewBase, IBattleResultPage
             var dropItemScroll = GetScript<ScrollRect>("DropItemScrollView");
             foreach (var dropItemID in battleResult.DropItemIdList) {
                 var dropItem = MasterDataTable.battle_drop_item [dropItemID];
-                if (dropItem == null || dropItem.reward_type == ItemTypeEnum.event_point) {
+                if (dropItem == null) {
                     continue;
                 }
                 var item = GameObjectEx.LoadAndCreateObject("Battle/ListItem_DropItem", dropItemScroll.content.gameObject);

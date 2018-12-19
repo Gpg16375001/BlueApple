@@ -171,13 +171,13 @@ public class BattleProgressManager
         // バトルの開始を投げる
         UpdateProgress (BattleState.BattleStart);
 
-        Time.timeScale = AwsModule.BattleData.BattleSpeed;
+        Time.timeScale = AwsModule.BattleData.BattleSpeed == 1 ? 1.0f : 3.0f;
     }
 
     public int ChangeBattleSpeed()
     {
         AwsModule.BattleData.ChangeBattleSpeed ();
-        Time.timeScale = AwsModule.BattleData.BattleSpeed;
+        Time.timeScale = AwsModule.BattleData.BattleSpeed == 1 ? 1.0f : 3.0f;
 
         return AwsModule.BattleData.BattleSpeed;
     }

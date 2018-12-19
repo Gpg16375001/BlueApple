@@ -105,9 +105,9 @@ public class View_QuestMap : ViewBase
 		IsZoom |= IsForcusDetail;
 
         ScreenBackground activeBg = null;
-		if (belonging != null && belonging.Enum != BelongingEnum.Unknown) {
+		if (belonging != null && belonging.disp_main_quest_list) {
 			foreach (var bel in Enum.GetValues(typeof(BelongingEnum)) as BelongingEnum[]) {
-                if (bel == BelongingEnum.Unknown) {
+				if (!MasterDataTable.belonging[bel].disp_main_quest_list) {
                     continue;
                 }
                 var go = this.GetScript<RectTransform>(string.Format("ZoomMap_{0}", (int)bel)).gameObject;
@@ -167,7 +167,7 @@ public class View_QuestMap : ViewBase
         ScreenBackground activeBg = null;
         if (belonging != null && belonging.Enum != BelongingEnum.Unknown) {
 			foreach(var bel in Enum.GetValues(typeof(BelongingEnum)) as BelongingEnum[]){
-				if(bel == BelongingEnum.Unknown){
+				if (!MasterDataTable.belonging[bel].disp_main_quest_list) {
 					continue;
 				}
                 var go = this.GetScript<RectTransform>(string.Format("ZoomMap_{0}", (int)bel)).gameObject;

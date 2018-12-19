@@ -6,4 +6,5 @@ public enum ApplicationTransitionEnum {
     Event = 4, // イベント
     PVP = 6, // PvP
     Story = 7, // ストーリー
+    Web = 99, // 外部ブラウザ
 }

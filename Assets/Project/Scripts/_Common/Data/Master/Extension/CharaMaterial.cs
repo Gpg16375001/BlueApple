@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 // partial class : キャラ強化素材
+
 public partial class CharaMaterial
 {
 
@@ -69,5 +71,14 @@ public partial class CharaMaterial
             );
             return type == charaBasedMatType.name;
         }
+    }
+
+    /// <summary>
+    /// 指定したタイプを持つ素材か？
+    /// </summary>
+    /// <param name="typeEnums">タイプ指定</param>
+    public bool IsSelectTypeMaterial(params CharaMaterialTypeEnum[] typeEnums) {
+        var typeList = MasterDataTable.chara_material_type.DataList.FindAll (m => typeEnums.Any(x => x == m.Enum));
+        return typeList.Exists(m => m.name == type);
     }
 }

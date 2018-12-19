@@ -13,7 +13,7 @@ public class View_BPRecovery : PopupViewBase {
 
     public static View_BPRecovery Create(Action<PvpUserData> didHeal)
     {
-        if (AwsModule.UserData.BattlePoint >= BP_MAX) {
+		if (AwsModule.UserData.UserData.BattlePoint >= BP_MAX) {
             PopupManager.OpenPopupSystemOK ("BPは最大です。");
             return null;
         }
@@ -29,36 +29,67 @@ public class View_BPRecovery : PopupViewBase {
     {
         m_DidHeal = didHeal;
 
-        var bpRecoveryItems = MasterDataTable.consumer_item.DataList.Where (x => x.sub_type == "BP回復薬").ToArray();
+		View_FadePanel.SharedInstance.IsLightLoading = true;
+		LockInputManager.SharedInstance.IsLock = true;
+		var obj = GetScript<RectTransform> ("AnimParts");
+		obj.gameObject.SetActive (false);
 
-        m_BattlePointTimeToFull = AwsModule.UserData.BattlePointTimeToFull;
-        m_UpdateStartupTime = AwsModule.UserData.UpdateStartupFromTime;
-        SetLimitTime ();
+		IsInit = false;
+		SendAPI.UsersGetUserData (new int [1] { AwsModule.UserData.UserData.UserId },
+			(success, response) => {
+				View_FadePanel.SharedInstance.IsLightLoading = false;
+				LockInputManager.SharedInstance.IsLock = false;
+				if(!success) {
+					Dispose();
+					return;
+				}
 
-        // 回復アイテムの登録
-        var GridObj = GetScript<RectTransform>("ItemGrid").gameObject;
-        foreach (var item in bpRecoveryItems) {
-            var consumerData = ConsumerData.CacheGet (item.index);
-            int count = consumerData != null ? consumerData.Count : 0;
+				var userData = response.UserDataList.FirstOrDefault(x => x.UserId == AwsModule.UserData.UserData.UserId);
+				if(userData == null) {
+					Dispose();
+					return;
+				}
 
-            if (count > 0) {
-                var go = GameObjectEx.LoadAndCreateObject ("_Common/View/ListItem_PointRecoveryItem", GridObj);
-                var behaviour = go.GetOrAddComponent<ListItem_PointRecoveryItem> ();
-                behaviour.Init (UserPointTypeEnum.BP, item, count, DidHeal);
-            }
-        }
+				obj.gameObject.SetActive (true);
+				// UserDataの更新
+				AwsModule.UserData.UserData = userData;
+				if (AwsModule.UserData.UserData.BattlePoint >= BP_MAX) {
+					PopupManager.OpenPopupSystemOK ("BPは最大です。");
+					return;
+				}
+				IsInit = true;
+				var bpRecoveryItems = MasterDataTable.consumer_item.DataList.Where (x => x.sub_type == "BP回復薬").ToArray ();
 
-        // ジェム回復の登録
-        {
-            var go = GameObjectEx.LoadAndCreateObject ("_Common/View/ListItem_PointRecoveryItem", GridObj);
-            var behaviour = go.GetOrAddComponent<ListItem_PointRecoveryItem> ();
-            behaviour.Init (UserPointTypeEnum.BP, 5, DidHeal);
-        }
+				m_PrevFullRecoveryTime = m_BattlePointTimeToFull = AwsModule.UserData.BattlePointTimeToFull;
+				m_UpdateStartupTime = AwsModule.UserData.UpdateStartupFromTime;
+				SetLimitTime ();
 
-        SetCanvasCustomButtonMsg ("bt_Close", DidTapClose);
-        SetBackButton ();
+				// 回復アイテムの登録
+				var GridObj = GetScript<RectTransform> ("ItemGrid").gameObject;
+				foreach (var item in bpRecoveryItems) {
+					var consumerData = ConsumerData.CacheGet (item.index);
+					int count = consumerData != null ? consumerData.Count : 0;
 
-        PlayOpenCloseAnimation (true);
+					if (count > 0) {
+						var go = GameObjectEx.LoadAndCreateObject ("_Common/View/ListItem_PointRecoveryItem", GridObj);
+						var behaviour = go.GetOrAddComponent<ListItem_PointRecoveryItem> ();
+						behaviour.Init (UserPointTypeEnum.BP, item, count, DidHeal);
+					}
+				}
+
+				// ジェム回復の登録
+				{
+					var go = GameObjectEx.LoadAndCreateObject ("_Common/View/ListItem_PointRecoveryItem", GridObj);
+					var behaviour = go.GetOrAddComponent<ListItem_PointRecoveryItem> ();
+					behaviour.Init (UserPointTypeEnum.BP, AwsModule.UserData.UserData.BattlePointHealCost, DidHeal);
+				}
+
+				SetCanvasCustomButtonMsg ("bt_Close", DidTapClose);
+				SetBackButton ();
+
+				PlayOpenCloseAnimation (true);
+			}
+		);
     }
 
     protected override void DidBackButton ()
@@ -67,11 +98,16 @@ public class View_BPRecovery : PopupViewBase {
     }
     void SetLimitTime()
     {
+		if (!IsInit) {
+			return;
+		}
+
         var fullRecoveryTime = Mathf.Max(0, m_BattlePointTimeToFull - (int)(Time.realtimeSinceStartup - m_UpdateStartupTime));
         var recoveryTime = MasterDataTable.userpoint_recovery_time[UserPointTypeEnum.BP].recovery_time;
         var oneRecoveryTime = Mathf.Max(0, fullRecoveryTime % recoveryTime);
 
-        if (fullRecoveryTime <= 0) {
+		if (fullRecoveryTime <= 0 && m_PrevFullRecoveryTime > 0) {
+			// 一回だけしか通らないように。。。
             // オーバー回復できないのでAPI発行してBPだけ更新して閉じる
             PopupManager.OpenPopupSystemOK ("BP回復時間が過ぎましたので画面更新します。",
                 () => {
@@ -84,6 +120,7 @@ public class View_BPRecovery : PopupViewBase {
             );
         }
 
+		m_PrevFullRecoveryTime = fullRecoveryTime;
         // 1回復までの時間表示
         TimeSpan oneRecoveryTimeSpan = new TimeSpan(0, 0, oneRecoveryTime);
         GetScript<TextMeshProUGUI>("TimeCount/txtp_Time").SetTextFormat("{0:D2}:{1:D2}", oneRecoveryTimeSpan.Minutes, oneRecoveryTimeSpan.Seconds);
@@ -121,7 +158,9 @@ public class View_BPRecovery : PopupViewBase {
         SetLimitTime ();
     }
 
+	private bool IsInit = false;
     float m_UpdateStartupTime;
     int m_BattlePointTimeToFull;
+	int m_PrevFullRecoveryTime;
     Action<PvpUserData> m_DidHeal;
 }

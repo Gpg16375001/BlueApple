@@ -9,9 +9,9 @@ public static partial class ServerModelCache
 	static partial void CreateTables() 
 	{
 		CardData.CreateTable();
+		UserData.CreateTable();
 		WeaponData.CreateTable();
 		MagikiteData.CreateTable();
-		UserData.CreateTable();
 		ConsumerData.CreateTable();
 		FormationData.CreateTable();
 		MaterialData.CreateTable();
@@ -61,6 +61,53 @@ public static partial class ServerModelCache
 			(con, trans) => {
 				self.Delete (con, trans);
 				ServerModelCache.Modify<IEnumerable<CardData>>();
+			}
+		);
+	}
+
+	static public void CacheSet(this IEnumerable<UserData> self)
+	{
+		var connection = ServerModelCache.GetConnection ();
+		connection.MakeTransaction (
+			(con, trans) => {
+				foreach(var x in self) {
+					x.Save (con, trans);
+				}
+				ServerModelCache.Modify<IEnumerable<UserData>>();
+			}
+		);
+	}
+
+	static public void CacheSet(this UserData self)
+	{
+		var connection = ServerModelCache.GetConnection ();
+		connection.MakeTransaction (
+			(con, trans) => {
+				self.Save (con, trans);
+				ServerModelCache.Modify<IEnumerable<UserData>>();
+			}
+		);
+	}
+	static public void CacheDelete(this IEnumerable<UserData> self)
+	{
+		var connection = ServerModelCache.GetConnection ();
+		connection.MakeTransaction (
+			(con, trans) => {
+				foreach(var x in self) {
+					x.Delete (con, trans);
+				}
+				ServerModelCache.Modify<IEnumerable<UserData>>();
+			}
+		);
+	}
+
+	static public void CacheDelete(this UserData self)
+	{
+		var connection = ServerModelCache.GetConnection ();
+		connection.MakeTransaction (
+			(con, trans) => {
+				self.Delete (con, trans);
+				ServerModelCache.Modify<IEnumerable<UserData>>();
 			}
 		);
 	}
@@ -155,53 +202,6 @@ public static partial class ServerModelCache
 			(con, trans) => {
 				self.Delete (con, trans);
 				ServerModelCache.Modify<IEnumerable<MagikiteData>>();
-			}
-		);
-	}
-
-	static public void CacheSet(this IEnumerable<UserData> self)
-	{
-		var connection = ServerModelCache.GetConnection ();
-		connection.MakeTransaction (
-			(con, trans) => {
-				foreach(var x in self) {
-					x.Save (con, trans);
-				}
-				ServerModelCache.Modify<IEnumerable<UserData>>();
-			}
-		);
-	}
-
-	static public void CacheSet(this UserData self)
-	{
-		var connection = ServerModelCache.GetConnection ();
-		connection.MakeTransaction (
-			(con, trans) => {
-				self.Save (con, trans);
-				ServerModelCache.Modify<IEnumerable<UserData>>();
-			}
-		);
-	}
-	static public void CacheDelete(this IEnumerable<UserData> self)
-	{
-		var connection = ServerModelCache.GetConnection ();
-		connection.MakeTransaction (
-			(con, trans) => {
-				foreach(var x in self) {
-					x.Delete (con, trans);
-				}
-				ServerModelCache.Modify<IEnumerable<UserData>>();
-			}
-		);
-	}
-
-	static public void CacheDelete(this UserData self)
-	{
-		var connection = ServerModelCache.GetConnection ();
-		connection.MakeTransaction (
-			(con, trans) => {
-				self.Delete (con, trans);
-				ServerModelCache.Modify<IEnumerable<UserData>>();
 			}
 		);
 	}

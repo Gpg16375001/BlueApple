@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using TMPro;
 
@@ -31,14 +32,26 @@ public class MiniView_BattleEventResult : ViewBase, IBattleResultPage
     /// <summary>
     /// 初期化.
     /// </summary>
-    public void Init(int index, ReceiveQuestsCloseQuest questResult)
+    public void Init(int index, int eventId, ReceiveQuestsCloseQuest questResult)
     {
         m_index = index;
+		EventID = eventId;
 
+		IconLoader.LoadEventPoint (eventId, LoadEventPointIcon);
+		GetScript<TextMeshProUGUI> ("txtp_EventRewardSub").SetText (ItemTypeEnum.event_point.GetName(eventId));
         GetScript<TextMeshProUGUI> ("txtp_EventRewardNum").SetText (questResult.GainEventPoint - questResult.GainBonusEventPoint);
         GetScript<TextMeshProUGUI> ("txtp_EventBounsNum").SetText (questResult.GainBonusEventPoint);
         GetScript<TextMeshProUGUI> ("txtp_EventTotalNum").SetText (questResult.GainEventPoint);
     }
+
+	private void LoadEventPointIcon(IconLoadSetting data, Sprite icon)
+	{
+		if (data.type == ItemTypeEnum.event_point && data.id == EventID) {
+			GetScript<Image> ("ItemBonus/ItemIcon").overrideSprite = icon;
+			GetScript<Image> ("ItemReward/ItemIcon").overrideSprite = icon;
+			GetScript<Image> ("ItemTotal/ItemIcon").overrideSprite = icon;
+		}
+	}
 
     /// <summary>開く.</summary>
     public void Open()
@@ -69,6 +82,8 @@ public class MiniView_BattleEventResult : ViewBase, IBattleResultPage
         do {
             yield return null;
         } while (anim.isPlaying);
+
+		IconLoader.RemoveLoadedEvent (ItemTypeEnum.event_point, EventID, LoadEventPointIcon);
         if (didEnd != null) {
             didEnd();
         }
@@ -78,4 +93,6 @@ public class MiniView_BattleEventResult : ViewBase, IBattleResultPage
     {
         //m_bEffecting = false;
     }
+
+	int EventID;
 }

@@ -69,6 +69,7 @@ public abstract class View_OptionListTypeBase : ViewBase, IViewOption
         View_FadePanel.SharedInstance.FadeOutWithLoadingAnim(View_FadePanel.FadeColor.Black, () => {
             if (m_currentMiniView != null) {
                 m_currentMiniView.AsyncDetach(() => {
+                    View_OptionSupport.DataClear();
                     ScreenChanger.SharedInstance.GoToMyPage(() => View_OptionTopPop.Create());
                 });
                 return;

@@ -10,8 +10,8 @@ namespace SmileLab.Net.API
 	{
 		// response
 		public PvpTeamData[] OpponentPvpTeamDataList;
-		public PvpUserData PvpUserData;
 		public PvpTeamData PvpTeamData;
+		public PvpUserData PvpUserData;
 		public UserData UserData;
 
 		class ReceivePvpGetOpponentListFormatter : IMessagePackFormatter<ReceivePvpGetOpponentList>
@@ -39,17 +39,17 @@ namespace SmileLab.Net.API
 						}
 					}
 				}
-				offset += MessagePackBinary.WriteString (ref bytes, offset, "PvpUserData");
-				if(value.PvpUserData == null) {
-					offset += MessagePackBinary.WriteNil (ref bytes, offset);
-				} else {
-					offset += formatterResolver.GetFormatter<PvpUserData> ().Serialize (ref bytes, offset, value.PvpUserData, formatterResolver);
-				}
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "PvpTeamData");
 				if(value.PvpTeamData == null) {
 					offset += MessagePackBinary.WriteNil (ref bytes, offset);
 				} else {
 					offset += formatterResolver.GetFormatter<PvpTeamData> ().Serialize (ref bytes, offset, value.PvpTeamData, formatterResolver);
+				}
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "PvpUserData");
+				if(value.PvpUserData == null) {
+					offset += MessagePackBinary.WriteNil (ref bytes, offset);
+				} else {
+					offset += formatterResolver.GetFormatter<PvpUserData> ().Serialize (ref bytes, offset, value.PvpUserData, formatterResolver);
 				}
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "UserData");
 				if(value.UserData == null) {
@@ -105,22 +105,22 @@ namespace SmileLab.Net.API
 						}
 						isRead = true;
 					}
-					if (key == "PvpUserData") {
-						if (MessagePackBinary.IsNil (bytes, offset)) {
-							offset += 1;
-							ret.PvpUserData = null;
-						} else {
-							ret.PvpUserData = formatterResolver.GetFormatter<PvpUserData> ().Deserialize (bytes, offset, formatterResolver, out readed);
-							offset += readed;
-						}
-						isRead = true;
-					}
 					if (key == "PvpTeamData") {
 						if (MessagePackBinary.IsNil (bytes, offset)) {
 							offset += 1;
 							ret.PvpTeamData = null;
 						} else {
 							ret.PvpTeamData = formatterResolver.GetFormatter<PvpTeamData> ().Deserialize (bytes, offset, formatterResolver, out readed);
+							offset += readed;
+						}
+						isRead = true;
+					}
+					if (key == "PvpUserData") {
+						if (MessagePackBinary.IsNil (bytes, offset)) {
+							offset += 1;
+							ret.PvpUserData = null;
+						} else {
+							ret.PvpUserData = formatterResolver.GetFormatter<PvpUserData> ().Deserialize (bytes, offset, formatterResolver, out readed);
 							offset += readed;
 						}
 						isRead = true;

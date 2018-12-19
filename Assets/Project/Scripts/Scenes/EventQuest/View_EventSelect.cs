@@ -13,9 +13,15 @@ public class View_EventSelect : ViewBase {
 
     public void Init (int EventId, EventQuestStageTypeEnum? StageType, Screen_EventQuest root, int eventPoint, EventQuest questData, EventQuestAchievement[] questAchievement)
     {
+		m_EventID = EventId;
         m_QuestAchievements = questAchievement;
         m_QuestData = questData;
         m_Root = root;
+
+		// イベントポイント名の設定
+		GetScript<TextMeshProUGUI> ("txtp_StockTitle").SetTextFormat("所持{0}", ItemTypeEnum.event_point.GetName(EventId));
+		GetScript<Image> ("IconEventPoint").overrideSprite = null;
+		IconLoader.LoadEventPoint(m_EventID, DidLoadIcon);
 
         GetScript<TextMeshProUGUI> ("txtp_GemNum").SetText(eventPoint);
 
@@ -47,6 +53,19 @@ public class View_EventSelect : ViewBase {
     {
         GetScript<TextMeshProUGUI> ("txtp_GemNum").SetText(eventPoint);
     }
+
+	public override void Dispose ()
+	{
+		IconLoader.RemoveLoadedEvent (ItemTypeEnum.event_point, m_EventID, DidLoadIcon);
+		base.Dispose ();
+	}
+
+	private void DidLoadIcon(IconLoadSetting data, Sprite icon)
+	{
+		if (data.type == ItemTypeEnum.event_point && data.id == m_EventID) {
+			GetScript<Image> ("IconEventPoint").overrideSprite = icon;
+		}
+	}
 
     private void ActiveTab(EventQuestStageTypeEnum type, bool forceCreate=false)
     {
@@ -191,6 +210,7 @@ public class View_EventSelect : ViewBase {
 
     List<ListItem_EventStage> EventStageItems = new List<ListItem_EventStage> ();
 
+	int m_EventID;
     Screen_EventQuest m_Root;
     EventQuestStage[] m_StageDatas;
     EventQuest m_QuestData;

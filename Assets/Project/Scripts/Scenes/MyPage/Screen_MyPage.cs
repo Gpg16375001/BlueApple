@@ -29,6 +29,7 @@ public class Screen_MyPage : ViewBase
 		SetCanvasCustomButtonMsg ("bt_SubMenuSetting", DidTapSettings);
 		SetCanvasCustomButtonMsg ("bt_MainUnit", DidTapMainUnit);
 		SetCanvasCustomButtonMsg ("Mirrativ/bt_Sub", DidTapMirrative);
+		GetScript<RectTransform>("Mirrativ").gameObject.SetActive( false );	//コミュメニューに統合した
 
         var presentBoxBadge = GetScript<RectTransform> ("BadgePresent");
         bool hasPresent = AwsModule.UserData.UserData.ReceivablePresentCount > 0;
@@ -36,6 +37,11 @@ public class Screen_MyPage : ViewBase
         if (hasPresent) {
             GetScript<TextMeshProUGUI> ("BadgePresent/txtp_Num").SetText(AwsModule.UserData.UserData.ReceivablePresentCount.ToString());
         }
+
+		if (AwsModule.ProgressData.TutorialStageNum == -1) {
+			View_GlobalMenu.Setup();	//ガチャ誘導
+			View_PlayerMenu.Setup();	//ジェム誘導
+		}
 
 		var missionBadge = GetScript<RectTransform>("BadgeMission");
 		bool hasMission = AwsModule.UserData.UserData.ReceivableMissionCount > 0;
@@ -56,63 +62,135 @@ public class Screen_MyPage : ViewBase
 		View_PlayerMenu.DidCloseUserProfile += DidCloseUserProfile;
         isOpenUserProfile = false;
 
-        View_LoginBonus loginbonusView = null;
-        if (loginbonus != null && loginbonus.Length > 0) {
-            // ログインボーナスの表示
-            int nowCount = 0;
-            loginbonusView = DispLoginbonus (loginbonus, nowCount);
-        } else {
-            LoginBonusAfterProc();
-        }
-
-		// お知らせ.
-		if (AwsModule.ProgressData.CheckViewNotice()) {
-			m_viewNotes = View_MyPageNotes.Create(false);
-			m_viewNotes.gameObject.SetActive(false);
-		}
-
         m_charaBasePos = this.GetScript<Transform>("CharacterAnchor").position;
         GetScript<uGUIPageScrollRect> ("ScrollBanner").gameObject.SetActive (false);
         bannerDatas = MasterDataTable.banner_setting.EnableData;
         bannerImages = new Dictionary<string, Sprite>();
+        downloadCount = 0;
         DLCManager.StartBannerDownload (bannerDatas.Select (x => x.image_path).ToArray (), DownloadBanner);
+   
+        // ログインボーナス系の完了後の処理
+        Action endCallback = () => {
+            View_FadePanel.SharedInstance.FadeIn (View_FadePanel.FadeColor.Black,
+                () => {
+                    // 初回起動.
+                    if (AwsModule.ProgressData.IsFirstBoot) {
+                        var module = TutorialFirstBootModule.CreateIfMissing (TutorialFirstBootModule.ViewMode.StorySelect, this, subMenuRootObj.GetOrAddComponent<ViewBase> (), View_GlobalMenu.CreateIfMissing (), View_PlayerMenu.CreateIfMissing ());
+                        module.LoadAndStartFirstScenario ();
+                    } else {
+                        // お知らせ.
+                        if (AwsModule.ProgressData.CheckViewNotice()) {
+                            m_viewNotes = View_MyPageNotes.Create(bannerImages);
+                            m_viewNotes.gameObject.SetActive(false);
+                        }
+                        StartCoroutine( displayNotes() );
+                        LoginBonusAfterProc();
+                    }
+                }
+            );
+        };
 
         // フェードを開ける.
         GetScript<ScreenBackground> ("BG").CallbackLoaded (() => {
-            if (loginbonusView != null && !loginbonusView.IsLoaded ()) {
-                StartCoroutine (WaitLoginbonusLoad (loginbonusView));
-            } else {
-                View_FadePanel.SharedInstance.FadeIn (View_FadePanel.FadeColor.Black,
-                    () => {
-                        if (loginbonusView != null) {
-                            loginbonusView.Open ();
-                        } else {
-                            // 初回起動.
-                            if (AwsModule.ProgressData.IsFirstBoot) {
-                                var module = TutorialFirstBootModule.CreateIfMissing (TutorialFirstBootModule.ViewMode.StorySelect, this, subMenuRootObj.GetOrAddComponent<ViewBase> (), View_GlobalMenu.CreateIfMissing (), View_PlayerMenu.CreateIfMissing ());
-                                module.LoadAndStartFirstScenario ();
-                            } else {
-                                // お知らせ.
-                                if (m_viewNotes != null) {
-                                    m_viewNotes.gameObject.SetActive (true);
-                                }
-                            }
-                        }
-                    });
-            }
+            StartCoroutine (DispLoginBonus (loginbonus, endCallback));
         });
     }
 
-    IEnumerator WaitLoginbonusLoad(View_LoginBonus loginbonusView)
+    IEnumerator DispLoginBonus(LoginbonusData[] loginbonus, Action endCallback)
     {
-        yield return new WaitUntil (() => loginbonusView.IsLoaded ());
-
-        View_FadePanel.SharedInstance.FadeIn (View_FadePanel.FadeColor.Black,
-            () => {
-                loginbonusView.Open ();
+        if (loginbonus != null && loginbonus.Length > 0) {
+            int count = 0;
+            while (loginbonus.Length > count) {
+                View_LoginBonus viewLoginBonus = null;
+                // ログインボーナスの作成
+                StartCoroutine(
+                    View_LoginBonus.Create(loginbonus[count],
+                        (view) => {
+                            viewLoginBonus = view;
+                        }
+                    )
+                );
+                // ABロード等GameObjectのロードが完了するまで待機
+                while (viewLoginBonus == null) {
+                    yield return null;
+                }
+                // 全部のロードが完了するまで待機
+                while (!viewLoginBonus.IsLoaded ()) {
+                    yield return null;
+                }
+                // ログインボーナスをオープンする
+                bool isOpen = true;
+                viewLoginBonus.Open(
+                    () => {
+                        count++;
+                        isOpen = false;
+                    }
+                );
+                // ボードを開いている間待機
+                while (isOpen) {
+                    yield return null;
+                }
             }
-        );
+        }
+
+        if (endCallback != null) {
+            endCallback ();
+        }    
     }
+
+    IEnumerator displayNotes()
+	{
+		IsReady = false;
+
+		if (m_viewNotes != null) {
+			m_viewNotes.gameObject.SetActive (true);
+
+			//閉じられるまで待つ
+			while( true ) {
+				if( m_viewNotes == null || !m_viewNotes.gameObject.activeSelf ) break;
+				yield return null;
+			}
+		}
+
+		if (PurchaseManager.SharedInstance.ExistNonValidateTransaction ()) {
+			IsReady = true;
+			yield break;
+		}
+
+		if( ScreenChanger.SharedInstance.PrevSceneName == "Title" ) {
+			var categories = new CommonNoticeCategoryEnum[] { CommonNoticeCategoryEnum.Note, CommonNoticeCategoryEnum.Update, CommonNoticeCategoryEnum.Bug };
+			int count = 0;
+			List<CommonNotice> infoList = new List<CommonNotice>();
+			Array.ForEach( categories, category => {
+				var list = MasterDataTable.notice.GetListThisPlatform(category);
+				list.RemoveAll( cn => !cn.IsPopupEnable );
+				list.RemoveAll( cn => {
+					if( (cn.popup_option == CommonNoticePopupEnum.OneTime) && AwsModule.NotesModifiedData.IsNew(cn) )
+						return false;
+					else if( (cn.popup_option == CommonNoticePopupEnum.EveryTime) )
+						return false;
+					return true;
+				} );
+				infoList.AddRange( list );
+				count++;
+			} );
+			while( categories.Length != count ) {
+				yield return null;
+			}
+			infoList = infoList.OrderBy( cn => cn.category ).OrderBy( cn => cn.priority ).ToList();
+			count = 0;
+			foreach( var info in infoList ) {
+				if( count >= MasterDataTable.CommonDefine.GetValue( "POPUP_NOTICE_MAX", 99 ) ) break;
+				var view = ListItem_MyPageNotes.DisplayItem( info );
+				while( view != null ) {
+					yield return null;
+				}
+				count++;
+			}
+		}
+
+		IsReady = true;
+	}
 
     private void BannerCreate ()
     {
@@ -135,19 +213,17 @@ public class Screen_MyPage : ViewBase
         scrollBanner.RotationInterval = 3.0f;
     }
 
+    int downloadCount = 0;
     BannerSetting[] bannerDatas;
     private Dictionary<string, Sprite> bannerImages;
 
     private void DownloadBanner(string imageName, Sprite sprite)
     {
-        bannerImages [imageName] = sprite;
-        if (bannerImages.Count >= bannerDatas.Length) {
+		bannerImages.Add( imageName, sprite );
+        downloadCount++;
+        if (downloadCount >= bannerDatas.Length) {
             BannerCreate ();
         }
-        // お知らせでも使う.
-		if(m_viewNotes != null){
-			m_viewNotes.UpdateBanner(imageName, sprite);
-		}
     }
 
     private void SetBanner(int number, GameObject obj)
@@ -155,30 +231,6 @@ public class Screen_MyPage : ViewBase
         Sprite spt = null;
         bannerImages.TryGetValue (bannerDatas [number].image_path, out spt);
         obj.GetOrAddComponent<ListItem_Banner> ().UpdateItem (bannerDatas [number], spt);
-    }
-
-    private View_LoginBonus DispLoginbonus(LoginbonusData[] loginbonus, int count)
-    {
-        return View_LoginBonus.Create(loginbonus[count++],
-            () => {
-                if(loginbonus.Length > count) {
-                    DispLoginbonus(loginbonus, count);
-                } else {
-                    loginbonus = null;
-
-    				if(AwsModule.ProgressData.IsFirstBoot){
-						var module = TutorialFirstBootModule.CreateIfMissing(TutorialFirstBootModule.ViewMode.StorySelect, this, View_GlobalMenu.CreateIfMissing(), View_PlayerMenu.CreateIfMissing());
-						module.LoadAndStartFirstScenario();
-    				}else{
-					    // お知らせ.
-					    if (m_viewNotes != null) {
-                            m_viewNotes.gameObject.SetActive(true);
-    					}
-    				}
-                    LoginBonusAfterProc(!AwsModule.ProgressData.IsFirstBoot);
-                }
-            }
-        );
     }
 
     private void LoginBonusAfterProc(bool checkPruchased = true)
@@ -208,35 +260,18 @@ public class Screen_MyPage : ViewBase
         if (PurchaseManager.SharedInstance.ExistNonValidateTransaction ()) {
             PopupManager.OpenPopupSystemOK ("課金の処理が終了していないアイテムが見つかりました。課金処理を続行します。",
                 () => {
-                    // 課金コールバックを追加しておく
-                    PurchaseManager.SharedInstance.SucceedEvent += OnSucceed;
-                    PurchaseManager.SharedInstance.ErrorEvent += OnError;
-
                     LockInputManager.SharedInstance.IsLock = true;
                     View_FadePanel.SharedInstance.IsLightLoading = true;
                     // 検証の終わっていないアイテムが存在するので検証を行う。
                     PurchaseManager.SharedInstance.ValidateForNonValdateTransaction (
                         () => {
-                            // 課金コールバックを削除しておく
-                            PurchaseManager.SharedInstance.SucceedEvent -= OnSucceed;
-                            PurchaseManager.SharedInstance.ErrorEvent -= OnError;
+                            View_FadePanel.SharedInstance.IsLightLoading = false;
+                            LockInputManager.SharedInstance.IsLock = false;
                         }
                     );
                 }
             );
         }
-    }
-
-    private void OnSucceed(SkuItem item)
-    {
-        View_FadePanel.SharedInstance.IsLightLoading = false;
-        LockInputManager.SharedInstance.IsLock = false;
-    }
-
-    private void OnError(PurchaseManager.PurchaseError errorCode, string error, SkuItem? item)
-    {
-        View_FadePanel.SharedInstance.IsLightLoading = false;
-        LockInputManager.SharedInstance.IsLock = false;
     }
  
     private void WillOpenUserProfile()
@@ -244,11 +279,8 @@ public class Screen_MyPage : ViewBase
         isOpenUserProfile = true;
 		subMenuRootObj.SetActive(false);
 	}
-	private void DidCloseUserProfile(bool bClose, CardData card)
+	private void DidCloseUserProfile(bool bClose)
 	{
-		if(card != null){
-			this.RequestMainModel();
-		}
         isOpenUserProfile = false;
 		subMenuRootObj.SetActive(bClose);    
 	}
@@ -257,7 +289,7 @@ public class Screen_MyPage : ViewBase
     private void RequestMainModel()
     {
 		this.StopCoroutine("CoRepeatPlayVoice");
-		subMenuRootObj.SetActive(true);      
+        subMenuRootObj.SetActive(!isOpenUserProfile);      
         View_FadePanel.SharedInstance.IsLightLoading = true;
 		this.GetScript<Transform>("CharacterAnchor").gameObject.DestroyChildren();
 		var loader = new UnitResourceLoader(AwsModule.UserData.MainCard);
@@ -274,7 +306,7 @@ public class Screen_MyPage : ViewBase
                 cubismRender.SortingOrder = rootCanvas.sortingOrder;
             }
             View_FadePanel.SharedInstance.IsLightLoading = false;         
-			this.StartCoroutine("CoRepeatPlayVoice");
+			this.StartCoroutine("CoRepeatPlayVoice", true);
         });
     }
 
@@ -298,7 +330,7 @@ public class Screen_MyPage : ViewBase
 
         View_PlayerMenu.IsEnableButtons = false;
         this.IsEnableButton = false;
-        m_viewNotes = View_MyPageNotes.Create(true, () => {
+        m_viewNotes = View_MyPageNotes.Create(bannerImages, () => {
             View_PlayerMenu.IsEnableButtons = true;
             this.IsEnableButton = true;
         });
@@ -351,7 +383,7 @@ public class Screen_MyPage : ViewBase
 		}
 		this.StopRandomVoice(); 
 		this.StopCoroutine("CoRepeatPlayVoice");
-		this.StartCoroutine("CoRepeatPlayVoice");
+		this.StartCoroutine("CoRepeatPlayVoice", false);
 	}
 
 	// ボタン : ミラティブ展開.
@@ -369,14 +401,14 @@ public class Screen_MyPage : ViewBase
 	}
 
     // ランダムボイス再生.
-	private Live2dVoicePlayer PlayStartRandomVoice()
+	private Live2dVoicePlayer PlayStartRandomVoice( bool first=false )
 	{
 		var baseRarity = MasterDataTable.card.DataList.Where(c => c.id == AwsModule.UserData.MainCard.CardId)
                                                       .Select(c => c.rarity)
                                                       .Min();
         var sheet = AwsModule.UserData.MainCard.Card.voice_sheet_name;
         if(!string.IsNullOrEmpty(sheet)){
-            var cue = this.GetSoundCue(baseRarity);         
+            var cue = this.GetSoundCue(baseRarity, first);         
             var rootObj = this.GetScript<RectTransform>("CharacterAnchor").gameObject;
             var obj = rootObj.GetChildren()[0];
             var player = obj.GetOrAddComponent<Live2dVoicePlayer>();
@@ -385,11 +417,16 @@ public class Screen_MyPage : ViewBase
         }
 		return null;
 	}
-	private SoundVoiceCueEnum GetSoundCue(int rarity)
+	private SoundVoiceCueEnum GetSoundCue(int rarity, bool first=false)
 	{
 		var now = GameTime.SharedInstance.Now;
 		var list = new List<SoundVoiceCueEnum>();
-        
+
+		if( first ) {
+			list.AddRange( GetSeasonVoice( now ) );
+			return list[UnityEngine.Random.Range(0, list.Count)];
+		}
+
         // APとBP最大.
 		if(AwsModule.UserData.ActionPointTimeToFull <= 0){
 			list.Add(SoundVoiceCueEnum.ap_max);
@@ -440,7 +477,6 @@ public class Screen_MyPage : ViewBase
 			if(now.Hour > 19 && now.Hour <= 22){
 				list.Add(SoundVoiceCueEnum.night);
 			}
-            
 			return list[UnityEngine.Random.Range(0, list.Count)];
 		}
 
@@ -464,7 +500,27 @@ public class Screen_MyPage : ViewBase
 		return list[UnityEngine.Random.Range(0, list.Count)];
 	}
 	private bool m_bListenedRetentionVoice = false;
-    
+
+	List<SoundVoiceCueEnum> GetSeasonVoice( DateTime now )
+	{
+		var dict = new Dictionary<CommonSeasonEnum,SoundVoiceCueEnum>() {
+			{ CommonSeasonEnum.NewYear, SoundVoiceCueEnum.new_year },
+			{ CommonSeasonEnum.Valentine, SoundVoiceCueEnum.valentine },
+			{ CommonSeasonEnum.Halloween, SoundVoiceCueEnum.halloween },
+			{ CommonSeasonEnum.Christmas, SoundVoiceCueEnum.christmas },
+			{ CommonSeasonEnum.EndOfYear, SoundVoiceCueEnum.end_of_year },
+		};
+
+		var list = new List<SoundVoiceCueEnum>();
+		if( MasterDataTable.season != null ) {
+			var type = MasterDataTable.season.GetSeason( now );
+			if( dict.ContainsKey( type ) ) {
+				list.Add( dict[type] );
+			}
+		}
+		return list;
+	}
+
     private void StopRandomVoice()
 	{
 		var rootObj = this.GetScript<RectTransform>("CharacterAnchor").gameObject;
@@ -478,13 +534,14 @@ public class Screen_MyPage : ViewBase
 
 	#endregion
     
-	IEnumerator CoRepeatPlayVoice()
+	IEnumerator CoRepeatPlayVoice(bool first)
 	{
 		if(AwsModule.ProgressData.IsFirstBoot){
 			yield break;
 		}
 		while(true){
-			m_voicePlayer = this.PlayStartRandomVoice();
+			m_voicePlayer = this.PlayStartRandomVoice( first );
+			first = false;
 			do {
 				yield return null;
 			} while (m_voicePlayer.IsPlayingVoice);
@@ -493,9 +550,14 @@ public class Screen_MyPage : ViewBase
 		}
 	}
 
+	public void OpenMirrativ()
+	{
+		DidTapMirrative();
+	}
+
     bool IsOpenViews()
     {
-        return m_viewNotes != null || m_optionTopPop != null || m_mirrativTop != null || isOpenUserProfile;
+        return (m_viewNotes != null || m_optionTopPop != null || m_mirrativTop != null || isOpenUserProfile) || !IsReady;
     }
 
 	private const float INTERVAL_PLAY_VOICE_MIN = 10f;
@@ -505,12 +567,21 @@ public class Screen_MyPage : ViewBase
     void Awake()
     {
 		this.gameObject.AttachUguiRootComponent(CameraHelper.SharedInstance.Camera2D);
+		instance = this;
     }
  
+	void OnDestory()
+	{
+		instance = null;
+	}
+
 	private static GameObject subMenuRootObj;
+    private static Screen_MyPage instance = null;
+	public static Screen_MyPage Instance { get { return instance; } }
     private Vector3 m_charaBasePos;
     private bool isOpenUserProfile;
 	private View_MyPageNotes m_viewNotes;
     private View_OptionTopPop m_optionTopPop;
     private View_MirrativTop m_mirrativTop;
+    public bool IsReady { get; private set; }
 }

@@ -111,16 +111,17 @@ namespace SmileLab.Net.API
 
             var seenDict = target.SeenReleaseDictionary;
             var needDict = target.NeedSeeReleaseDictionary; 
-			var bNeedSee = target.NeedSeeReleaseDictionary[data.id];
-            if (bNeedSee) {
-				if (seenDict.ContainsKey(data.id)) {
-					seenDict[data.id] = true;
-                } else {
-					seenDict.Add(data.id, true);
-                }
-				needDict[data.id] = false;
-            } 
-
+			if( target.NeedSeeReleaseDictionary.ContainsKey(data.id) ) {
+				var bNeedSee = target.NeedSeeReleaseDictionary[data.id];
+				if (bNeedSee) {
+					if (seenDict.ContainsKey(data.id)) {
+						seenDict[data.id] = true;
+					} else {
+						seenDict.Add(data.id, true);
+					}
+					needDict[data.id] = false;
+				} 
+			}
 			list.Add(target);
             Put("NotesModifiedList", new Serialization<NotesModifiedSaveData>(list));
 		}

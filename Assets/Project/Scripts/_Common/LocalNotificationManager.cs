@@ -33,6 +33,9 @@ public class LocalNotificationManager : MonoBehaviour
 
     void OnApplicationPause(bool bPause)
     {
+        if (AwsModule.LocalData == null) {
+            return;
+        }
 		// TODO : 通知設定確認.
 		if(!AwsModule.LocalData.IsNotificateAP && !AwsModule.LocalData.IsNotificateBP){
             return;
@@ -46,17 +49,6 @@ public class LocalNotificationManager : MonoBehaviour
         if( bPause ){
 			LocalNotificationSchedule();
         }
-    }
-    
-    void OnApplicationQuit()
-    {
-		// TODO : 通知設定確認.
-        if (!AwsModule.LocalData.IsNotificateAP && !AwsModule.LocalData.IsNotificateBP) {
-            return;
-        }
-
-        // TODO : 通知.
-		//LocalNotificationSchedule();
     }
 
 	void LocalNotificationSchedule()

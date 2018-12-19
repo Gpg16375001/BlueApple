@@ -46,7 +46,10 @@ PvpMedalCount INTEGER NOT NULL,
 WeaponBagCapacity INTEGER NOT NULL,
 MagikiteBagCapacity INTEGER NOT NULL,
 RarestCardMissCount INTEGER NOT NULL,
-CreationDate TEXT NOT NULL
+ActionPointHealCost INTEGER NOT NULL,
+BattlePointHealCost INTEGER NOT NULL,
+CreationDate TEXT NOT NULL,
+GainFriendPointOnSupport INTEGER NOT NULL
 );",
 						trans);
 				}
@@ -192,8 +195,17 @@ CreationDate TEXT NOT NULL
 				if(column == "RarestCardMissCount") {
 					RarestCardMissCount = reader.ReadInt(i);
 				}
+				if(column == "ActionPointHealCost") {
+					ActionPointHealCost = reader.ReadInt(i);
+				}
+				if(column == "BattlePointHealCost") {
+					BattlePointHealCost = reader.ReadInt(i);
+				}
 				if(column == "CreationDate") {
 					CreationDate = reader.ReadString(i);
+				}
+				if(column == "GainFriendPointOnSupport") {
+					GainFriendPointOnSupport = reader.ReadInt(i);
 				}
 			}
 		}
@@ -237,12 +249,15 @@ CreationDate TEXT NOT NULL
 			connection.BindInteger(stmHandle, 31, WeaponBagCapacity);
 			connection.BindInteger(stmHandle, 32, MagikiteBagCapacity);
 			connection.BindInteger(stmHandle, 33, RarestCardMissCount);
-			connection.BindText(stmHandle, 34, CreationDate);
+			connection.BindInteger(stmHandle, 34, ActionPointHealCost);
+			connection.BindInteger(stmHandle, 35, BattlePointHealCost);
+			connection.BindText(stmHandle, 36, CreationDate);
+			connection.BindInteger(stmHandle, 37, GainFriendPointOnSupport);
 		}
 
 		public void Save(SqliteDatabase connection, object transaction=null)
 		{
-			connection.Execute ("REPLACE INTO UserDataTable (UserId,CustomerId,Nickname,LastLoginDate,Level,Exp,ActionPoint,ActionPointFullDate,ActionPointTimeToFull,BattlePoint,BattlePointFullDate,BattlePointTimeToFull,IsFollow,IsFollower,FollowDate,FollowerDate,FollowCount,FollowerCount,Comment,MainCardData,SupportCardList,SupporterCardList,ReceivablePresentCount,ReceivableLoginbonusIdList,ReceivableMissionCount,FreeGemCount,PaidGemCount,GoldCount,FriendPointCount,PvpMedalCount,WeaponBagCapacity,MagikiteBagCapacity,RarestCardMissCount,CreationDate) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16,?17,?18,?19,?20,?21,?22,?23,?24,?25,?26,?27,?28,?29,?30,?31,?32,?33,?34);", this, BindParamter, transaction);
+			connection.Execute ("REPLACE INTO UserDataTable (UserId,CustomerId,Nickname,LastLoginDate,Level,Exp,ActionPoint,ActionPointFullDate,ActionPointTimeToFull,BattlePoint,BattlePointFullDate,BattlePointTimeToFull,IsFollow,IsFollower,FollowDate,FollowerDate,FollowCount,FollowerCount,Comment,MainCardData,SupportCardList,SupporterCardList,ReceivablePresentCount,ReceivableLoginbonusIdList,ReceivableMissionCount,FreeGemCount,PaidGemCount,GoldCount,FriendPointCount,PvpMedalCount,WeaponBagCapacity,MagikiteBagCapacity,RarestCardMissCount,ActionPointHealCost,BattlePointHealCost,CreationDate,GainFriendPointOnSupport) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16,?17,?18,?19,?20,?21,?22,?23,?24,?25,?26,?27,?28,?29,?30,?31,?32,?33,?34,?35,?36,?37);", this, BindParamter, transaction);
 		}
 
 		public void Delete(SqliteDatabase connection, object transaction=null)

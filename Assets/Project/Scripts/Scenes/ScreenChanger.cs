@@ -452,6 +452,19 @@ namespace SmileLab
             ScreenChanger.SharedInstance.Exec("EventQuest", ctrl, didProcEnd);
         }
 
+        /// <summary>
+        /// アイテム一覧画面へ
+        /// </summary>
+        /// <param name="didProcEnd">Did proc end.</param>
+        public void GoToItemList(Action didProcEnd = null)
+        {
+            View_GlobalMenu.IsVisible = true;
+            View_PlayerMenu.IsVisible = true;
+
+            var ctrl = ScreenControllerBase.Create<ItemListSController> ();
+            ScreenChanger.SharedInstance.Exec ("ItemList", ctrl, didProcEnd);
+        }
+
         #endregion
     }
 }

@@ -19,6 +19,9 @@ namespace SmileLab.UI {
         [Serializable]
         public class ButtonClickedEvent : UnityEvent {}
 
+		[Serializable]
+		public class ButtonRepeatEvent : UnityEvent<int> {}
+
         // Event delegates triggered on click.
         [FormerlySerializedAs("onClick")]
         [SerializeField]
@@ -38,6 +41,10 @@ namespace SmileLab.UI {
         [SerializeField]
         private ButtonClickedEvent m_OnRelease = new ButtonClickedEvent();
 
+		[FormerlySerializedAs("onRepeat")]
+		[SerializeField]
+		private ButtonRepeatEvent m_OnRepeat = new ButtonRepeatEvent();
+
         [SerializeField]
         private bool m_PlayLongPressSe = false;
 
@@ -49,8 +56,11 @@ namespace SmileLab.UI {
         private IStateTransition[] m_StateTransitions;
 
         public bool m_EnableLongPress;
-
         public float m_LongPressThredshold = 1.0f;
+
+		public bool m_EnableRepeat = false;
+		public float m_RepeatThredshold = 0.5f;
+		public float m_RepeatInterval = 0.3f;
 
         private bool m_IsForceHighlight = false;
         public bool ForceHighlight {
@@ -76,7 +86,6 @@ namespace SmileLab.UI {
         public ButtonClickedEvent onClick
         {
             get { return m_OnClick; }
-            set { m_OnClick = value; }
         }
 
         public void SetClickSe(SoundClipName soundClip)
@@ -88,7 +97,6 @@ namespace SmileLab.UI {
         public ButtonClickedEvent onLongPress
         {
             get { return m_OnLongPress; }
-            set { m_OnLongPress = value; }
         }
 
         public void SetLongPressSe(SoundClipName soundClip)
@@ -100,8 +108,12 @@ namespace SmileLab.UI {
         public ButtonClickedEvent onRelease
         {
             get { return m_OnRelease; }
-            set { m_OnRelease = value; }
         }
+
+		public ButtonRepeatEvent onRepeat
+		{
+			get { return m_OnRepeat; }
+		}
 
         protected override void Awake ()
         {
@@ -218,6 +230,9 @@ namespace SmileLab.UI {
             if (m_EnableLongPress) {
                 StartCoroutine ("CheckWaitLongPress");
             }
+			else if (m_EnableRepeat) {
+				StartCoroutine ("CheckRepeat");
+			}
         }
         IEnumerator CheckWaitLongPress()
         {
@@ -238,6 +253,39 @@ namespace SmileLab.UI {
                 yield return null;
             }
         }
+		IEnumerator CheckRepeat()
+		{
+			if (!m_EnableRepeat)
+				yield break;
+
+			m_PressSec = 0f;
+			// Repeat開始待ち
+			while (m_IsPressing) {
+				m_PressSec += Time.unscaledDeltaTime;
+				if (m_PressSec >= m_RepeatThredshold) {
+					break;
+				}
+				yield return null;
+			}
+
+			int repeatCount = 0;
+			// 1回目を実行
+			SoundManager.SharedInstance.PlaySE (m_OnClickSe);
+			m_OnRepeat.Invoke (repeatCount++);
+			yield return null;
+
+			// Repeat処理に移行
+			m_PressSec = 0f;
+			while (m_IsPressing) {
+				m_PressSec += Time.unscaledDeltaTime;
+				if (m_PressSec >= m_RepeatInterval) {
+					SoundManager.SharedInstance.PlaySE (m_OnClickSe);
+					m_OnRepeat.Invoke (repeatCount++);
+					m_PressSec = 0f;
+				}
+				yield return null;
+			}
+		}
 
         public override void OnPointerUp (PointerEventData eventData)
         {
@@ -262,6 +310,7 @@ namespace SmileLab.UI {
         private void Release()
         {
             StopCoroutine ("CheckWaitLongPress");
+			StopCoroutine ("CheckRepeat");
 
             // Releaseコールバック
             m_OnRelease.Invoke ();

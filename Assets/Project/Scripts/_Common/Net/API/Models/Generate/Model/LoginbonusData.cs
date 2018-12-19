@@ -16,6 +16,8 @@ namespace SmileLab.Net.API
 		public string LastReceivedDate;
 		public int[] CurrentRoundDayCountList;
 		public int[] NextRoundDayCountList;
+		public string StartDate;
+		public string EndDate;
 
 		class LoginbonusDataFormatter : IMessagePackFormatter<LoginbonusData>
 		{
@@ -25,7 +27,7 @@ namespace SmileLab.Net.API
 				}
 
 				var startOffset = offset;
-				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 5);
+				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 7);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "LoginbonusId");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.LoginbonusId);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "LastReceivedDayCount");
@@ -52,6 +54,10 @@ namespace SmileLab.Net.API
 						offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.NextRoundDayCountList[i]);
 					}
 				}
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "StartDate");
+				offset += MessagePackBinary.WriteString(ref bytes, offset, value.StartDate);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "EndDate");
+				offset += MessagePackBinary.WriteString(ref bytes, offset, value.EndDate);
 				return offset - startOffset;
 			}
 
@@ -114,6 +120,16 @@ namespace SmileLab.Net.API
 								offset += readed;
 							}
 						}
+						isRead = true;
+					}
+					if (key == "StartDate") {
+						ret.StartDate = MessagePackBinary.ReadString(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
+					if (key == "EndDate") {
+						ret.EndDate = MessagePackBinary.ReadString(bytes, offset, out readed);
+						offset += readed;
 						isRead = true;
 					}
 					if(!isRead) {

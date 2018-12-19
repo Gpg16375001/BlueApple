@@ -30,7 +30,14 @@ public class UnitCard : ViewBase {
             LoadedResource (resource);
         }
 
-        this.GetScript<Image> ("EmblemIcon").sprite = IconLoader.LoadEmblem (m_Card.Card.character.belonging);
+		var emblemIconSpr = IconLoader.LoadEmblem (m_Card.Card.character.belonging);
+		// Emblemアイコンがロード出来たら設定する
+		if (emblemIconSpr != null) {
+			this.GetScript<Image> ("EmblemIcon").gameObject.SetActive (true);
+			this.GetScript<Image> ("EmblemIcon").sprite = emblemIconSpr;
+		} else {
+			this.GetScript<Image> ("EmblemIcon").gameObject.SetActive (false);
+		}
 
         this.GetScript<TextMeshProUGUI> ("txtp_UnitNameSub").SetText (m_Card.Card.alias);
         this.GetScript<TextMeshProUGUI> ("txtp_UnitNameJa").SetText (m_Card.Card.nickname);

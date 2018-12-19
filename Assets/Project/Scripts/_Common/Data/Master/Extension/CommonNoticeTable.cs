@@ -24,6 +24,13 @@ public partial class CommonNoticeTable
 	{
 		var stores = Enum.GetValues(typeof(StoreTypeEnum)) as StoreTypeEnum[];
 		var storeType = Array.Find(stores, s => s.ToString() == GameSystem.GetPlatformName());
+#if UNITY_EDITOR
+#if UNITY_ANDROID
+		storeType = Array.Find(stores, s => s.ToString() == "GooglePlay");
+#elif UNITY_IOS
+		storeType = Array.Find(stores, s => s.ToString() == "AppStore");
+#endif
+#endif //UNITY_EDITOR
 		var shift = ((int)storeType)-1; // 0ビット目も使用するので0始まりに変換する必要.
 		var check = 1 << shift;
 		var rtnList = DataList.FindAll(d => d.IsEnable && d.category == categoryEnum && (d.view_target_bit & check) > 0);

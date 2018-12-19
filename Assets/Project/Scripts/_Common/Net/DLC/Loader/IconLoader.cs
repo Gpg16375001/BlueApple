@@ -201,6 +201,16 @@ public static class IconLoader {
         LoadIcon(ItemTypeEnum.consumer, consumerId, didLoaded);
     }
 
+	/// <summary>
+	/// 消費アイテムアイコンロード
+	/// </summary>
+	/// <param name="consumerId">Consumer identifier.</param>
+	/// <param name="didLoaded">Did loaded.</param>
+	public static void LoadEventPoint(int eventId, IconLoadedEvent didLoaded)
+	{
+		LoadIcon(ItemTypeEnum.event_point, eventId, didLoaded);
+	}
+
     // アイコンロード汎用処理
 	private static void LoadIcon(ItemTypeEnum type, int id, int rarity, IconLoadedEvent didLoaded)
     {
@@ -290,6 +300,9 @@ public static class IconLoader {
                 case ItemTypeEnum.consumer:
                     yield return CoLoadConsumerIcon (loadData);
                     break;
+				case ItemTypeEnum.event_point:
+					yield return CoLoadEventQuestPointIcon (loadData);
+					break;
                 default:
                     break;
                 }
@@ -404,6 +417,28 @@ public static class IconLoader {
         asyncObj = null;
         ConsumerIconAssetBundle.Unload(false);
     }
+
+	static IEnumerator CoLoadEventQuestPointIcon(IconLoadSetting data)
+	{
+		var EventQuestPointIconAssetBundle = DLCManager.AssetBundleFromFile(DLCManager.DLC_FOLDER.Icon, "eventquestpoint_icon");
+		if (EventQuestPointIconAssetBundle == null) {
+            // なくても問題はないのでエラーは出さないでスルーする
+			//Debug.LogError ("Not Load AssetBundle eventquestpoint_icon");
+            var CurrencyIconAtlas = Resources.Load<SpriteAtlas>("Atlases/CurrencyIcon");
+            data.Loaded(CurrencyIconAtlas.GetSprite ("IconEventPoint"));
+			yield break;
+		}
+		var asyncObj = EventQuestPointIconAssetBundle.assetbundle.LoadAssetAsync<Sprite>(data.id.ToString());
+		yield return asyncObj;
+
+		var spr = asyncObj.asset as Sprite;
+		data.Loaded(spr);
+		m_Reference.Add(new UniRx.Tuple<ItemTypeEnum, int, int>(data.type, data.id, data.rarity), new WeakReference(spr));
+
+		data = null;
+		asyncObj = null;
+		EventQuestPointIconAssetBundle.Unload(false);
+	}
 
     static Queue<IconLoadSetting> m_LoadRequestQueue;
     static List<IconLoadSetting> m_LoadingList;

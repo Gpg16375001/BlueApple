@@ -169,7 +169,7 @@ public class View_MainQuest_StageSelect : ViewBase, IViewMainQuest
 		}
 
 		// その国のキャラクターの情報更新確認用データを取得しておく.クエストで解放される要因があるため.
-		foreach (var card in CardData.CacheGetAll().Where(c => c.Card.release_chapter_flavor2.country.Enum == quest.Country.Enum)) {
+        foreach (var card in CardData.CacheGetAll().Where(c => c.Card.release_chapter_flavor2 != null && c.Card.release_chapter_flavor2.country.Enum == quest.Country.Enum)) {
 			AwsModule.CardModifiedData.UpdateData(card);
         }
 

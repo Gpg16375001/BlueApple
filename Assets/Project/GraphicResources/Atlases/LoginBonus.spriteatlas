@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: LoginBonus
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 0
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    packedHash:
+      serializedVersion: 2
+      Hash: 5a0a10e1d5420336f3080f846b9657b0
+    variantMultiplier: 1
+    bindAsDefault: 1
+    finalFormat: 4
+    hashString: 5a0a10e1d5420336f3080f846b9657b0
+    totalSpriteSurfaceArea: 499635
+    packables:
+    - {fileID: 102900000, guid: 322f3aea8ea75314894a06360a8be820, type: 3}
+    packedSpriteRenderDataKeys:
+    - f296b33a17e378043b79f5ffecaf0cc5: 21300000
+    - 53503ea8f295b8e42ba19d796c21dee2: 21300000
+    - 14ba649d620f0ff44addcddc0aa94065: 21300000
+    - 8822a4a0e3971614dac774540c2c1f3b: 21300000
+    - 68afdc5bad350e8488055e227025f3d2: 21300000
+    - a2ca87426f415ae45b08207fabfc4493: 21300000
+    - a0422356d72e96b4c99fcc4081c7b637: 21300000
+    - 9c6831ee0ee18954d95968d88ef23df3: 21300000
+    - e7c63be03908ee844ac25cb2ad61e970: 21300000
+    - 8191ea3529237804fa77a6c12c238cf5: 21300000
+    - 92c1b21332464cf48b7fafe9dfd2f07c: 21300000
+    - d411d8f9ad08f224f986425a21cca846: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: f296b33a17e378043b79f5ffecaf0cc5, type: 3}
+  - {fileID: 21300000, guid: 53503ea8f295b8e42ba19d796c21dee2, type: 3}
+  - {fileID: 21300000, guid: 14ba649d620f0ff44addcddc0aa94065, type: 3}
+  - {fileID: 21300000, guid: 8822a4a0e3971614dac774540c2c1f3b, type: 3}
+  - {fileID: 21300000, guid: 68afdc5bad350e8488055e227025f3d2, type: 3}
+  - {fileID: 21300000, guid: a2ca87426f415ae45b08207fabfc4493, type: 3}
+  - {fileID: 21300000, guid: a0422356d72e96b4c99fcc4081c7b637, type: 3}
+  - {fileID: 21300000, guid: 9c6831ee0ee18954d95968d88ef23df3, type: 3}
+  - {fileID: 21300000, guid: e7c63be03908ee844ac25cb2ad61e970, type: 3}
+  - {fileID: 21300000, guid: 8191ea3529237804fa77a6c12c238cf5, type: 3}
+  - {fileID: 21300000, guid: 92c1b21332464cf48b7fafe9dfd2f07c, type: 3}
+  - {fileID: 21300000, guid: d411d8f9ad08f224f986425a21cca846, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - img_LoginBonusParts01
+  - img_TodayMarkLight
+  - img_LoginStamp
+  - img_LoginBonusFrame
+  - img_TodayMark
+  - img_LoginBonusTodayFrame
+  - img_LoginBonusLogo02
+  - img_LoginBonusTodayTitle
+  - eff_Bar01_mask
+  - img_LoginBonusLine
+  - img_LoginBonusDayTitle
+  - eff_ColorGray01
+  m_Tag: LoginBonus
+  m_IsVariant: 0

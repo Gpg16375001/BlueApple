@@ -23,6 +23,7 @@ namespace SmileLab.Net.API
 		public StageEnemyData[] StageEnemyList;
 		public string CreationDate;
 		public int Status;
+		public int GainFriendPoint;
 
 		class BattleEntryDataFormatter : IMessagePackFormatter<BattleEntryData>
 		{
@@ -32,7 +33,7 @@ namespace SmileLab.Net.API
 				}
 
 				var startOffset = offset;
-				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 12);
+				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 13);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "EntryId");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.EntryId);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "StageId");
@@ -89,6 +90,8 @@ namespace SmileLab.Net.API
 				offset += MessagePackBinary.WriteString(ref bytes, offset, value.CreationDate);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "Status");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.Status);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "GainFriendPoint");
+				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GainFriendPoint);
 				return offset - startOffset;
 			}
 
@@ -205,6 +208,11 @@ namespace SmileLab.Net.API
 					}
 					if (key == "Status") {
 						ret.Status = MessagePackBinary.ReadInt32(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
+					if (key == "GainFriendPoint") {
+						ret.GainFriendPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
 						isRead = true;
 					}

@@ -77,7 +77,7 @@ public class WeaponListView : ViewBase
 
         // 初回リスト生成.
         m_WeaponIconPrefab = Resources.Load("_Common/View/ListItem_WeaponIcon") as GameObject;
-        this.UpdateList();
+        this.CreateList();
 
 		// ドロップダウンの初期設定
 		if(sortDropDown != null){
@@ -91,7 +91,30 @@ public class WeaponListView : ViewBase
 			filterButton.onClick.AddListener(DidTapFilter);
 		}
 	}
-    
+
+    private void CreateList()
+    {
+        var weaponSortData = AwsModule.LocalData.WeaponSortData;
+        if (weaponSortData.SortType != (int)m_sortType || weaponSortData.IsDescending != m_isDescending) {
+            weaponSortData.SortType = (int)m_sortType;
+            weaponSortData.IsDescending = m_isDescending;
+            AwsModule.LocalData.WeaponSortData = weaponSortData;
+        }
+
+        m_SortFilteredList = WeaponData.CacheGetAll();
+        if(m_invisibleWeaponList.Count > 0){
+            m_SortFilteredList.RemoveAll(w => m_invisibleWeaponList.Exists(i => i.BagId == w.BagId));
+        }
+        this.SortAndFilter();
+        gridLayoutGroup.ResetScrollPosition();
+        gridLayoutGroup.UpdateList (m_WeaponIconPrefab, m_SortFilteredList.Count);
+        gridLayoutGroup.OnUpdateItemEvent.AddListener(CallbackUpdateListItem);
+        gridLayoutGroup.Initialize(m_WeaponIconPrefab, 30, m_SortFilteredList.Count, false);
+        if(DidUpdateList != null){
+            DidUpdateList();
+        }
+    }
+
     /// <summary>
     /// リスト更新.キャッシュの取り直しから行う.false指定で差分更新だけ行う.
     /// </summary>
@@ -109,10 +132,7 @@ public class WeaponListView : ViewBase
             m_SortFilteredList.RemoveAll(w => m_invisibleWeaponList.Exists(i => i.BagId == w.BagId));
 		}
         this.SortAndFilter();
-        gridLayoutGroup.ResetScrollPosition();
-		gridLayoutGroup.OnUpdateItemEvent.RemoveAllListeners();
-		gridLayoutGroup.OnUpdateItemEvent.AddListener(CallbackUpdateListItem);
-		gridLayoutGroup.Initialize(m_WeaponIconPrefab, 31, m_SortFilteredList.Count, false);
+        gridLayoutGroup.UpdateList (m_WeaponIconPrefab, m_SortFilteredList.Count);
 		if(DidUpdateList != null){
 			DidUpdateList();
 		}
@@ -181,7 +201,7 @@ public class WeaponListView : ViewBase
         int sub = 0;
         switch (m_sortType) {
             case SortType.Get:
-                sub = (int)(a.CreationDateTime - b.CreationDateTime).TotalMinutes;
+                sub = (int)(a.CreationDateTime - b.CreationDateTime).TotalSeconds;
                 break;
             case SortType.Rarity:
                 sub = a.Rarity - b.Rarity;

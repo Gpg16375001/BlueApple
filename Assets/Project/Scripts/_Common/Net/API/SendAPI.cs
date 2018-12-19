@@ -6,16 +6,27 @@ using SmileLab.Net.API;
 public static class SendAPI
 {
 	/// <summary>
-	/// URL: /auth/
-	/// blah
+	/// URL: /api/cards/evolve_card
+	/// - カードを進化させる（レアリティアップ）
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   CardId:
+	///     進化させるカードのCardId
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   CardData:
+	///     強化したカードのCardData
+	///   UserData:
+	///     ユーザーデータ
 	/// </summary>
-	public static void AuthIndex(string Username, string Password, Action<bool, ReceiveAuthIndex> didLoad)
+	public static void CardsEvolveCard(int CardId, Action<bool, ReceiveCardsEvolveCard> didLoad)
 	{
-		SendAuthIndex request = new SendAuthIndex ();
-		request.Username = Username;
-		request.Password = Password;
-		AwsModule.Request.Exec<ReceiveAuthIndex> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveAuthIndex>(response, didLoad, true);
+		SendCardsEvolveCard request = new SendCardsEvolveCard ();
+		request.CardId = CardId;
+		AwsModule.Request.Exec<ReceiveCardsEvolveCard> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveCardsEvolveCard>(response, didLoad, true);
 		});
 	}
 
@@ -60,122 +71,6 @@ public static class SendAPI
 		SendCardsGetCardList request = new SendCardsGetCardList ();
 		AwsModule.Request.Exec<ReceiveCardsGetCardList> (request, (response) => {
 			AwsModule.Request.CheckResultCode<ReceiveCardsGetCardList>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/cards/set_weapon
-	/// - 武器を指定カードにセットする（装備済みの武器は自動で外れる）
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   EquippedWeaponList:
-	///     装備変更するカードのEquippedWeaponのリスト
-	/// - EquippedWeapon:
-	///   CardId:
-	///     武器を装備させるカードのCardId
-	///   WeaponBagId:
-	///     武器のBagId（0指定でカードから武器を外す）
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   AffectedCardDataList:
-	///     影響のあったCardDataのリスト
-	///   AffectedWeaponDataList:
-	///     影響のあったWeaponDataのリスト
-	/// </summary>
-	public static void CardsSetWeapon(EquippedWeapon[] EquippedWeaponList, Action<bool, ReceiveCardsSetWeapon> didLoad)
-	{
-		SendCardsSetWeapon request = new SendCardsSetWeapon ();
-		request.EquippedWeaponList = EquippedWeaponList;
-		AwsModule.Request.Exec<ReceiveCardsSetWeapon> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveCardsSetWeapon>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/cards/set_magikite
-	/// - マギカイトを指定カードの各スロットに装備する（装備済みのマギカイトは自動で外れる）
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   EquippedMagikiteList:
-	///     装備変更するカードのEquippedMagikiteのリスト
-	/// - EquippedMagikite:
-	///   CardId:
-	///     マギカイトを装備させるカードのCardId
-	///   MagikiteBagIdList:
-	///     装備するマギカイトのBagIdのリスト（0指定でカードから外す）
-	///     開放した育成ボードに応じて最大8個
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   AffectedCardDataList:
-	///     影響のあったCardDataのリスト
-	///   AffectedMagikiteDataList:
-	///     影響のあったMagikiteDataのリスト
-	/// </summary>
-	public static void CardsSetMagikite(EquippedMagikite[] EquippedMagikiteList, Action<bool, ReceiveCardsSetMagikite> didLoad)
-	{
-		SendCardsSetMagikite request = new SendCardsSetMagikite ();
-		request.EquippedMagikiteList = EquippedMagikiteList;
-		AwsModule.Request.Exec<ReceiveCardsSetMagikite> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveCardsSetMagikite>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/cards/reinforce_card
-	/// - カードを強化する（EXP加算）
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   CardId:
-	///     強化するカードのCardId
-	///   MaterialIdList:
-	///     使用する強化素材のMaterialIdのリスト
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   ReinforcementDegreeId:
-	///     1:成功、2:大成功、3:超成功
-	///   CardData:
-	///     強化したカードのCardData
-	///   UserData:
-	///     ユーザーデータ
-	/// </summary>
-	public static void CardsReinforceCard(int CardId, int[] MaterialIdList, Action<bool, ReceiveCardsReinforceCard> didLoad)
-	{
-		SendCardsReinforceCard request = new SendCardsReinforceCard ();
-		request.CardId = CardId;
-		request.MaterialIdList = MaterialIdList;
-		AwsModule.Request.Exec<ReceiveCardsReinforceCard> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveCardsReinforceCard>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/cards/evolve_card
-	/// - カードを進化させる（レアリティアップ）
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   CardId:
-	///     進化させるカードのCardId
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   CardData:
-	///     強化したカードのCardData
-	///   UserData:
-	///     ユーザーデータ
-	/// </summary>
-	public static void CardsEvolveCard(int CardId, Action<bool, ReceiveCardsEvolveCard> didLoad)
-	{
-		SendCardsEvolveCard request = new SendCardsEvolveCard ();
-		request.CardId = CardId;
-		AwsModule.Request.Exec<ReceiveCardsEvolveCard> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveCardsEvolveCard>(response, didLoad, true);
 		});
 	}
 
@@ -230,6 +125,157 @@ public static class SendAPI
 		request.CardId = CardId;
 		AwsModule.Request.Exec<ReceiveCardsLimitBreakWithGem> (request, (response) => {
 			AwsModule.Request.CheckResultCode<ReceiveCardsLimitBreakWithGem>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/cards/reinforce_card
+	/// - カードを強化する（EXP加算）
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   CardId:
+	///     強化するカードのCardId
+	///   MaterialIdList:
+	///     使用する強化素材のMaterialIdのリスト
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   ReinforcementDegreeId:
+	///     1:成功、2:大成功、3:超成功
+	///   CardData:
+	///     強化したカードのCardData
+	///   UserData:
+	///     ユーザーデータ
+	/// </summary>
+	public static void CardsReinforceCard(int CardId, int[] MaterialIdList, Action<bool, ReceiveCardsReinforceCard> didLoad)
+	{
+		SendCardsReinforceCard request = new SendCardsReinforceCard ();
+		request.CardId = CardId;
+		request.MaterialIdList = MaterialIdList;
+		AwsModule.Request.Exec<ReceiveCardsReinforceCard> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveCardsReinforceCard>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/cards/set_magikite
+	/// - マギカイトを指定カードの各スロットに装備する（装備済みのマギカイトは自動で外れる）
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   EquippedMagikiteList:
+	///     装備変更するカードのEquippedMagikiteのリスト
+	/// - EquippedMagikite:
+	///   CardId:
+	///     マギカイトを装備させるカードのCardId
+	///   MagikiteBagIdList:
+	///     装備するマギカイトのBagIdのリスト（0指定でカードから外す）
+	///     開放した育成ボードに応じて最大8個
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   AffectedCardDataList:
+	///     影響のあったCardDataのリスト
+	///   AffectedMagikiteDataList:
+	///     影響のあったMagikiteDataのリスト
+	/// </summary>
+	public static void CardsSetMagikite(EquippedMagikite[] EquippedMagikiteList, Action<bool, ReceiveCardsSetMagikite> didLoad)
+	{
+		SendCardsSetMagikite request = new SendCardsSetMagikite ();
+		request.EquippedMagikiteList = EquippedMagikiteList;
+		AwsModule.Request.Exec<ReceiveCardsSetMagikite> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveCardsSetMagikite>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/cards/set_weapon
+	/// - 武器を指定カードにセットする（装備済みの武器は自動で外れる）
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   EquippedWeaponList:
+	///     装備変更するカードのEquippedWeaponのリスト
+	/// - EquippedWeapon:
+	///   CardId:
+	///     武器を装備させるカードのCardId
+	///   WeaponBagId:
+	///     武器のBagId（0指定でカードから武器を外す）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   AffectedCardDataList:
+	///     影響のあったCardDataのリスト
+	///   AffectedWeaponDataList:
+	///     影響のあったWeaponDataのリスト
+	/// </summary>
+	public static void CardsSetWeapon(EquippedWeapon[] EquippedWeaponList, Action<bool, ReceiveCardsSetWeapon> didLoad)
+	{
+		SendCardsSetWeapon request = new SendCardsSetWeapon ();
+		request.EquippedWeaponList = EquippedWeaponList;
+		AwsModule.Request.Exec<ReceiveCardsSetWeapon> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveCardsSetWeapon>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/cards/unlock_all_board_slots
+	/// - ボードの未開放スロットを全て開放する
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）  
+	///   CardId:
+	///     CardId
+	///   BoardIndex:
+	///     ボード番号（1〜、開放済みのボードに限る）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   CardData:
+	///     CardData
+	///   UserData:
+	///     UserData
+	///   MasterVersion:
+	///     マスタバージョン番号
+	/// </summary>
+	public static void CardsUnlockAllBoardSlots(int CardId, int BoardIndex, Action<bool, ReceiveCardsUnlockAllBoardSlots> didLoad)
+	{
+		SendCardsUnlockAllBoardSlots request = new SendCardsUnlockAllBoardSlots ();
+		request.CardId = CardId;
+		request.BoardIndex = BoardIndex;
+		AwsModule.Request.Exec<ReceiveCardsUnlockAllBoardSlots> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveCardsUnlockAllBoardSlots>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/cards/unlock_all_board_slots_with_gem
+	/// - ジェムを使用してボードの未開放スロットを全て開放する
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）  
+	///   CardId:
+	///     CardId
+	///   BoardIndex:
+	///     ボード番号（1〜、開放済みのボードに限る）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   CardData:
+	///     CardData
+	///   UserData:
+	///     UserData
+	///   MasterVersion:
+	///     マスタバージョン番号
+	/// </summary>
+	public static void CardsUnlockAllBoardSlotsWithGem(int CardId, int BoardIndex, Action<bool, ReceiveCardsUnlockAllBoardSlotsWithGem> didLoad)
+	{
+		SendCardsUnlockAllBoardSlotsWithGem request = new SendCardsUnlockAllBoardSlotsWithGem ();
+		request.CardId = CardId;
+		request.BoardIndex = BoardIndex;
+		AwsModule.Request.Exec<ReceiveCardsUnlockAllBoardSlotsWithGem> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveCardsUnlockAllBoardSlotsWithGem>(response, didLoad, true);
 		});
 	}
 
@@ -296,66 +342,6 @@ public static class SendAPI
 		request.SlotIndexList = SlotIndexList;
 		AwsModule.Request.Exec<ReceiveCardsUnlockBoardSlotWithGem> (request, (response) => {
 			AwsModule.Request.CheckResultCode<ReceiveCardsUnlockBoardSlotWithGem>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/cards/unlock_all_board_slots
-	/// - ボードの未開放スロットを全て開放する
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）  
-	///   CardId:
-	///     CardId
-	///   BoardIndex:
-	///     ボード番号（1〜、開放済みのボードに限る）
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   CardData:
-	///     CardData
-	///   UserData:
-	///     UserData
-	///   MasterVersion:
-	///     マスタバージョン番号
-	/// </summary>
-	public static void CardsUnlockAllBoardSlots(int CardId, int BoardIndex, Action<bool, ReceiveCardsUnlockAllBoardSlots> didLoad)
-	{
-		SendCardsUnlockAllBoardSlots request = new SendCardsUnlockAllBoardSlots ();
-		request.CardId = CardId;
-		request.BoardIndex = BoardIndex;
-		AwsModule.Request.Exec<ReceiveCardsUnlockAllBoardSlots> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveCardsUnlockAllBoardSlots>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/cards/unlock_all_board_slots_with_gem
-	/// - ジェムを使用してボードの未開放スロットを全て開放する
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）  
-	///   CardId:
-	///     CardId
-	///   BoardIndex:
-	///     ボード番号（1〜、開放済みのボードに限る）
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   CardData:
-	///     CardData
-	///   UserData:
-	///     UserData
-	///   MasterVersion:
-	///     マスタバージョン番号
-	/// </summary>
-	public static void CardsUnlockAllBoardSlotsWithGem(int CardId, int BoardIndex, Action<bool, ReceiveCardsUnlockAllBoardSlotsWithGem> didLoad)
-	{
-		SendCardsUnlockAllBoardSlotsWithGem request = new SendCardsUnlockAllBoardSlotsWithGem ();
-		request.CardId = CardId;
-		request.BoardIndex = BoardIndex;
-		AwsModule.Request.Exec<ReceiveCardsUnlockAllBoardSlotsWithGem> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveCardsUnlockAllBoardSlotsWithGem>(response, didLoad, true);
 		});
 	}
 
@@ -510,6 +496,27 @@ public static class SendAPI
 	}
 
 	/// <summary>
+	/// URL: /api/fgid/associate_user
+	/// - 自身とFGIDとを連携させる
+	///   ※FGIDにログイン後の、サイト内のアプリ起動用URLから起動（再開）した時のみコールすること
+	/// - リクエスト
+	///   GameToken:
+	///     FGIDとのセッションを管理するトークン
+	///     ※get_login_infoで受け取った値かアプリ起動用URLから所得した値（違う場合は改竄の可能性）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	/// </summary>
+	public static void FgidAssociateUser(string GameToken, Action<bool, ReceiveFgidAssociateUser> didLoad)
+	{
+		SendFgidAssociateUser request = new SendFgidAssociateUser ();
+		request.GameToken = GameToken;
+		AwsModule.Request.Exec<ReceiveFgidAssociateUser> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveFgidAssociateUser>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
 	/// URL: /api/fgid/get_login_info
 	/// - ＜アプリ開始済みユーザのみ＞FGIDにログインするための情報を所得する
 	/// - リクエスト
@@ -538,35 +545,163 @@ public static class SendAPI
 	}
 
 	/// <summary>
-	/// URL: /api/fgid/associate_user
-	/// - 自身とFGIDとを連携させる
-	///   ※FGIDにログイン後の、サイト内のアプリ起動用URLから起動（再開）した時のみコールすること
+	/// URL: /api/friends/get_follow_list
+	/// - フォローリストの所得
 	/// - リクエスト
-	///   GameToken:
-	///     FGIDとのセッションを管理するトークン
-	///     ※get_login_infoで受け取った値かアプリ起動用URLから所得した値（違う場合は改竄の可能性）
+	///   From:
+	///     リストの所得開始位置、先頭が0
+	///   Count:
+	///     所得数
+	///   SortOrder:
+	///     並べ替え順 - 0:ログイン(新しい)、1:ログイン(古い)、2:レベル(昇順)、3:レベル(降順)、4:フ>ォロー順（新しい）、5:フォロー順（古い）
 	/// - レスポンス
 	///   ResultCode:
 	///     0:成功、1以上:失敗
+	///   FriendDataList:
+	///     FriendDataのリスト
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// - FriendDataList
+	///   UserId:
+	///     ユーザID
+	///   CustomerId:
+	///     お客様番号
+	///   Nickname:
+	///     ニックネーム
+	///   LastLoginDate:
+	///     最終ログイン日時
+	///   Level:
+	///     レベル/Rank(マスターデータから経験値で逆引き)
+	///   IsFollow:
+	///     フォローしているか
+	///   IsFollower:
+	///     フォローされているか
+	///   FollowDate:
+	///     自分がフォローした日時
+	///   FollowerDate:
+	///     自分がフォローされた日時（相手がフォローした日時）
+	///   FollowCount:
+	///     フォロー数
+	///   FolowerCount:
+	///     フォロワー数
+	///   Comment:
+	///     コメント
+	///   MainCardData:
+	///     メインカードのCardData
 	/// </summary>
-	public static void FgidAssociateUser(string GameToken, Action<bool, ReceiveFgidAssociateUser> didLoad)
+	public static void FriendsGetFollowList(int From, int Count, int SortOrder, Action<bool, ReceiveFriendsGetFollowList> didLoad)
 	{
-		SendFgidAssociateUser request = new SendFgidAssociateUser ();
-		request.GameToken = GameToken;
-		AwsModule.Request.Exec<ReceiveFgidAssociateUser> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveFgidAssociateUser>(response, didLoad, true);
+		SendFriendsGetFollowList request = new SendFriendsGetFollowList ();
+		request.From = From;
+		request.Count = Count;
+		request.SortOrder = SortOrder;
+		AwsModule.Request.Exec<ReceiveFriendsGetFollowList> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveFriendsGetFollowList>(response, didLoad, true);
 		});
 	}
 
 	/// <summary>
-	/// URL: /filelist/
-	/// blah
+	/// URL: /api/friends/get_follower_list
+	/// - フォロワーリストの所得
+	/// - リクエスト
+	///   From:
+	///     リストの所得開始位置、先頭が0
+	///   Count:
+	///     所得数
+	///   SortOrder:
+	///     並べ替え順 - 0:ログイン(新しい)、1:ログイン(古い)、2:レベル(昇順)、3:レベル(降順)、4:フ>ォロー順（新しい）、5:フォロー順（古い）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   FriendDataList:
+	///     FriendDataのリスト
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// - FriendDataList
+	///   UserId:
+	///     ユーザID
+	///   CustomerId:
+	///     お客様番号
+	///   Nickname:
+	///     ニックネーム
+	///   LastLoginDate:
+	///     最終ログイン日時
+	///   Level:
+	///     レベル/Rank(マスターデータから経験値で逆引き)
+	///   IsFollow:
+	///     フォローしているか
+	///   IsFollower:
+	///     フォローされているか
+	///   FollowDate:
+	///     自分がフォローした日時
+	///   FollowerDate:
+	///     自分がフォローされた日時（相手がフォローした日時）
+	///   FollowCount:
+	///     フォロー数
+	///   FolowerCount:
+	///     フォロワー数
+	///   Comment:
+	///     コメント
+	///   MainCardData:
+	///     メインカードのCardData
 	/// </summary>
-	public static void FilelistIndex(Action<bool, ReceiveFilelistIndex> didLoad)
+	public static void FriendsGetFollowerList(int From, int Count, int SortOrder, Action<bool, ReceiveFriendsGetFollowerList> didLoad)
 	{
-		SendFilelistIndex request = new SendFilelistIndex ();
-		AwsModule.Request.Exec<ReceiveFilelistIndex> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveFilelistIndex>(response, didLoad, false);
+		SendFriendsGetFollowerList request = new SendFriendsGetFollowerList ();
+		request.From = From;
+		request.Count = Count;
+		request.SortOrder = SortOrder;
+		AwsModule.Request.Exec<ReceiveFriendsGetFollowerList> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveFriendsGetFollowerList>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/gacha/execute_tutorial_gacha
+	/// チュートリアル用ガチャを実行する
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   AcquiredGachaItemDataList:
+	///     AcquiredGachaItemDataのリスト
+	///   UserData:
+	///     ユーザーデータ
+	/// - AcquiredGachaItemData:
+	///   GachaProductId:
+	///     ガチャ商品ID
+	///   GachaId:
+	///     ガチャID
+	///   GachaItemId:
+	///     ガチャアイテムID
+	///   ItemType:
+	///     アイテムタイプ
+	///   ItemId:
+	///     アイテムID
+	///   Quantity:
+	///     個数
+	///   IsNew:
+	///     True:新規獲得、False:入手経験あり
+	///   ConvertedItemType:
+	///     ＜カードの場合＞自動変換後のアイテムのアイテムタイプ
+	///   ConvertedItemId:
+	///     ＜カードの場合＞自動変換後のアイテムのアイテムID
+	///   ConvertedQuantity:
+	///     ＜カードの場合＞自動変換後のアイテムの個数
+	///   CardData:
+	///     CardData
+	///   MagikiteData:
+	///     MagikiteData
+	///   WeaponData:
+	///     WeaponData
+	/// </summary>
+	public static void GachaExecuteTutorialGacha(Action<bool, ReceiveGachaExecuteTutorialGacha> didLoad)
+	{
+		SendGachaExecuteTutorialGacha request = new SendGachaExecuteTutorialGacha ();
+		AwsModule.Request.Exec<ReceiveGachaExecuteTutorialGacha> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveGachaExecuteTutorialGacha>(response, didLoad, true);
 		});
 	}
 
@@ -693,56 +828,7 @@ public static class SendAPI
 		SendGachaPurchaseProduct request = new SendGachaPurchaseProduct ();
 		request.GachaProductId = GachaProductId;
 		AwsModule.Request.Exec<ReceiveGachaPurchaseProduct> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveGachaPurchaseProduct>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/gacha/execute_tutorial_gacha
-	/// チュートリアル用ガチャを実行する
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   AcquiredGachaItemDataList:
-	///     AcquiredGachaItemDataのリスト
-	///   UserData:
-	///     ユーザーデータ
-	/// - AcquiredGachaItemData:
-	///   GachaProductId:
-	///     ガチャ商品ID
-	///   GachaId:
-	///     ガチャID
-	///   GachaItemId:
-	///     ガチャアイテムID
-	///   ItemType:
-	///     アイテムタイプ
-	///   ItemId:
-	///     アイテムID
-	///   Quantity:
-	///     個数
-	///   IsNew:
-	///     True:新規獲得、False:入手経験あり
-	///   ConvertedItemType:
-	///     ＜カードの場合＞自動変換後のアイテムのアイテムタイプ
-	///   ConvertedItemId:
-	///     ＜カードの場合＞自動変換後のアイテムのアイテムID
-	///   ConvertedQuantity:
-	///     ＜カードの場合＞自動変換後のアイテムの個数
-	///   CardData:
-	///     CardData
-	///   MagikiteData:
-	///     MagikiteData
-	///   WeaponData:
-	///     WeaponData
-	/// </summary>
-	public static void GachaExecuteTutorialGacha(Action<bool, ReceiveGachaExecuteTutorialGacha> didLoad)
-	{
-		SendGachaExecuteTutorialGacha request = new SendGachaExecuteTutorialGacha ();
-		AwsModule.Request.Exec<ReceiveGachaExecuteTutorialGacha> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveGachaExecuteTutorialGacha>(response, didLoad, true);
+			AwsModule.Request.CheckResultCode<ReceiveGachaPurchaseProduct>(response, didLoad, false);
 		});
 	}
 
@@ -930,6 +1016,21 @@ public static class SendAPI
 	///     LoginbonusDataのリスト
 	///   MasterVersion:
 	///     マスターバージョン番号
+	/// - LoginbonusData
+	///   LoginbonusId:
+	///     ログインボーナスID
+	///   LastReceivedDayCount:
+	///     最終受取日数
+	///   LastReceivedDate:
+	///     最終受取日時
+	///   CurrentRoundDayCountList:
+	///     現在の周回の日数リスト
+	///   NextRoundDayCountList:
+	///     次回の周回の日数リスト
+	///   StartDate:
+	///     開始日時
+	///   EndDate:
+	///     終了日時
 	/// </summary>
 	public static void LoginbonusGetAvailableList(Action<bool, ReceiveLoginbonusGetAvailableList> didLoad)
 	{
@@ -954,6 +1055,21 @@ public static class SendAPI
 	///     LoginbonusDataのリスト
 	///   MasterVersion:
 	///     マスターバージョン番号
+	/// - LoginbonusData
+	///   LoginbonusId:
+	///     ログインボーナスID
+	///   LastReceivedDayCount:
+	///     最終受取日数
+	///   LastReceivedDate:
+	///     最終受取日時
+	///   CurrentRoundDayCountList:
+	///     現在の周回の日数リスト
+	///   NextRoundDayCountList:
+	///     次回の周回の日数リスト
+	///   StartDate:
+	///     開始日時
+	///   EndDate:
+	///     終了日時
 	/// </summary>
 	public static void LoginbonusReceiveItem(int[] LoginbonusIdList, Action<bool, ReceiveLoginbonusReceiveItem> didLoad)
 	{
@@ -1035,31 +1151,6 @@ public static class SendAPI
 	}
 
 	/// <summary>
-	/// URL: /api/magikites/unlock_magikite
-	/// - マギカイトをアンロックする
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   MagikiteBagId:
-	///     アンロックするマギカイトのBagId
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   MagikiteData:
-	///     MagikiteData
-	///   MasterVersion:
-	///     マスターバージョン番号
-	/// </summary>
-	public static void MagikitesUnlockMagikite(long MagikiteBagId, Action<bool, ReceiveMagikitesUnlockMagikite> didLoad)
-	{
-		SendMagikitesUnlockMagikite request = new SendMagikitesUnlockMagikite ();
-		request.MagikiteBagId = MagikiteBagId;
-		AwsModule.Request.Exec<ReceiveMagikitesUnlockMagikite> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveMagikitesUnlockMagikite>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
 	/// URL: /api/magikites/sell_magikite
 	/// - マギカイトを売却する
 	/// - リクエスト
@@ -1081,6 +1172,31 @@ public static class SendAPI
 		request.MagikiteBagIdList = MagikiteBagIdList;
 		AwsModule.Request.Exec<ReceiveMagikitesSellMagikite> (request, (response) => {
 			AwsModule.Request.CheckResultCode<ReceiveMagikitesSellMagikite>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/magikites/unlock_magikite
+	/// - マギカイトをアンロックする
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   MagikiteBagId:
+	///     アンロックするマギカイトのBagId
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   MagikiteData:
+	///     MagikiteData
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// </summary>
+	public static void MagikitesUnlockMagikite(long MagikiteBagId, Action<bool, ReceiveMagikitesUnlockMagikite> didLoad)
+	{
+		SendMagikitesUnlockMagikite request = new SendMagikitesUnlockMagikite ();
+		request.MagikiteBagId = MagikiteBagId;
+		AwsModule.Request.Exec<ReceiveMagikitesUnlockMagikite> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveMagikitesUnlockMagikite>(response, didLoad, true);
 		});
 	}
 
@@ -1224,32 +1340,6 @@ public static class SendAPI
 	}
 
 	/// <summary>
-	/// URL: /api/payments/submit_receipt_with_timeout
-	/// - ストアのレシートを提出する（60秒間スリープしてServerErrorを返却）
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID
-	///   Receipt:
-	///     レシート
-	///   Signature:
-	///     署名（androidの場合）
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   UserData:
-	///     ユーザデータ
-	/// </summary>
-	public static void PaymentsSubmitReceiptWithTimeout(string Receipt, string Signature, Action<bool, ReceivePaymentsSubmitReceiptWithTimeout> didLoad)
-	{
-		SendPaymentsSubmitReceiptWithTimeout request = new SendPaymentsSubmitReceiptWithTimeout ();
-		request.Receipt = Receipt;
-		request.Signature = Signature;
-		AwsModule.Request.Exec<ReceivePaymentsSubmitReceiptWithTimeout> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceivePaymentsSubmitReceiptWithTimeout>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
 	/// URL: /api/payments/submit_receipt
 	/// - ストアのレシートを提出する
 	/// - リクエスト
@@ -1272,6 +1362,32 @@ public static class SendAPI
 		request.Signature = Signature;
 		AwsModule.Request.Exec<ReceivePaymentsSubmitReceipt> (request, (response) => {
 			AwsModule.Request.CheckResultCode<ReceivePaymentsSubmitReceipt>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/payments/submit_receipt_with_timeout
+	/// - ストアのレシートを提出する（60秒間スリープしてServerErrorを返却）
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID
+	///   Receipt:
+	///     レシート
+	///   Signature:
+	///     署名（androidの場合）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   UserData:
+	///     ユーザデータ
+	/// </summary>
+	public static void PaymentsSubmitReceiptWithTimeout(string Receipt, string Signature, Action<bool, ReceivePaymentsSubmitReceiptWithTimeout> didLoad)
+	{
+		SendPaymentsSubmitReceiptWithTimeout request = new SendPaymentsSubmitReceiptWithTimeout ();
+		request.Receipt = Receipt;
+		request.Signature = Signature;
+		AwsModule.Request.Exec<ReceivePaymentsSubmitReceiptWithTimeout> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceivePaymentsSubmitReceiptWithTimeout>(response, didLoad, true);
 		});
 	}
 
@@ -1423,6 +1539,85 @@ public static class SendAPI
 	}
 
 	/// <summary>
+	/// URL: /api/pvp/begin_battle
+	/// - バトル開始を通知する
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   ContestId:
+	///     コンテストID
+	///   OpponentUserId:
+	///     対戦相手のユーザID
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   PvpBattleEntryData:
+	///     バトルエントリーデータ
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// - PvpBattleEntryData
+	///   EntryId:
+	///     エントリーID
+	///   ContestId:
+	///     コンテストID
+	///   PvpTeamData:
+	///     自分のチームデータ
+	///   OpponentUserId:
+	///     対戦相手のユーザID
+	///   OpponentPvpTeamData:
+	///     対戦相手のチームデータ
+	/// </summary>
+	public static void PvpBeginBattle(int ContestId, int OpponentUserId, Action<bool, ReceivePvpBeginBattle> didLoad)
+	{
+		SendPvpBeginBattle request = new SendPvpBeginBattle ();
+		request.ContestId = ContestId;
+		request.OpponentUserId = OpponentUserId;
+		AwsModule.Request.Exec<ReceivePvpBeginBattle> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceivePvpBeginBattle>(response, didLoad, false);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/pvp/finish_battle
+	/// - バトル結果を通知する
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   EntryId:
+	///     エントリーID
+	///   IsWin:
+	///     True:勝ち、False:負け
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   BaseWinningPoint: <- 廃止予定、WinningPointを利用してください
+	///     基礎勝利ポイント
+	///   RankCorrectedWinningPoint: <- 廃止予定、WinningPointに統合しました
+	///     獲得ランク補正済み勝利ポイント（BaseWinningPointにRankCorrectionPercentageを乗じた値）
+	///   ConsecutiveWinsBonusWinningPoint:
+	///     獲得連勝ボーナスポイント
+	///   WinningPoint:
+	///     獲得勝敗ポイント
+	///   PvpMedal:
+	///     獲得PvPメダル
+	///   PvpUserData:
+	///     PvpUserData
+	///   UserData:
+	///     UserData
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// </summary>
+	public static void PvpFinishBattle(int EntryId, bool IsWin, Action<bool, ReceivePvpFinishBattle> didLoad)
+	{
+		SendPvpFinishBattle request = new SendPvpFinishBattle ();
+		request.EntryId = EntryId;
+		request.IsWin = IsWin;
+		AwsModule.Request.Exec<ReceivePvpFinishBattle> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceivePvpFinishBattle>(response, didLoad, false);
+		});
+	}
+
+	/// <summary>
 	/// URL: /api/pvp/get_opponent_list
 	/// - 対戦者候補一覧の所得
 	/// - リクエスト
@@ -1527,383 +1722,6 @@ public static class SendAPI
 	}
 
 	/// <summary>
-	/// URL: /api/pvp/begin_battle
-	/// - バトル開始を通知する
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   ContestId:
-	///     コンテストID
-	///   OpponentUserId:
-	///     対戦相手のユーザID
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   PvpBattleEntryData:
-	///     バトルエントリーデータ
-	///   MasterVersion:
-	///     マスターバージョン番号
-	/// - PvpBattleEntryData
-	///   EntryId:
-	///     エントリーID
-	///   ContestId:
-	///     コンテストID
-	///   PvpTeamData:
-	///     自分のチームデータ
-	///   OpponentUserId:
-	///     対戦相手のユーザID
-	///   OpponentPvpTeamData:
-	///     対戦相手のチームデータ
-	/// </summary>
-	public static void PvpBeginBattle(int ContestId, int OpponentUserId, Action<bool, ReceivePvpBeginBattle> didLoad)
-	{
-		SendPvpBeginBattle request = new SendPvpBeginBattle ();
-		request.ContestId = ContestId;
-		request.OpponentUserId = OpponentUserId;
-		AwsModule.Request.Exec<ReceivePvpBeginBattle> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceivePvpBeginBattle>(response, didLoad, false);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/pvp/finish_battle
-	/// - バトル結果を通知する
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   EntryId:
-	///     エントリーID
-	///   IsWin:
-	///     True:勝ち、False:負け
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   BaseWinningPoint: <- 廃止予定、WinningPointを利用してください
-	///     基礎勝利ポイント
-	///   RankCorrectedWinningPoint: <- 廃止予定、WinningPointに統合しました
-	///     獲得ランク補正済み勝利ポイント（BaseWinningPointにRankCorrectionPercentageを乗じた値）
-	///   ConsecutiveWinsBonusWinningPoint:
-	///     獲得連勝ボーナスポイント
-	///   WinningPoint:
-	///     獲得勝敗ポイント
-	///   PvpMedal:
-	///     獲得PvPメダル
-	///   PvpUserData:
-	///     PvpUserData
-	///   UserData:
-	///     UserData
-	///   MasterVersion:
-	///     マスターバージョン番号
-	/// </summary>
-	public static void PvpFinishBattle(int EntryId, bool IsWin, Action<bool, ReceivePvpFinishBattle> didLoad)
-	{
-		SendPvpFinishBattle request = new SendPvpFinishBattle ();
-		request.EntryId = EntryId;
-		request.IsWin = IsWin;
-		AwsModule.Request.Exec<ReceivePvpFinishBattle> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceivePvpFinishBattle>(response, didLoad, false);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/quests/get_event_quest_achievement
-	/// イベントクエストの達成リストを所得する
-	/// - リクエスト
-	///   EventQuestId:
-	///     イベントクエストID
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   EventQuestAchievementList:
-	///     EventQuestAchievementのリスト
-	/// - EventQuestAchievement
-	///   StageDetailId:
-	///     ステージ詳細ID
-	///   StageType:
-	///     1:シナリオ、2:チャレンジ
-	///   IsAchieved:
-	///     true:達成済み、false:未達成
-	///   AchievedMissionIdList:
-	///     達成済みMissionIdのリスト
-	///   ReceivedMissionRewardCount:
-	///     受取済みMission情報の個数（Mission全達成で1）
-	///   IsOpen:
-	///     true:プレイ可能、false:プレイ不可（開放条件および開始・終了日時で判定）
-	///   StartDate:
-	///     開始日時
-	///   EndDate:
-	///     終了日時
-	/// </summary>
-	public static void QuestsGetEventQuestAchievement(int EventQuestId, Action<bool, ReceiveQuestsGetEventQuestAchievement> didLoad)
-	{
-		SendQuestsGetEventQuestAchievement request = new SendQuestsGetEventQuestAchievement ();
-		request.EventQuestId = EventQuestId;
-		AwsModule.Request.Exec<ReceiveQuestsGetEventQuestAchievement> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveQuestsGetEventQuestAchievement>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/quests/get_daily_achievement
-	/// 曜日クエストの達成リストを所得する
-	/// - リクエスト
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   DailyQuestAchievementList:
-	///     DailyQuestAchievementのリスト
-	/// - DailyQuestAchievement
-	///   QuestType:
-	///     4:強化素材クエスト、5:進化素材クエスト
-	///   QuestId:
-	///     クエストID
-	///   DayOfWeek:
-	///     開催曜日（0:日曜〜6:土曜）
-	///   LockStatus:
-	///     0:ロック無し（開催曜日一致）、1:ロック中、2:アンロック中
-	///   UnlockDate:
-	///     アンロックした日時、LockStatus=2の時のみ評価
-	///   TimeToLock:
-	///     ロックまでの残り時間（秒）、LockStatus=2の時のみ評価
-	///   IsAchieved:
-	///     true:達成済み、false:未達成
-	///   AchievedMissionIdList:
-	///     達成済みMissionIdのリスト
-	///   ReceivedMissionRewardCount:
-	///     受取済みMission情報の個数（Mission全達成で1）
-	/// </summary>
-	public static void QuestsGetDailyAchievement(Action<bool, ReceiveQuestsGetDailyAchievement> didLoad)
-	{
-		SendQuestsGetDailyAchievement request = new SendQuestsGetDailyAchievement ();
-		AwsModule.Request.Exec<ReceiveQuestsGetDailyAchievement> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveQuestsGetDailyAchievement>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/quests/unlock_daily_quest
-	/// 曜日クエストのロックを外す
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   QuestType:
-	///     4:強化素材クエスト、5:進化素材クエスト
-	///   UnlockDayOfWeek:
-	///     アンロックする曜日（0:日曜〜6:土曜）
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   DailyQuestAchievementList:
-	///     アンロックしたクエストのDailyQuestAchievement
-	/// </summary>
-	public static void QuestsUnlockDailyQuest(int QuestType, int UnlockDayOfWeek, Action<bool, ReceiveQuestsUnlockDailyQuest> didLoad)
-	{
-		SendQuestsUnlockDailyQuest request = new SendQuestsUnlockDailyQuest ();
-		request.QuestType = QuestType;
-		request.UnlockDayOfWeek = UnlockDayOfWeek;
-		AwsModule.Request.Exec<ReceiveQuestsUnlockDailyQuest> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveQuestsUnlockDailyQuest>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/quests/get_main_country_list
-	/// メインクエストの国リストを所得する
-	/// - リクエスト
-	/// - レスポンス
-	///   MainQuestCountryDataList:
-	///     MainQuestCountryDataのリスト
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	/// - MainQuestCountryData:
-	///   MainQuestCountry:
-	///     国（1〜7）
-	///   IsOpen:
-	///     True:進行可、False:進行不可
-	///   IsNew:
-	///     True:未進行（達成クエスト無し）、False:進行済み
-	///   IsClear:
-	///     True:全クエストクリア済み、False:未クリア
-	/// </summary>
-	public static void QuestsGetMainCountryList(Action<bool, ReceiveQuestsGetMainCountryList> didLoad)
-	{
-		SendQuestsGetMainCountryList request = new SendQuestsGetMainCountryList ();
-		AwsModule.Request.Exec<ReceiveQuestsGetMainCountryList> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveQuestsGetMainCountryList>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/quests/get_main_achievement_by_country
-	/// メインクエストの国別達成状況のリストを所得する
-	/// - リクエスト
-	///   MainQuestCountry:
-	///     国（1〜7）
-	/// - レスポンス
-	///   QuestAchievementList:
-	///     QuestAchievementのリスト
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	/// - QuestAchievement:
-	///   QuestType:
-	///     1:メインクエスト、2:サブクエスト、3:キャラクエスト
-	///   QuestId:
-	///     クエストID
-	///   IsAchieved:
-	///     true:達成済、false:未達成
-	///   AchievedSelectionIdList:
-	///     選択済みSelectionIdのリスト
-	///   AchievedMissionIdList:
-	///     達成済みMissionIdのリスト
-	///   ReceivedMissionRewardCount:
-	///     受取済みMission報酬の個数
-	/// </summary>
-	public static void QuestsGetMainAchievementByCountry(int MainQuestCountry, Action<bool, ReceiveQuestsGetMainAchievementByCountry> didLoad)
-	{
-		SendQuestsGetMainAchievementByCountry request = new SendQuestsGetMainAchievementByCountry ();
-		request.MainQuestCountry = MainQuestCountry;
-		AwsModule.Request.Exec<ReceiveQuestsGetMainAchievementByCountry> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveQuestsGetMainAchievementByCountry>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/quests/get_achievement_by_type
-	/// 指定タイプのクエストの達成状況のリストを所得する
-	/// - リクエスト
-	///   QuestType:
-	///     クエストタイプ（1:メインクエスト、2:サブクエスト、3:キャラクエスト）
-	/// - レスポンス
-	///   QuestAchievementList:
-	///     QuestAchievementのリスト
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	/// - QuestAchievement:
-	///   QuestType:
-	///     1:メインクエスト、2:サブクエスト、3:キャラクエスト
-	///   QuestId:
-	///     クエストID
-	///   IsAchieved:
-	///     true:達成済、false:未達成
-	///   AchievedSelectionIdList:
-	///     選択済みSelectionIdのリスト
-	///   AchievedMissionIdList:
-	///     達成済みMissionIdのリスト
-	///   ReceivedMissionRewardCount:
-	///     受取済みMission報酬の個数
-	/// </summary>
-	public static void QuestsGetAchievementByType(int QuestType, Action<bool, ReceiveQuestsGetAchievementByType> didLoad)
-	{
-		SendQuestsGetAchievementByType request = new SendQuestsGetAchievementByType ();
-		request.QuestType = QuestType;
-		AwsModule.Request.Exec<ReceiveQuestsGetAchievementByType> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveQuestsGetAchievementByType>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/quests/get_achievement
-	/// クエストの達成状況のリストを所得する
-	/// - リクエスト
-	/// - レスポンス
-	///   QuestAchievementList:
-	///     QuestAchievementのリスト
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	/// - QuestAchievement:
-	///   QuestType:
-	///     1:メインクエスト、2:サブクエスト、3:キャラクエスト
-	///   QuestId:
-	///     クエストID
-	///   IsAchieved:
-	///     true:達成済、false:未達成
-	///   AchievedSelectionIdList:
-	///     選択済みSelectionIdのリスト
-	///   AchievedMissionIdList:
-	///     達成済みMissionIdのリスト
-	///   ReceivedMissionRewardCount:
-	///     受取済みMission報酬の個数
-	/// </summary>
-	public static void QuestsGetAchievement(Action<bool, ReceiveQuestsGetAchievement> didLoad)
-	{
-		SendQuestsGetAchievement request = new SendQuestsGetAchievement ();
-		AwsModule.Request.Exec<ReceiveQuestsGetAchievement> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveQuestsGetAchievement>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/quests/open_quest
-	/// クエスト開始を通知する
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   QuestId:
-	///     クエストID（イベントクエストの場合はステージ詳細ID）
-	///   StageId:
-	///     ＜バトル時のみ＞ステージID
-	///   MemberCardIdList:
-	///     ＜バトル時のみ＞バトルに参加するメンバーのCardIdのリスト
-	///   SupporterUserId（GuestUserIdから変更、当面はどちらでもOK）:
-	///     ＜バトル時のみ＞バトルに連れていくサポートカードの所持ユーザのUserId
-	///   SupporterCardId（GuestCardIdから変更、当面はどちらでもOK）:
-	///     ＜バトル時のみ＞バトルに連れていくサポートカードのCardId
-	///   OverrideExpPercentage:
-	///     ユニット経験値の上乗せ率（%）
-	///   OverrideGoldPercentage:
-	///     ゲーム内通貨の上乗せ率（%）
-	///   OverrideItemDropPercentage:
-	///     アイテムドロップ確率の上乗せ率（%）
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   BattleEntryData:
-	///     ＜バトル時のみ＞バトルエントリーデータ
-	/// - BattleEntryData:
-	///   EntryId:
-	///     エントリーID
-	///   StageId:
-	///     ステージID
-	///   MemberCardIdList:
-	///     バトルに参加するメンバーのCardIdのリスト
-	///   SupporterUserId:（GuestUserIdから変更、当面は両方）:
-	///     バトルに連れていくサポートカードの所持ユーザのUserId
-	///   SupporterCardId（GuestCardIdから変更、当面は両方）:
-	///     バトルに連れていくサポートカードのCardId
-	///   SupporterCardData
-	///     バトルに連れていくサポートカードのCardData（装備、育成ボードデータ込み）
-	///   DropItemIdList:
-	///     このバトルでドロップするアイテムのID（ドロップテーブルのID）のリスト
-	///     StageEnemyListに統合
-	///   StageEnemyList:
-	///     StageEnemyDataのリスト
-	///   CreationDate:
-	///     バトル開始日時
-	///   Status:
-	///     0:戦闘中、1:戦闘勝利、99:戦闘離脱
-	/// - StageEnemyData:
-	///   EnemyId:
-	///     敵ID（ステージ敵設定のID）
-	///   DropItemList:
-	///     この敵を倒した時にドロップする報酬、ItemDataのリスト
-	/// </summary>
-	public static void QuestsOpenQuest(int QuestId, int StageId, int[] MemberCardIdList, int SupporterUserId, int SupporterCardId, int OverrideExpPercentage, int OverrideGoldPercentage, int OverrideItemDropPercentage, Action<bool, ReceiveQuestsOpenQuest> didLoad)
-	{
-		SendQuestsOpenQuest request = new SendQuestsOpenQuest ();
-		request.QuestId = QuestId;
-		request.StageId = StageId;
-		request.MemberCardIdList = MemberCardIdList;
-		request.SupporterUserId = SupporterUserId;
-		request.SupporterCardId = SupporterCardId;
-		request.OverrideExpPercentage = OverrideExpPercentage;
-		request.OverrideGoldPercentage = OverrideGoldPercentage;
-		request.OverrideItemDropPercentage = OverrideItemDropPercentage;
-		AwsModule.Request.Exec<ReceiveQuestsOpenQuest> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveQuestsOpenQuest>(response, didLoad, false);
-		});
-	}
-
-	/// <summary>
 	/// URL: /api/quests/close_quest
 	/// クエスト終了を通知する
 	/// - リクエスト
@@ -1954,6 +1772,8 @@ public static class SendAPI
 	///     獲得イベントポイント（総数）
 	///   GainBonusEventPoint:
 	///     獲得ボーナスイベントポイント
+	///   GainFriendPoint:
+	///     獲得フレンドポイント
 	/// </summary>
 	public static void QuestsCloseQuest(int QuestId, bool IsAchieved, int EntryId, int[] SelectionIdList, int[] MissionIdList, Action<bool, ReceiveQuestsCloseQuest> didLoad)
 	{
@@ -1965,51 +1785,6 @@ public static class SendAPI
 		request.MissionIdList = MissionIdList;
 		AwsModule.Request.Exec<ReceiveQuestsCloseQuest> (request, (response) => {
 			AwsModule.Request.CheckResultCode<ReceiveQuestsCloseQuest>(response, didLoad, false);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/quests/skip_battle
-	/// チケットを使用してバトルをスキップする
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   QuestId:
-	///     クエストID
-	///   StageId:
-	///     ステージID
-	///   MemberCardIdList:
-	///     バトルに参加するメンバーのCardIdのリスト
-	///   SkipCount:
-	///     スキップ回数
-	///   OverrideExpPercentage:
-	///     ユニット経験値の上乗せ率（%）
-	///   OverrideGoldPercentage:
-	///     ゲーム内通貨の上乗せ率（%）
-	///   OverrideItemDropPercentage:
-	///     アイテムドロップ確率の上乗せ率（%）
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   BattleEntryDataList:
-	///     BattleEntryDataのリスト
-	///   UserData:
-	///     ユーザデータ
-	///   MemberCardDataList:
-	///     メンバーカードリスト、CardDataのリスト
-	/// </summary>
-	public static void QuestsSkipBattle(int QuestId, int StageId, int[] MemberCardIdList, int SkipCount, int OverrideExpPercentage, int OverrideGoldPercentage, int OverrideItemDropPercentage, Action<bool, ReceiveQuestsSkipBattle> didLoad)
-	{
-		SendQuestsSkipBattle request = new SendQuestsSkipBattle ();
-		request.QuestId = QuestId;
-		request.StageId = StageId;
-		request.MemberCardIdList = MemberCardIdList;
-		request.SkipCount = SkipCount;
-		request.OverrideExpPercentage = OverrideExpPercentage;
-		request.OverrideGoldPercentage = OverrideGoldPercentage;
-		request.OverrideItemDropPercentage = OverrideItemDropPercentage;
-		AwsModule.Request.Exec<ReceiveQuestsSkipBattle> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveQuestsSkipBattle>(response, didLoad, true);
 		});
 	}
 
@@ -2036,6 +1811,228 @@ public static class SendAPI
 		request.EntryId = EntryId;
 		AwsModule.Request.Exec<ReceiveQuestsContinueQuest> (request, (response) => {
 			AwsModule.Request.CheckResultCode<ReceiveQuestsContinueQuest>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/quests/get_achievement
+	/// クエストの達成状況のリストを所得する
+	/// - リクエスト
+	/// - レスポンス
+	///   QuestAchievementList:
+	///     QuestAchievementのリスト
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	/// - QuestAchievement:
+	///   QuestType:
+	///     1:メインクエスト、2:サブクエスト、3:キャラクエスト
+	///   QuestId:
+	///     クエストID
+	///   IsAchieved:
+	///     true:達成済、false:未達成
+	///   AchievedSelectionIdList:
+	///     選択済みSelectionIdのリスト
+	///   AchievedMissionIdList:
+	///     達成済みMissionIdのリスト
+	///   ReceivedMissionRewardCount:
+	///     受取済みMission報酬の個数
+	/// </summary>
+	public static void QuestsGetAchievement(Action<bool, ReceiveQuestsGetAchievement> didLoad)
+	{
+		SendQuestsGetAchievement request = new SendQuestsGetAchievement ();
+		AwsModule.Request.Exec<ReceiveQuestsGetAchievement> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsGetAchievement>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/quests/get_achievement_by_quest_id
+	/// 指定したクエストの達成状況を所得する
+	/// - リクエスト
+	///   QuestId:
+	///     クエストID
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   IsAchieved:
+	///     true:達成済み、false:未達成
+	/// </summary>
+	public static void QuestsGetAchievementByQuestId(int QuestId, Action<bool, ReceiveQuestsGetAchievementByQuestId> didLoad)
+	{
+		SendQuestsGetAchievementByQuestId request = new SendQuestsGetAchievementByQuestId ();
+		request.QuestId = QuestId;
+		AwsModule.Request.Exec<ReceiveQuestsGetAchievementByQuestId> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsGetAchievementByQuestId>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/quests/get_achievement_by_type
+	/// 指定タイプのクエストの達成状況のリストを所得する
+	/// - リクエスト
+	///   QuestType:
+	///     クエストタイプ（1:メインクエスト、2:サブクエスト、3:キャラクエスト）
+	/// - レスポンス
+	///   QuestAchievementList:
+	///     QuestAchievementのリスト
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	/// - QuestAchievement:
+	///   QuestType:
+	///     1:メインクエスト、2:サブクエスト、3:キャラクエスト
+	///   QuestId:
+	///     クエストID
+	///   IsAchieved:
+	///     true:達成済、false:未達成
+	///   AchievedSelectionIdList:
+	///     選択済みSelectionIdのリスト
+	///   AchievedMissionIdList:
+	///     達成済みMissionIdのリスト
+	///   ReceivedMissionRewardCount:
+	///     受取済みMission報酬の個数
+	/// </summary>
+	public static void QuestsGetAchievementByType(int QuestType, Action<bool, ReceiveQuestsGetAchievementByType> didLoad)
+	{
+		SendQuestsGetAchievementByType request = new SendQuestsGetAchievementByType ();
+		request.QuestType = QuestType;
+		AwsModule.Request.Exec<ReceiveQuestsGetAchievementByType> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsGetAchievementByType>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/quests/get_daily_achievement
+	/// 曜日クエストの達成リストを所得する
+	/// - リクエスト
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   DailyQuestAchievementList:
+	///     DailyQuestAchievementのリスト
+	/// - DailyQuestAchievement
+	///   QuestType:
+	///     4:強化素材クエスト、5:進化素材クエスト
+	///   QuestId:
+	///     クエストID
+	///   DayOfWeek:
+	///     開催曜日（0:日曜〜6:土曜）
+	///   LockStatus:
+	///     0:ロック無し（開催曜日一致）、1:ロック中、2:アンロック中
+	///   UnlockDate:
+	///     アンロックした日時、LockStatus=2の時のみ評価
+	///   TimeToLock:
+	///     ロックまでの残り時間（秒）、LockStatus=2の時のみ評価
+	///   IsAchieved:
+	///     true:達成済み、false:未達成
+	///   AchievedMissionIdList:
+	///     達成済みMissionIdのリスト
+	///   ReceivedMissionRewardCount:
+	///     受取済みMission情報の個数（Mission全達成で1）
+	/// </summary>
+	public static void QuestsGetDailyAchievement(Action<bool, ReceiveQuestsGetDailyAchievement> didLoad)
+	{
+		SendQuestsGetDailyAchievement request = new SendQuestsGetDailyAchievement ();
+		AwsModule.Request.Exec<ReceiveQuestsGetDailyAchievement> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsGetDailyAchievement>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/quests/get_event_quest_achievement
+	/// イベントクエストの達成リストを所得する
+	/// - リクエスト
+	///   EventQuestId:
+	///     イベントクエストID
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   EventQuestAchievementList:
+	///     EventQuestAchievementのリスト
+	/// - EventQuestAchievement
+	///   StageDetailId:
+	///     ステージ詳細ID
+	///   StageType:
+	///     1:シナリオ、2:チャレンジ
+	///   IsAchieved:
+	///     true:達成済み、false:未達成
+	///   AchievedMissionIdList:
+	///     達成済みMissionIdのリスト
+	///   ReceivedMissionRewardCount:
+	///     受取済みMission情報の個数（Mission全達成で1）
+	///   IsOpen:
+	///     true:プレイ可能、false:プレイ不可（開放条件および開始・終了日時で判定）
+	///   StartDate:
+	///     開始日時
+	///   EndDate:
+	///     終了日時
+	/// </summary>
+	public static void QuestsGetEventQuestAchievement(int EventQuestId, Action<bool, ReceiveQuestsGetEventQuestAchievement> didLoad)
+	{
+		SendQuestsGetEventQuestAchievement request = new SendQuestsGetEventQuestAchievement ();
+		request.EventQuestId = EventQuestId;
+		AwsModule.Request.Exec<ReceiveQuestsGetEventQuestAchievement> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsGetEventQuestAchievement>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/quests/get_main_achievement_by_country
+	/// メインクエストの国別達成状況のリストを所得する
+	/// - リクエスト
+	///   MainQuestCountry:
+	///     国（1〜7）
+	/// - レスポンス
+	///   QuestAchievementList:
+	///     QuestAchievementのリスト
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	/// - QuestAchievement:
+	///   QuestType:
+	///     1:メインクエスト、2:サブクエスト、3:キャラクエスト
+	///   QuestId:
+	///     クエストID
+	///   IsAchieved:
+	///     true:達成済、false:未達成
+	///   AchievedSelectionIdList:
+	///     選択済みSelectionIdのリスト
+	///   AchievedMissionIdList:
+	///     達成済みMissionIdのリスト
+	///   ReceivedMissionRewardCount:
+	///     受取済みMission報酬の個数
+	/// </summary>
+	public static void QuestsGetMainAchievementByCountry(int MainQuestCountry, Action<bool, ReceiveQuestsGetMainAchievementByCountry> didLoad)
+	{
+		SendQuestsGetMainAchievementByCountry request = new SendQuestsGetMainAchievementByCountry ();
+		request.MainQuestCountry = MainQuestCountry;
+		AwsModule.Request.Exec<ReceiveQuestsGetMainAchievementByCountry> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsGetMainAchievementByCountry>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/quests/get_main_country_list
+	/// メインクエストの国リストを所得する
+	/// - リクエスト
+	/// - レスポンス
+	///   MainQuestCountryDataList:
+	///     MainQuestCountryDataのリスト
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	/// - MainQuestCountryData:
+	///   MainQuestCountry:
+	///     国（1〜7）
+	///   IsOpen:
+	///     True:進行可、False:進行不可
+	///   IsNew:
+	///     True:未進行（達成クエスト無し）、False:進行済み
+	///   IsClear:
+	///     True:全クエストクリア済み、False:未クリア
+	/// </summary>
+	public static void QuestsGetMainCountryList(Action<bool, ReceiveQuestsGetMainCountryList> didLoad)
+	{
+		SendQuestsGetMainCountryList request = new SendQuestsGetMainCountryList ();
+		AwsModule.Request.Exec<ReceiveQuestsGetMainCountryList> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsGetMainCountryList>(response, didLoad, true);
 		});
 	}
 
@@ -2089,14 +2086,146 @@ public static class SendAPI
 	}
 
 	/// <summary>
-	/// URL: /register/
-	/// fuga
+	/// URL: /api/quests/open_quest
+	/// クエスト開始を通知する
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   QuestId:
+	///     クエストID（イベントクエストの場合はステージ詳細ID）
+	///   StageId:
+	///     ＜バトル時のみ＞ステージID
+	///   MemberCardIdList:
+	///     ＜バトル時のみ＞バトルに参加するメンバーのCardIdのリスト
+	///   SupporterUserId（GuestUserIdから変更、当面はどちらでもOK）:
+	///     ＜バトル時のみ＞バトルに連れていくサポートカードの所持ユーザのUserId
+	///   SupporterCardId（GuestCardIdから変更、当面はどちらでもOK）:
+	///     ＜バトル時のみ＞バトルに連れていくサポートカードのCardId
+	///   OverrideExpPercentage:
+	///     ユニット経験値の上乗せ率（%）
+	///   OverrideGoldPercentage:
+	///     ゲーム内通貨の上乗せ率（%）
+	///   OverrideItemDropPercentage:
+	///     アイテムドロップ確率の上乗せ率（%）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   BattleEntryData:
+	///     ＜バトル時のみ＞バトルエントリーデータ
+	/// - BattleEntryData:
+	///   EntryId:
+	///     エントリーID
+	///   StageId:
+	///     ステージID
+	///   MemberCardIdList:
+	///     バトルに参加するメンバーのCardIdのリスト
+	///   SupporterUserId:（GuestUserIdから変更、当面は両方）:
+	///     バトルに連れていくサポートカードの所持ユーザのUserId
+	///   SupporterCardId（GuestCardIdから変更、当面は両方）:
+	///     バトルに連れていくサポートカードのCardId
+	///   SupporterCardData
+	///     バトルに連れていくサポートカードのCardData（装備、育成ボードデータ込み）
+	///   DropItemIdList:
+	///     このバトルでドロップするアイテムのID（ドロップテーブルのID）のリスト
+	///     StageEnemyListに統合
+	///   StageEnemyList:
+	///     StageEnemyDataのリスト
+	///   CreationDate:
+	///     バトル開始日時
+	///   Status:
+	///     0:戦闘中、1:戦闘勝利、99:戦闘離脱
+	///   GainFriendPoint:
+	///     バトル勝利時に加算されるフレンドポイント
+	/// - StageEnemyData:
+	///   EnemyId:
+	///     敵ID（ステージ敵設定のID）
+	///   DropItemList:
+	///     この敵を倒した時にドロップする報酬、ItemDataのリスト
 	/// </summary>
-	public static void RegisterIndex(Action<bool, ReceiveRegisterIndex> didLoad)
+	public static void QuestsOpenQuest(int QuestId, int StageId, int[] MemberCardIdList, int SupporterUserId, int SupporterCardId, int OverrideExpPercentage, int OverrideGoldPercentage, int OverrideItemDropPercentage, Action<bool, ReceiveQuestsOpenQuest> didLoad)
 	{
-		SendRegisterIndex request = new SendRegisterIndex ();
-		AwsModule.Request.Exec<ReceiveRegisterIndex> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveRegisterIndex>(response, didLoad, true);
+		SendQuestsOpenQuest request = new SendQuestsOpenQuest ();
+		request.QuestId = QuestId;
+		request.StageId = StageId;
+		request.MemberCardIdList = MemberCardIdList;
+		request.SupporterUserId = SupporterUserId;
+		request.SupporterCardId = SupporterCardId;
+		request.OverrideExpPercentage = OverrideExpPercentage;
+		request.OverrideGoldPercentage = OverrideGoldPercentage;
+		request.OverrideItemDropPercentage = OverrideItemDropPercentage;
+		AwsModule.Request.Exec<ReceiveQuestsOpenQuest> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsOpenQuest>(response, didLoad, false);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/quests/skip_battle
+	/// チケットを使用してバトルをスキップする
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   QuestId:
+	///     クエストID
+	///   StageId:
+	///     ステージID
+	///   MemberCardIdList:
+	///     バトルに参加するメンバーのCardIdのリスト
+	///   SkipCount:
+	///     スキップ回数
+	///   OverrideExpPercentage:
+	///     ユニット経験値の上乗せ率（%）
+	///   OverrideGoldPercentage:
+	///     ゲーム内通貨の上乗せ率（%）
+	///   OverrideItemDropPercentage:
+	///     アイテムドロップ確率の上乗せ率（%）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   BattleEntryDataList:
+	///     BattleEntryDataのリスト
+	///   UserData:
+	///     ユーザデータ
+	///   MemberCardDataList:
+	///     メンバーカードリスト、CardDataのリスト
+	/// </summary>
+	public static void QuestsSkipBattle(int QuestId, int StageId, int[] MemberCardIdList, int SkipCount, int OverrideExpPercentage, int OverrideGoldPercentage, int OverrideItemDropPercentage, Action<bool, ReceiveQuestsSkipBattle> didLoad)
+	{
+		SendQuestsSkipBattle request = new SendQuestsSkipBattle ();
+		request.QuestId = QuestId;
+		request.StageId = StageId;
+		request.MemberCardIdList = MemberCardIdList;
+		request.SkipCount = SkipCount;
+		request.OverrideExpPercentage = OverrideExpPercentage;
+		request.OverrideGoldPercentage = OverrideGoldPercentage;
+		request.OverrideItemDropPercentage = OverrideItemDropPercentage;
+		AwsModule.Request.Exec<ReceiveQuestsSkipBattle> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsSkipBattle>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/quests/unlock_daily_quest
+	/// 曜日クエストのロックを外す
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   QuestType:
+	///     4:強化素材クエスト、5:進化素材クエスト
+	///   UnlockDayOfWeek:
+	///     アンロックする曜日（0:日曜〜6:土曜）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   DailyQuestAchievementList:
+	///     アンロックしたクエストのDailyQuestAchievement
+	/// </summary>
+	public static void QuestsUnlockDailyQuest(int QuestType, int UnlockDayOfWeek, Action<bool, ReceiveQuestsUnlockDailyQuest> didLoad)
+	{
+		SendQuestsUnlockDailyQuest request = new SendQuestsUnlockDailyQuest ();
+		request.QuestType = QuestType;
+		request.UnlockDayOfWeek = UnlockDayOfWeek;
+		AwsModule.Request.Exec<ReceiveQuestsUnlockDailyQuest> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveQuestsUnlockDailyQuest>(response, didLoad, true);
 		});
 	}
 
@@ -2217,91 +2346,6 @@ public static class SendAPI
 	}
 
 	/// <summary>
-	/// URL: /takeover/get_fgid_login_info
-	/// - ＜引き継ぎ実行用＞FGIDにログインするための情報を所得する
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   LoginUrl:
-	///     ブラウザ（iOS: WebView、Android:標準ブラウザ）で開くURL
-	///   GameToken:
-	///     FGIDとのセッションを管理するトークン
-	/// </summary>
-	public static void TakeoverGetFgidLoginInfo(Action<bool, ReceiveTakeoverGetFgidLoginInfo> didLoad)
-	{
-		SendTakeoverGetFgidLoginInfo request = new SendTakeoverGetFgidLoginInfo ();
-		AwsModule.Request.Exec<ReceiveTakeoverGetFgidLoginInfo> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveTakeoverGetFgidLoginInfo>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /takeover/confirm_user
-	///     - FGIDと連携済みのユーザのユーザ情報を返却する
-	///       ※FGIDにログイン後の、サイト内のアプリ起動用URLから起動（再開）した時のみコールすること
-	///     - リクエスト
-	///       RequestId:
-	///         リクエストID（多重処理防止用）
-	///       GameToken:
-	///         FGIDとのセッションを管理するトークン
-	///         ※get_fgid_login_infoで受け取った値かアプリ起動用URLから所得した値（違う場合は改竄の可能
-	/// 性）
-	///     - レスポンス
-	///       ResultCode:
-	///         0:成功、1以上:失敗
-	///       UserId:
-	///         ユニークID
-	///       CustomerId:
-	///         お客様番号
-	///       Nickname:
-	///         ニックネーム:
-	///       Exp:
-	///         経験値
-	/// </summary>
-	public static void TakeoverConfirmUser(string GameToken, Action<bool, ReceiveTakeoverConfirmUser> didLoad)
-	{
-		SendTakeoverConfirmUser request = new SendTakeoverConfirmUser ();
-		request.GameToken = GameToken;
-		AwsModule.Request.Exec<ReceiveTakeoverConfirmUser> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveTakeoverConfirmUser>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /takeover/resume_user
-	/// - FGIDと連携済みのユーザとしてゲームを再開する
-	///   ※FGIDにログイン後の、サイト内のアプリ起動用URLから起動（再開）した時のみコールすること
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   GameToken:
-	///     FGIDとのセッションを管理するトークン
-	///     ※get_fgid_login_infoで受け取った値かアプリ起動用URLから所得した値（違う場合は改竄の可能性）
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   AuthUsername:
-	///     認証用ユーザ名
-	///   AuthPassword:
-	///     認証用パスワード（旧ユーザ使用のパスワードは無効にする→旧ユーザはログイン不可）
-	///   UserId:
-	///     ユニークID
-	///   CustomerId:
-	///     お客様番号
-	/// </summary>
-	public static void TakeoverResumeUser(string GameToken, Action<bool, ReceiveTakeoverResumeUser> didLoad)
-	{
-		SendTakeoverResumeUser request = new SendTakeoverResumeUser ();
-		request.GameToken = GameToken;
-		AwsModule.Request.Exec<ReceiveTakeoverResumeUser> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveTakeoverResumeUser>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
 	/// URL: /api/teams/get_card_list
 	/// - 所持カードリストの所得
 	/// - リクエスト
@@ -2383,52 +2427,6 @@ public static class SendAPI
 	}
 
 	/// <summary>
-	/// URL: /api/users/search_by_customer_id
-	/// - プレイヤーIDで検索する
-	/// - リクエスト
-	///   CustomerId:
-	///     プレイヤーID(カスタマーID)
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   UserDataList:
-	///     UserDataのリスト
-	///   MasterVersion:
-	///     マスターバージョン番号
-	/// </summary>
-	public static void UsersSearchByCustomerId(string CustomerId, Action<bool, ReceiveUsersSearchByCustomerId> didLoad)
-	{
-		SendUsersSearchByCustomerId request = new SendUsersSearchByCustomerId ();
-		request.CustomerId = CustomerId;
-		AwsModule.Request.Exec<ReceiveUsersSearchByCustomerId> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveUsersSearchByCustomerId>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/users/search_by_nickname
-	/// - ニックネームで検索する
-	/// - リクエスト
-	///   Keyword:
-	///     検索ワード
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   UserDataList:
-	///     UserDataのリスト
-	///   MasterVersion:
-	///     マスターバージョン番号
-	/// </summary>
-	public static void UsersSearchByNickname(string Keyword, Action<bool, ReceiveUsersSearchByNickname> didLoad)
-	{
-		SendUsersSearchByNickname request = new SendUsersSearchByNickname ();
-		request.Keyword = Keyword;
-		AwsModule.Request.Exec<ReceiveUsersSearchByNickname> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveUsersSearchByNickname>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
 	/// URL: /api/users/follow_user
 	/// - 指定ユーザをフォローする
 	/// - リクエスト
@@ -2441,6 +2439,8 @@ public static class SendAPI
 	///     0:成功、1以上:失敗
 	///   UserData:
 	///     ユーザデータ
+	///   FriendData:
+	///     フレンドデータ
 	///   MasterVersion:
 	///     マスターバージョン番号
 	/// </summary>
@@ -2454,50 +2454,22 @@ public static class SendAPI
 	}
 
 	/// <summary>
-	/// URL: /api/users/unfollow_user
-	/// - 指定ユーザのフォローをやめる
+	/// URL: /api/users/get_battle_supporter_list
+	/// - サポート候補一覧の所得
 	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   UserId:
-	///     フォローをやめるユーザID
 	/// - レスポンス
 	///   ResultCode:
 	///     0:成功、1以上:失敗
-	///   UserData:
-	///     ユーザデータ
+	///   UserDataList:
+	///     UserDataのリスト
 	///   MasterVersion:
 	///     マスターバージョン番号
 	/// </summary>
-	public static void UsersUnfollowUser(int UserId, Action<bool, ReceiveUsersUnfollowUser> didLoad)
+	public static void UsersGetBattleSupporterList(Action<bool, ReceiveUsersGetBattleSupporterList> didLoad)
 	{
-		SendUsersUnfollowUser request = new SendUsersUnfollowUser ();
-		request.UserId = UserId;
-		AwsModule.Request.Exec<ReceiveUsersUnfollowUser> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveUsersUnfollowUser>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/users/remove_follower
-	/// - 指定ユーザからのフォローを外す(フォロワーを外す)
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   UserId:
-	///     フォローを外すユーザID
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   MasterVersion:
-	///     マスターバージョン番号
-	/// </summary>
-	public static void UsersRemoveFollower(int UserId, Action<bool, ReceiveUsersRemoveFollower> didLoad)
-	{
-		SendUsersRemoveFollower request = new SendUsersRemoveFollower ();
-		request.UserId = UserId;
-		AwsModule.Request.Exec<ReceiveUsersRemoveFollower> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveUsersRemoveFollower>(response, didLoad, true);
+		SendUsersGetBattleSupporterList request = new SendUsersGetBattleSupporterList ();
+		AwsModule.Request.Exec<ReceiveUsersGetBattleSupporterList> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveUsersGetBattleSupporterList>(response, didLoad, true);
 		});
 	}
 
@@ -2556,26 +2528,6 @@ public static class SendAPI
 		request.SortOrder = SortOrder;
 		AwsModule.Request.Exec<ReceiveUsersGetFollowerList> (request, (response) => {
 			AwsModule.Request.CheckResultCode<ReceiveUsersGetFollowerList>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/users/get_battle_supporter_list
-	/// - サポート候補一覧の所得
-	/// - リクエスト
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   UserDataList:
-	///     UserDataのリスト
-	///   MasterVersion:
-	///     マスターバージョン番号
-	/// </summary>
-	public static void UsersGetBattleSupporterList(Action<bool, ReceiveUsersGetBattleSupporterList> didLoad)
-	{
-		SendUsersGetBattleSupporterList request = new SendUsersGetBattleSupporterList ();
-		AwsModule.Request.Exec<ReceiveUsersGetBattleSupporterList> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveUsersGetBattleSupporterList>(response, didLoad, true);
 		});
 	}
 
@@ -2649,6 +2601,12 @@ public static class SendAPI
 	///     未受取のプレゼントBOX内アイテム数
 	///   ReceivableLoginbonusIdList: #自分の場合のみ
 	///     受取可能なログインボーナスID
+	///   ActionPointHealCost:
+	///     AP回復のコスト
+	///   BattlePointHealCost:
+	///     BP回復のコスト
+	///   GainFriendPointOnSupport: #他人の場合のみ
+	///     サポートに連れていった時に双方が獲得できるフレンドポイント
 	/// </summary>
 	public static void UsersGetUserData(int[] UserIdList, Action<bool, ReceiveUsersGetUserData> didLoad)
 	{
@@ -2756,6 +2714,100 @@ public static class SendAPI
 	}
 
 	/// <summary>
+	/// URL: /api/users/remove_follower
+	/// - 指定ユーザからのフォローを外す(フォロワーを外す)
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   UserId:
+	///     フォローを外すユーザID
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// </summary>
+	public static void UsersRemoveFollower(int UserId, Action<bool, ReceiveUsersRemoveFollower> didLoad)
+	{
+		SendUsersRemoveFollower request = new SendUsersRemoveFollower ();
+		request.UserId = UserId;
+		AwsModule.Request.Exec<ReceiveUsersRemoveFollower> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveUsersRemoveFollower>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/users/search_by_customer_id
+	/// - プレイヤーIDで検索する
+	/// - リクエスト
+	///   CustomerId:
+	///     プレイヤーID(カスタマーID)
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   UserDataList:
+	///     UserDataのリスト
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// </summary>
+	public static void UsersSearchByCustomerId(string CustomerId, Action<bool, ReceiveUsersSearchByCustomerId> didLoad)
+	{
+		SendUsersSearchByCustomerId request = new SendUsersSearchByCustomerId ();
+		request.CustomerId = CustomerId;
+		AwsModule.Request.Exec<ReceiveUsersSearchByCustomerId> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveUsersSearchByCustomerId>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/users/search_by_nickname
+	/// - ニックネームで検索する
+	/// - リクエスト
+	///   Keyword:
+	///     検索ワード
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   UserDataList:
+	///     UserDataのリスト
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// </summary>
+	public static void UsersSearchByNickname(string Keyword, Action<bool, ReceiveUsersSearchByNickname> didLoad)
+	{
+		SendUsersSearchByNickname request = new SendUsersSearchByNickname ();
+		request.Keyword = Keyword;
+		AwsModule.Request.Exec<ReceiveUsersSearchByNickname> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveUsersSearchByNickname>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/users/unfollow_user
+	/// - 指定ユーザのフォローをやめる
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   UserId:
+	///     フォローをやめるユーザID
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   UserData:
+	///     ユーザデータ
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// </summary>
+	public static void UsersUnfollowUser(int UserId, Action<bool, ReceiveUsersUnfollowUser> didLoad)
+	{
+		SendUsersUnfollowUser request = new SendUsersUnfollowUser ();
+		request.UserId = UserId;
+		AwsModule.Request.Exec<ReceiveUsersUnfollowUser> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveUsersUnfollowUser>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
 	/// URL: /api/weapons/get_weapon_list
 	/// - 所持武器リストの所得
 	/// - リクエスト
@@ -2797,6 +2849,36 @@ public static class SendAPI
 	}
 
 	/// <summary>
+	/// URL: /api/weapons/limit_break_weapon
+	/// - 武器を限界突破する
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   WeaponBagId:
+	///     限界突破する武器のBagId
+	///   MaterialWeaponBagIdList:
+	///     素材にする武器のBagIdのリスト
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   WeaponData:
+	///     WeaponData
+	///   UserData:
+	///     UserData
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// </summary>
+	public static void WeaponsLimitBreakWeapon(long WeaponBagId, long[] MaterialWeaponBagIdList, Action<bool, ReceiveWeaponsLimitBreakWeapon> didLoad)
+	{
+		SendWeaponsLimitBreakWeapon request = new SendWeaponsLimitBreakWeapon ();
+		request.WeaponBagId = WeaponBagId;
+		request.MaterialWeaponBagIdList = MaterialWeaponBagIdList;
+		AwsModule.Request.Exec<ReceiveWeaponsLimitBreakWeapon> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveWeaponsLimitBreakWeapon>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
 	/// URL: /api/weapons/lock_weapon
 	/// - 武器をロックする
 	/// - リクエスト
@@ -2818,31 +2900,6 @@ public static class SendAPI
 		request.WeaponBagId = WeaponBagId;
 		AwsModule.Request.Exec<ReceiveWeaponsLockWeapon> (request, (response) => {
 			AwsModule.Request.CheckResultCode<ReceiveWeaponsLockWeapon>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
-	/// URL: /api/weapons/unlock_weapon
-	/// - 武器をアンロックする
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   WeaponBagId:
-	///     アンロックする武器のBagId
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   WeaponData:
-	///     WeaponData
-	///   MasterVersion:
-	///     マスターバージョン番号
-	/// </summary>
-	public static void WeaponsUnlockWeapon(long WeaponBagId, Action<bool, ReceiveWeaponsUnlockWeapon> didLoad)
-	{
-		SendWeaponsUnlockWeapon request = new SendWeaponsUnlockWeapon ();
-		request.WeaponBagId = WeaponBagId;
-		AwsModule.Request.Exec<ReceiveWeaponsUnlockWeapon> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveWeaponsUnlockWeapon>(response, didLoad, true);
 		});
 	}
 
@@ -2879,36 +2936,6 @@ public static class SendAPI
 	}
 
 	/// <summary>
-	/// URL: /api/weapons/limit_break_weapon
-	/// - 武器を限界突破する
-	/// - リクエスト
-	///   RequestId:
-	///     リクエストID（多重処理防止用）
-	///   WeaponBagId:
-	///     限界突破する武器のBagId
-	///   MaterialWeaponBagIdList:
-	///     素材にする武器のBagIdのリスト
-	/// - レスポンス
-	///   ResultCode:
-	///     0:成功、1以上:失敗
-	///   WeaponData:
-	///     WeaponData
-	///   UserData:
-	///     UserData
-	///   MasterVersion:
-	///     マスターバージョン番号
-	/// </summary>
-	public static void WeaponsLimitBreakWeapon(long WeaponBagId, long[] MaterialWeaponBagIdList, Action<bool, ReceiveWeaponsLimitBreakWeapon> didLoad)
-	{
-		SendWeaponsLimitBreakWeapon request = new SendWeaponsLimitBreakWeapon ();
-		request.WeaponBagId = WeaponBagId;
-		request.MaterialWeaponBagIdList = MaterialWeaponBagIdList;
-		AwsModule.Request.Exec<ReceiveWeaponsLimitBreakWeapon> (request, (response) => {
-			AwsModule.Request.CheckResultCode<ReceiveWeaponsLimitBreakWeapon>(response, didLoad, true);
-		});
-	}
-
-	/// <summary>
 	/// URL: /api/weapons/sell_weapon
 	/// - 武器を売却する
 	/// - リクエスト
@@ -2930,6 +2957,154 @@ public static class SendAPI
 		request.WeaponBagIdList = WeaponBagIdList;
 		AwsModule.Request.Exec<ReceiveWeaponsSellWeapon> (request, (response) => {
 			AwsModule.Request.CheckResultCode<ReceiveWeaponsSellWeapon>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /api/weapons/unlock_weapon
+	/// - 武器をアンロックする
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   WeaponBagId:
+	///     アンロックする武器のBagId
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   WeaponData:
+	///     WeaponData
+	///   MasterVersion:
+	///     マスターバージョン番号
+	/// </summary>
+	public static void WeaponsUnlockWeapon(long WeaponBagId, Action<bool, ReceiveWeaponsUnlockWeapon> didLoad)
+	{
+		SendWeaponsUnlockWeapon request = new SendWeaponsUnlockWeapon ();
+		request.WeaponBagId = WeaponBagId;
+		AwsModule.Request.Exec<ReceiveWeaponsUnlockWeapon> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveWeaponsUnlockWeapon>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /auth/
+	/// blah
+	/// </summary>
+	public static void AuthIndex(string Username, string Password, Action<bool, ReceiveAuthIndex> didLoad)
+	{
+		SendAuthIndex request = new SendAuthIndex ();
+		request.Username = Username;
+		request.Password = Password;
+		AwsModule.Request.Exec<ReceiveAuthIndex> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveAuthIndex>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /filelist/
+	/// blah
+	/// </summary>
+	public static void FilelistIndex(Action<bool, ReceiveFilelistIndex> didLoad)
+	{
+		SendFilelistIndex request = new SendFilelistIndex ();
+		AwsModule.Request.Exec<ReceiveFilelistIndex> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveFilelistIndex>(response, didLoad, false);
+		});
+	}
+
+	/// <summary>
+	/// URL: /register/
+	/// fuga
+	/// </summary>
+	public static void RegisterIndex(Action<bool, ReceiveRegisterIndex> didLoad)
+	{
+		SendRegisterIndex request = new SendRegisterIndex ();
+		AwsModule.Request.Exec<ReceiveRegisterIndex> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveRegisterIndex>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /takeover/confirm_user
+	///     - FGIDと連携済みのユーザのユーザ情報を返却する
+	///       ※FGIDにログイン後の、サイト内のアプリ起動用URLから起動（再開）した時のみコールすること
+	///     - リクエスト
+	///       RequestId:
+	///         リクエストID（多重処理防止用）
+	///       GameToken:
+	///         FGIDとのセッションを管理するトークン
+	///         ※get_fgid_login_infoで受け取った値かアプリ起動用URLから所得した値（違う場合は改竄の可能
+	/// 性）
+	///     - レスポンス
+	///       ResultCode:
+	///         0:成功、1以上:失敗
+	///       UserId:
+	///         ユニークID
+	///       CustomerId:
+	///         お客様番号
+	///       Nickname:
+	///         ニックネーム:
+	///       Exp:
+	///         経験値
+	/// </summary>
+	public static void TakeoverConfirmUser(string GameToken, Action<bool, ReceiveTakeoverConfirmUser> didLoad)
+	{
+		SendTakeoverConfirmUser request = new SendTakeoverConfirmUser ();
+		request.GameToken = GameToken;
+		AwsModule.Request.Exec<ReceiveTakeoverConfirmUser> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveTakeoverConfirmUser>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /takeover/get_fgid_login_info
+	/// - ＜引き継ぎ実行用＞FGIDにログインするための情報を所得する
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   LoginUrl:
+	///     ブラウザ（iOS: WebView、Android:標準ブラウザ）で開くURL
+	///   GameToken:
+	///     FGIDとのセッションを管理するトークン
+	/// </summary>
+	public static void TakeoverGetFgidLoginInfo(Action<bool, ReceiveTakeoverGetFgidLoginInfo> didLoad)
+	{
+		SendTakeoverGetFgidLoginInfo request = new SendTakeoverGetFgidLoginInfo ();
+		AwsModule.Request.Exec<ReceiveTakeoverGetFgidLoginInfo> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveTakeoverGetFgidLoginInfo>(response, didLoad, true);
+		});
+	}
+
+	/// <summary>
+	/// URL: /takeover/resume_user
+	/// - FGIDと連携済みのユーザとしてゲームを再開する
+	///   ※FGIDにログイン後の、サイト内のアプリ起動用URLから起動（再開）した時のみコールすること
+	/// - リクエスト
+	///   RequestId:
+	///     リクエストID（多重処理防止用）
+	///   GameToken:
+	///     FGIDとのセッションを管理するトークン
+	///     ※get_fgid_login_infoで受け取った値かアプリ起動用URLから所得した値（違う場合は改竄の可能性）
+	/// - レスポンス
+	///   ResultCode:
+	///     0:成功、1以上:失敗
+	///   AuthUsername:
+	///     認証用ユーザ名
+	///   AuthPassword:
+	///     認証用パスワード（旧ユーザ使用のパスワードは無効にする→旧ユーザはログイン不可）
+	///   UserId:
+	///     ユニークID
+	///   CustomerId:
+	///     お客様番号
+	/// </summary>
+	public static void TakeoverResumeUser(string GameToken, Action<bool, ReceiveTakeoverResumeUser> didLoad)
+	{
+		SendTakeoverResumeUser request = new SendTakeoverResumeUser ();
+		request.GameToken = GameToken;
+		AwsModule.Request.Exec<ReceiveTakeoverResumeUser> (request, (response) => {
+			AwsModule.Request.CheckResultCode<ReceiveTakeoverResumeUser>(response, didLoad, true);
 		});
 	}
 

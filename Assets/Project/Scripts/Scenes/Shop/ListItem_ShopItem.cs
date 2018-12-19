@@ -90,5 +90,6 @@ public class ListItem_ShopItem : ViewBase
 
 	private Action<ShopProductData> m_didBuy;
 	private ShopList m_data;
+	public ShopList Data { get { return m_data; } }
 	private ShopProductData m_res;
 }

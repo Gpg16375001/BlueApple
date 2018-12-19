@@ -161,6 +161,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1032423148983452
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224906540395735692}
+  m_Layer: 5
+  m_Name: ArrowRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
 --- !u!1 &1033391770715636
 GameObject:
   m_ObjectHideFlags: 1
@@ -357,6 +372,25 @@ GameObject:
   - component: {fileID: 114028976333947162}
   m_Layer: 0
   m_Name: img_UnitStatusBase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1073559754764406
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224014853958165590}
+  - component: {fileID: 222420225584012916}
+  - component: {fileID: 114984408972363996}
+  - component: {fileID: 114804644791822568}
+  - component: {fileID: 111622562402353698}
+  m_Layer: 5
+  m_Name: bt_ArrowPage_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1070,6 +1104,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!1 &1178938383292398
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224998917788106060}
+  - component: {fileID: 222736707869954282}
+  - component: {fileID: 114031601699666484}
+  m_Layer: 5
+  m_Name: img_Add_ArrowPage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1179457067424544
 GameObject:
   m_ObjectHideFlags: 1
@@ -1245,6 +1296,25 @@ GameObject:
   - component: {fileID: 224072046343329960}
   m_Layer: 5
   m_Name: Star5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1208986769507930
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224262709087962976}
+  - component: {fileID: 222298463453556124}
+  - component: {fileID: 114760701308519338}
+  - component: {fileID: 114623600138565638}
+  - component: {fileID: 111432836850825288}
+  m_Layer: 5
+  m_Name: bt_ArrowPage_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1814,6 +1884,21 @@ GameObject:
   - component: {fileID: 224489175108378484}
   m_Layer: 0
   m_Name: WeaponRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1296710684908706
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224771379555459518}
+  m_Layer: 5
+  m_Name: AutoSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2495,6 +2580,21 @@ GameObject:
   - component: {fileID: 114894427030159392}
   m_Layer: 0
   m_Name: FormationEffectIcon3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!1 &1390942723058050
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224737394416955630}
+  m_Layer: 5
+  m_Name: ArrowLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5129,6 +5229,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1807369428151778
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224328842679987702}
+  - component: {fileID: 222403531599353056}
+  - component: {fileID: 114423586707822040}
+  - component: {fileID: 114253095235425428}
+  m_Layer: 5
+  m_Name: txtp_AutoSelect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1808009389614230
 GameObject:
   m_ObjectHideFlags: 1
@@ -5784,6 +5902,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1955610013644512
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224786793195498514}
+  - component: {fileID: 222841858464651070}
+  - component: {fileID: 114890051348781334}
+  - component: {fileID: 114814868926012634}
+  m_Layer: 5
+  m_Name: bt_CommonS01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1956892523246120
 GameObject:
   m_ObjectHideFlags: 1
@@ -5914,6 +6050,23 @@ GameObject:
   - component: {fileID: 224033637674755410}
   m_Layer: 0
   m_Name: FormationIconRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1982430353159270
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224252318527632232}
+  - component: {fileID: 222234880996407346}
+  - component: {fileID: 114594224609109200}
+  m_Layer: 5
+  m_Name: img_Add_ArrowPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6181,6 +6334,36 @@ Transform:
   m_Father: {fileID: 224075113905344112}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &111432836850825288
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208986769507930}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 706e8439deeb0e74c86875d8729a99a3, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 706e8439deeb0e74c86875d8729a99a3, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!111 &111622562402353698
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1073559754764406}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 706e8439deeb0e74c86875d8729a99a3, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 706e8439deeb0e74c86875d8729a99a3, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &114000208624723590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6536,6 +6719,33 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114031601699666484
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1178938383292398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 6b1579f5bdfcb4f4ca37293ac3496dad, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 981538c3edca30f42b2be22d2388779b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &114032897596807150
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6855,11 +7065,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114045174739466322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7768,11 +7986,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114139270801407526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7988,11 +8214,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114155300352727058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8614,11 +8848,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114210218184915644
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9141,6 +9383,24 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114253095235425428
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1807369428151778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f7382b9bd974bb1922868d5751c088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+    m_DisabledColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
 --- !u!114 &114259509204667530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9195,12 +9455,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects:
   - {fileID: 1665065969435488}
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114260812939007592
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9674,12 +9942,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects:
   - {fileID: 1790567512496766}
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114295784896696404
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10910,6 +11186,118 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114423586707822040
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1807369428151778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1453722849, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_text: "\u304A\u307E\u304B\u305B\u7DE8\u6210"
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 01d6a950ce2eea24487737daf2cde4b2, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 7310a20ddc22a3e42ac94f0bfb05d388, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_enableVertexGradient: 0
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_outlineColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontSize: 17.2738
+  m_fontSizeBase: 17.2738
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_textAlignment: 4098
+  m_isAlignmentEnumConverted: 1
+  m_characterSpacing: 4
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_firstOverflowCharacterIndex: -1
+  m_linkedTextComponent: {fileID: 0}
+  m_isLinkedTextComponent: 0
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_ignoreRectMaskCulling: 0
+  m_ignoreCulling: 1
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_firstVisibleCharacter: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_textInfo:
+    textComponent: {fileID: 114423586707822040}
+    characterCount: 6
+    spriteCount: 0
+    spaceCount: 0
+    wordCount: 1
+    linkCount: 0
+    lineCount: 1
+    pageCount: 1
+    materialCount: 1
+  m_havePropertiesChanged: 1
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 1
+  m_inputSource: 0
+  m_hasFontAssetChanged: 0
+  m_subTextObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &114425511892639722
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11572,11 +11960,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114481954876094266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12527,11 +12923,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114580354340753982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12758,6 +13162,33 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: df57fc5514f3e234a8ac68c3a18d79f2, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!114 &114594224609109200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1982430353159270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 6b1579f5bdfcb4f4ca37293ac3496dad, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 981538c3edca30f42b2be22d2388779b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13021,6 +13452,72 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114623600138565638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208986769507930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9059ed08ef004fa4b63c073c592bb66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 2
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 114760701308519338}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_PlayClickSe: 0
+  m_OnClickSe: 0
+  m_OnLongPress:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnRelease:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_PlayLongPressSe: 0
+  m_OnLongPressSe: 0
+  m_TransitionObjects: []
+  m_EnableLongPress: 0
+  m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114628213242027610
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -13421,11 +13918,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114653866289811056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -13696,11 +14201,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114666661560209628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -14003,11 +14516,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114693118043609584
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -14116,11 +14637,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114706603322176606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -14524,6 +15053,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   atlas: {fileID: 4343727234628468602, guid: ccf987e22f3b2c6488420101dfb5eb6d, type: 2}
   spriteName: 
+--- !u!114 &114760701308519338
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208986769507930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 77d3e3958096aab4e966a0d23d0db39c, type: 2}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.5019608}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: f91194d109a90f34d99fdb9a95413b5e, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &114761653823330128
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -15437,6 +15993,72 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114804644791822568
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1073559754764406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9059ed08ef004fa4b63c073c592bb66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 2
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 114984408972363996}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_PlayClickSe: 0
+  m_OnClickSe: 0
+  m_OnLongPress:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnRelease:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_PlayLongPressSe: 0
+  m_OnLongPressSe: 0
+  m_TransitionObjects: []
+  m_EnableLongPress: 0
+  m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114807271131524204
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -15630,12 +16252,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects:
   - {fileID: 1958157794442084}
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114814826350175874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -15663,6 +16293,73 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114814868926012634
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1955610013644512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9059ed08ef004fa4b63c073c592bb66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+    m_DisabledColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 114890051348781334}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_PlayClickSe: 1
+  m_OnClickSe: 40002
+  m_OnLongPress:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnRelease:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_PlayLongPressSe: 0
+  m_OnLongPressSe: 0
+  m_TransitionObjects:
+  - {fileID: 1807369428151778}
+  m_EnableLongPress: 0
+  m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114819348334150920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -16862,6 +17559,33 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114890051348781334
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1955610013644512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: cf855b9eac0108b44ab2a239a82d58a1, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &114893015796856704
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -17203,11 +17927,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114928562422681046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -17663,6 +18395,33 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114984408972363996
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1073559754764406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 77d3e3958096aab4e966a0d23d0db39c, type: 2}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.5019608}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: f91194d109a90f34d99fdb9a95413b5e, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &114986970211996378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -24970,6 +25729,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1618383627029522}
+--- !u!222 &222234880996407346
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1982430353159270}
 --- !u!222 &222239258092946254
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -25042,6 +25807,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1381005391251164}
+--- !u!222 &222298463453556124
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208986769507930}
 --- !u!222 &222299657366428216
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -25204,6 +25975,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1995831550235910}
+--- !u!222 &222403531599353056
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1807369428151778}
 --- !u!222 &222410841433435272
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -25234,6 +26011,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1922362350285826}
+--- !u!222 &222420225584012916
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1073559754764406}
 --- !u!222 &222425740969004822
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -25660,6 +26443,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1445112904437518}
+--- !u!222 &222736707869954282
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1178938383292398}
 --- !u!222 &222747114849258458
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -25816,6 +26605,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1013829500740184}
+--- !u!222 &222841858464651070
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1955610013644512}
 --- !u!222 &222849716612613838
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -26120,6 +26915,25 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 54, y: -24}
   m_SizeDelta: {x: 39, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224014853958165590
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1073559754764406}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -8.693653, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 224998917788106060}
+  m_Father: {fileID: 224737394416955630}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -8.693652, y: 0}
+  m_SizeDelta: {x: 65, y: 135}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224022051884003272
 RectTransform:
@@ -27888,6 +28702,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 28, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224252318527632232
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1982430353159270}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224262709087962976}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 62, y: 150}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224255525355244280
 RectTransform:
   m_ObjectHideFlags: 1
@@ -27924,6 +28756,25 @@ RectTransform:
   m_AnchoredPosition: {x: -330.625, y: -536.25}
   m_SizeDelta: {x: 26, y: 34}
   m_Pivot: {x: 0, y: 1}
+--- !u!224 &224262709087962976
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208986769507930}
+  m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.693653, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 224252318527632232}
+  m_Father: {fileID: 224906540395735692}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -8.693652, y: 0}
+  m_SizeDelta: {x: 65, y: 135}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224266488575325134
 RectTransform:
   m_ObjectHideFlags: 1
@@ -28415,6 +29266,24 @@ RectTransform:
   m_AnchoredPosition: {x: -346.875, y: -525}
   m_SizeDelta: {x: 26, y: 34}
   m_Pivot: {x: 0, y: 1}
+--- !u!224 &224328842679987702
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1807369428151778}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 196, y: 275.59998, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224771379555459518}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 196, y: 275.59998}
+  m_SizeDelta: {x: 124, y: 36}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224331519541119468
 RectTransform:
   m_ObjectHideFlags: 1
@@ -31123,6 +31992,25 @@ RectTransform:
   m_AnchoredPosition: {x: -0.099998474, y: 0}
   m_SizeDelta: {x: 48, y: 19}
   m_Pivot: {x: 1, y: 1}
+--- !u!224 &224737394416955630
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1390942723058050}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -504, y: -45.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 224014853958165590}
+  m_Father: {fileID: 224746366308973276}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -504, y: -45.5}
+  m_SizeDelta: {x: 65, y: 135}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224739544178274118
 RectTransform:
   m_ObjectHideFlags: 1
@@ -31194,6 +32082,9 @@ RectTransform:
   - {fileID: 224493471321445878}
   - {fileID: 224701700181692848}
   - {fileID: 224311129865918034}
+  - {fileID: 224771379555459518}
+  - {fileID: 224906540395735692}
+  - {fileID: 224737394416955630}
   m_Father: {fileID: 224268253116315692}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -31300,6 +32191,26 @@ RectTransform:
   m_AnchoredPosition: {x: -0.099998474, y: 0}
   m_SizeDelta: {x: 48, y: 19}
   m_Pivot: {x: 1, y: 1}
+--- !u!224 &224771379555459518
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1296710684908706}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.5, y: -35, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 224786793195498514}
+  - {fileID: 224328842679987702}
+  m_Father: {fileID: 224746366308973276}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 5.5, y: -35}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224777940555309134
 RectTransform:
   m_ObjectHideFlags: 1
@@ -31317,6 +32228,24 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -24, y: 2}
   m_SizeDelta: {x: 31, y: 18}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224786793195498514
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1955610013644512}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 196, y: 276.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224771379555459518}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 196, y: 276.5}
+  m_SizeDelta: {x: 170, y: 36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224789742049277042
 RectTransform:
@@ -32372,6 +33301,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 28, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224906540395735692
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1032423148983452}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 503, y: -45.5, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 224262709087962976}
+  m_Father: {fileID: 224746366308973276}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 503, y: -45.5}
+  m_SizeDelta: {x: 65, y: 135}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224906973285321992
 RectTransform:
   m_ObjectHideFlags: 1
@@ -33073,6 +34021,24 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 28, y: 28}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224998917788106060
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1178938383292398}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224014853958165590}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 62, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224999738804830454
 RectTransform:

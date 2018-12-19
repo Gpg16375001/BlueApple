@@ -29,6 +29,11 @@ public class TutorialResourceDownloader
     /// </summary>
     public static void StartDownload()
 	{
+        if (IsStartLoad) {
+            return;
+        }
+        IsStartLoad = true;
+
 		IsDownloadEndForInit = false;
 		Debug.Log("StartDownload");
 
@@ -126,4 +131,5 @@ public class TutorialResourceDownloader
 
 	private static readonly string[] ACT_LIST_FIRST = { "tuto_1", "tuto_2", "tuto_3" };
 	private static readonly string[] ACT_LIST_LATER = { "tuto_1", "tuto_4", "tuto_5", "tuto_5_1", "tuto_5_2", "tuto_5_3", "tuto_5_4", "tuto_6" };   // tuto1は設定ファイルが入っているの必須.
+    private static bool IsStartLoad = false;
 }

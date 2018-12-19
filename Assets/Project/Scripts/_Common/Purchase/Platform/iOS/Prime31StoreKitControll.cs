@@ -410,6 +410,7 @@ Debug.Log(string.Format("Prime31StoreKitControll CoVerify receipt: {0}", receipt
         if (ErrorEvent != null) {
             ErrorEvent (errorCode, error, item);
         }
+        CurrentBuyItem = null;
     }
 }
 

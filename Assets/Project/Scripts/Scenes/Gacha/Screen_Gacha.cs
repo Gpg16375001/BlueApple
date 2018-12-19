@@ -35,6 +35,11 @@ public class Screen_Gacha : ViewBase
 		this.GetScript<CustomButton>("bt_ArrowPage_2").onClick.AddListener(DidTapRight);
 		this.SetCanvasCustomButtonMsg("Character/bt_GachaCategory", DidTapCharaGacha);
 		this.SetCanvasCustomButtonMsg("Weapon/bt_GachaCategory", DidTapWeaponGacha);      
+		{
+			var value = (m_data.WeaponContent.DataFree != null) && (m_data.WeaponContent.DataFree.IsPurchasable);
+			this.GetScript<RectTransform>("Weapon/txtp_WeaponGacha").transform.Find("Exclamation").gameObject.SetActive( value );
+		}
+
 		DidTapCharaGacha();
 
 #if false
@@ -350,9 +355,14 @@ public class Screen_Gacha : ViewBase
 
 	public static int s_PageIndex;
 	public static int s_SubPageIndex;
-	public static void Reset()
+
+	public static List<int> s_GachaIdList = new List<int>();
+	public static void Reset(bool clean=true)
 	{
 		s_PageIndex = 0;
 		s_SubPageIndex = 0;
+		if( clean ) {
+			s_GachaIdList.Clear();
+		}
 	}
 }

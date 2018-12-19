@@ -97,7 +97,7 @@ public partial class MainQuestTable
     {
         var rtn = new List<int>();
         foreach (var belongingEnum in Enum.GetValues(typeof(BelongingEnum)) as BelongingEnum[]) {
-            if (belongingEnum == BelongingEnum.Unknown) {
+			if (!MasterDataTable.belonging[belongingEnum].disp_main_quest_list) {
                 continue;
             }
             var questId = DataList.FindAll(q => q.country == MasterDataTable.belonging[belongingEnum].name)

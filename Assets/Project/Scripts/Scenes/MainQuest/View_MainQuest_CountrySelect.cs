@@ -81,7 +81,7 @@ public class View_MainQuest_CountrySelect : ViewBase, IViewMainQuest
     {
 		var valm = MasterDataTable.belonging.DataList.Find(b => b.Enum == BelongingEnum.Varm);
 		var achiveList = QuestAchievement.CacheGetAll().Where(a => a.IsAchieved).ToList();
-		var belongList = MasterDataTable.belonging.DataList.FindAll(b => b.name != "不明");
+		var belongList = MasterDataTable.belonging.DataList.FindAll(b => b.disp_main_quest_list);
 		belongList.Sort((x, y) => x.priority_view - y.priority_view);
         foreach (var beloginig in belongList) {
 			var questList = MasterDataTable.quest_main.DataList.FindAll(q => q.country == beloginig.name);

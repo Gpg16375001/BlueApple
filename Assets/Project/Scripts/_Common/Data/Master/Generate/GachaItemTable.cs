@@ -82,12 +82,27 @@ public partial class GachaItem
     [SerializeField]
     public int hit_rate;
 
+    // 優先順位
+    [SerializeField]
+    public int priority;
+
+    [SerializeField]
+    private string priority_start_date_value;
+    // 優先順位開始日時
+    public DateTime? priority_start_date;
+
+    [SerializeField]
+    private string priority_end_date_value;
+    // 優先順位終了日時
+    public DateTime? priority_end_date;
+
 
     // 初期化関数をpartial化して拡張できるようにする。
     partial void InitExtension();
     public void Init() {
         if(!Application.isPlaying) return;
-
+       if(string.IsNullOrEmpty(priority_start_date_value)) { priority_start_date = null; } else { priority_start_date = DateTime.Parse(priority_start_date_value); }
+       if(string.IsNullOrEmpty(priority_end_date_value)) { priority_end_date = null; } else { priority_end_date = DateTime.Parse(priority_end_date_value); }
         InitExtension();
     }
 }

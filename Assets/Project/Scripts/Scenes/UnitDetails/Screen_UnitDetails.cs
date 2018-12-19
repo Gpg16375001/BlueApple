@@ -139,10 +139,18 @@ public class Screen_UnitDetails : ViewBase
         this.GetScript<TextMeshProUGUI> ("txtp_UnitSPD").SetText (displayCard.Parameter.Agility);
 
 		// 限界突破
-		for (var i = 0; i < 4; ++i){
+        var growthBoardSetting = MasterDataTable.card_growth_board_setting [displayCard.CardId];
+        var boardPattern = MasterDataTable.material_growth_board_pattern [growthBoardSetting.growth_board_pattern_id];
+        int maxLimitBreak = boardPattern.total_board_number - boardPattern.initial_board_number;
+		for (var i = 0; i < 5; ++i){
 			var symbolName = string.Format("SelectWeaponSymbol{0}", i+1);
-			this.GetScript<Image>(symbolName+"/LimitBreakIconOn").gameObject.SetActive(displayCard.LimitBreakGrade > i);
-            this.GetScript<Image>(symbolName+"/LimitBreakIconOff").gameObject.SetActive(displayCard.LimitBreakGrade <= i);
+            if (maxLimitBreak < i + 1) {
+                this.GetScript<RectTransform> (symbolName).gameObject.SetActive (false);
+            } else {
+                this.GetScript<RectTransform> (symbolName).gameObject.SetActive (true);
+                this.GetScript<Image> (symbolName + "/LimitBreakIconOn").gameObject.SetActive (displayCard.LimitBreakGrade > i);
+                this.GetScript<Image> (symbolName + "/LimitBreakIconOff").gameObject.SetActive (displayCard.LimitBreakGrade <= i);
+            }
 		}
 
         // 武具の設定
@@ -271,6 +279,7 @@ public class Screen_UnitDetails : ViewBase
         var actionSkill = displayCard.Parameter.UnitActionSkillList.FirstOrDefault(x => !x.IsNormalAction);
         if (actionSkill != null) {
             this.GetScript<TextMeshProUGUI> ("Skill/txtp_SkillName").SetText (actionSkill.Skill.display_name);
+            this.GetScript<TextMeshProUGUI>("Skill/txtp_SkillLv").SetText(actionSkill.Level);
 			this.GetScript<CustomButton>("Skill/bt_Info").onClick.RemoveAllListeners();
             this.SetCanvasCustomButtonMsg("Skill/bt_Info", () => PopupManager.OpenPopupOK(actionSkill.Skill.flavor));
         } else {
@@ -280,6 +289,7 @@ public class Screen_UnitDetails : ViewBase
         var passiveSkill = displayCard.Parameter.UnitPassiveSkillList.FirstOrDefault();
         if (passiveSkill != null) {
             this.GetScript<TextMeshProUGUI>("Skill2/txtp_SkillName").SetText(passiveSkill.Skill.display_name);
+            this.GetScript<TextMeshProUGUI>("Skill2/txtp_SkillLv").SetText(passiveSkill.Level);
 			this.GetScript<CustomButton>("Skill2/bt_Info").onClick.RemoveAllListeners();
             this.SetCanvasCustomButtonMsg("Skill2/bt_Info", () => PopupManager.OpenPopupOK(passiveSkill.Skill.flavor));
         } else {
@@ -288,6 +298,7 @@ public class Screen_UnitDetails : ViewBase
 
         if (displayCard.Parameter.SpecialSkill != null) {
             this.GetScript<TextMeshProUGUI> ("txtp_SPName").SetText (displayCard.Parameter.SpecialSkill.Skill.display_name);
+            this.GetScript<TextMeshProUGUI>("SP/txtp_SkillLv").SetText(displayCard.Parameter.SpecialSkill.Level);
 			this.GetScript<CustomButton>("SP/bt_Info").onClick.RemoveAllListeners();
             this.SetCanvasCustomButtonMsg("SP/bt_Info", () => PopupManager.OpenPopupOK(displayCard.Parameter.SpecialSkill.Skill.flavor));
         } else {
@@ -318,7 +329,34 @@ public class Screen_UnitDetails : ViewBase
 		if(displayCard.IsReleaseFlavor2){
 			this.GetScript<TextMeshProUGUI>("Contents2/txtp_Profile").SetText(displayCard.Card.flavor_text2);
 		}else{
-			var notes = string.Format("以下の条件を達成すると見ることができます。\n・{0}のシナリオを{1}章までクリアする。", displayCard.Card.release_chapter_flavor2.country.name, displayCard.Card.release_chapter_flavor2.chapter);      
+			string notes = "以下の条件を達成すると見ることができます。\n";
+
+            int releaseCount = 0;
+            if (displayCard.Card.release_chapter_flavor2 != null) {
+                releaseCount++;
+            }
+            if (displayCard.Card.release_flavor2_event_stage_detail_id.HasValue) {
+                releaseCount++;
+            }
+            if (displayCard.Card.release_flavor2_max_rarity) {
+                releaseCount++;
+            }
+            if(releaseCount > 1) {
+                notes = "以下の条件のどれかを達成すると見ることができます。\n";
+            }
+
+			if (displayCard.Card.release_chapter_flavor2 != null) {
+				notes += string.Format ("・{0}のシナリオを{1}章までクリアする。\n", displayCard.Card.release_chapter_flavor2.country.name, displayCard.Card.release_chapter_flavor2.chapter);      
+			}
+			if (displayCard.Card.release_flavor2_event_stage_detail_id.HasValue) {
+				var eventQuestStageDetial = MasterDataTable.event_quest_stage_details [displayCard.Card.release_flavor2_event_stage_detail_id.Value];
+				if (eventQuestStageDetial != null) {
+                    notes += string.Format ("・イベントクエスト{0}ステージ{1}をクリアする。\n", eventQuestStageDetial.QuestName, eventQuestStageDetial.QuestNum);
+				}
+			}
+			if (displayCard.Card.release_flavor2_max_rarity) {
+				notes += "・最大レアリティまで進化する。\n";      
+			}
 			this.GetScript<TextMeshProUGUI>("Contents2/txtp_UnlockNotes").SetText(notes);
 		}      
   

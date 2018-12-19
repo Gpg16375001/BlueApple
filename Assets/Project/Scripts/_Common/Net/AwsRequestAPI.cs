@@ -158,7 +158,9 @@ public class AwsRequestAPI
                             // retry
                             if(!ret) {
                                 LockInputManager.SharedInstance.IsLock = false;
-                                PopupManager.OpenPopupSystemOK("再起動する", () => ScreenChanger.SharedInstance.Reboot());
+                                PopupManager.OpenPopupSystemOK("認証でエラーが発生しました。\n再起動します。", () => ScreenChanger.SharedInstance.Reboot());
+
+                                return;
                             }
                             SetAuthToken();
 							SetSignature(send);
@@ -174,19 +176,49 @@ public class AwsRequestAPI
                 }
             } else if (webRequsetError.Request.responseCode == 503 && send.retryCount < 5) {
                 // サーバータイムアウトの場合はユーザー確認をした上で再度リクエストを投げる。
+                var prevLock = LockInputManager.SharedInstance.IsLock;
                 LockInputManager.SharedInstance.IsLock = false;
-                PopupManager.OpenPopupSystemYN("タイムアウトしました。リトライしますか？",
+                PopupManager.OpenPopupSystemYN("通信がタイムアウトしました。\nリトライしますか？",
                     () => {
                         send.retryCount++;
                         byte[] post = Encoding.UTF8.GetBytes (JsonUtility.ToJson (send));
+
+                        if(prevLock) {
+                            LockInputManager.SharedInstance.IsLock = true;
+                        }
+
                         NetRequestManager.Post (send.URL, post, CommonHeader, 
                             res => CallbackDidLoad (send, res, didLoad),
                             e => CallbackDidError (send, e, didLoad));
                     }, 
                     () => {
-                        PopupManager.OpenPopupSystemOK("通信が完了しないため、再起動します。", () => ScreenChanger.SharedInstance.Reboot());
+                        PopupManager.OpenPopupSystemOK("通信が完了できないため、\n再起動します。", () => ScreenChanger.SharedInstance.Reboot());
                     }
                 );
+            }
+        }
+        if (exception != null && exception is TimeoutException) {
+            if(send.retryCount < 5) {
+                // サーバータイムアウトの場合はユーザー確認をした上で再度リクエストを投げる。
+                var prevLock = LockInputManager.SharedInstance.IsLock;
+                LockInputManager.SharedInstance.IsLock = false;
+                PopupManager.OpenPopupSystemYN("通信がタイムアウトしました。\nリトライしますか？",
+                    () => {
+                        send.retryCount++;
+                        byte[] post = Encoding.UTF8.GetBytes (JsonUtility.ToJson (send));
+
+                        if(prevLock) {
+                            LockInputManager.SharedInstance.IsLock = true;
+                        }
+                        NetRequestManager.Post (send.URL, post, CommonHeader, 
+                            res => CallbackDidLoad (send, res, didLoad),
+                            e => CallbackDidError (send, e, didLoad));
+                    }, 
+                    () => {
+                        PopupManager.OpenPopupSystemOK("通信が完了できないため、\n再起動します。", () => ScreenChanger.SharedInstance.Reboot());
+                    }
+                );
+                return;
             }
         }
         if(didLoad != null) {
@@ -207,7 +239,7 @@ public class AwsRequestAPI
                         // 他に引き継ぎされている
                         LockInputManager.SharedInstance.IsLock = false;
                         PopupManager.OpenPopupSystemOK(
-                            "認証情報が無効になっています。認証情報の初期化を行い再起動します。",
+                            "認証情報が無効になっています。\n認証情報の初期化を行い再起動します。",
                             () => {
                                 AwsLocalUserData.DeleteUserInfoFile();
                                 ScreenChanger.SharedInstance.Reboot();
@@ -236,7 +268,7 @@ public class AwsRequestAPI
         if (response == null) {
             // どうしようもないのでタイトルに戻す。
             LockInputManager.SharedInstance.IsLock = false;
-            PopupManager.OpenPopupSystemOK("通信の結果を取得できなかったため、アプリを再起動します。", () => {
+            PopupManager.OpenPopupSystemOK("通信の結果を取得できなかったため、\nアプリを再起動します。", () => {
                 didLoad(false, response);
                 ScreenChanger.SharedInstance.Reboot();
             });
@@ -260,6 +292,61 @@ public class AwsRequestAPI
         }
         didLoad(ResultCode == ServerResultCodeEnum.SUCCESS, response);
     }
+
+	public void CheckResultCodeRetry<T>(T response, Action<bool, T> didLoad,
+        bool checkVersion = true, bool throughError = false, Action retryFunc = null, Action retireFunc = null) where T : BaseReceiveAPI
+	{
+		if (response == null) {
+			// どうしようもないのでタイトルに戻す。
+			var prevLock = LockInputManager.SharedInstance.IsLock;
+			LockInputManager.SharedInstance.IsLock = false;
+            if (retryFunc != null) {
+                PopupManager.OpenPopupSystemYN ("通信の結果を取得できませんでした。\nリトライしますか？",
+                    () => {
+                        if (prevLock) {
+                            LockInputManager.SharedInstance.IsLock = true;
+                        }
+                        retryFunc ();
+                    },
+                    () => {
+                        if (retireFunc != null) {
+                            retireFunc ();
+                        } else {
+                            PopupManager.OpenPopupSystemOK ("通信の結果を取得できなかったため、\nアプリを再起動します。", () => {
+                                didLoad (false, response);
+                                ScreenChanger.SharedInstance.Reboot ();
+                            });
+                        }
+                    });
+            } else {
+                if (retireFunc != null) {
+                    retireFunc ();
+                } else {
+                    PopupManager.OpenPopupSystemOK ("通信の結果を取得できなかったため、\nアプリを再起動します。", () => {
+                        didLoad (false, response);
+                        ScreenChanger.SharedInstance.Reboot ();
+                    });
+                }
+            }
+			return;
+		}
+
+		var ResultCode = (ServerResultCodeEnum)response.ResultCode;
+		if (!throughError && ResultCode != ServerResultCodeEnum.SUCCESS && MasterDataTable.server_result_code != null) {
+			var resultData = MasterDataTable.server_result_code [ResultCode];
+			if (resultData != null && resultData.proc != ServerResultCodeProcEnum.None) {
+				Debug.Log(response.ErrorMessage);
+				resultData.proc.Execute (ResultCode, response.ErrorMessage);
+			}
+		}
+
+		if (checkVersion && CheckMasterVersion != null) {
+			if (CheckMasterVersion (response.MasterVersion, () => didLoad(ResultCode == ServerResultCodeEnum.SUCCESS, response), () => didLoad(false, response))) {
+				return;
+			}
+		}
+		didLoad(ResultCode == ServerResultCodeEnum.SUCCESS, response);
+	}
 
     // 初期化.
     public AwsRequestAPI()

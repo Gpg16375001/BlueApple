@@ -65,6 +65,7 @@ public class Screen_PartyEdit : ViewBase
         this.SetCanvasCustomButtonMsg("bt_FormationChange", DidTapFormation);
         this.GetScript<InputField>("PartyName/bt_InputArea").onValueChanged.AddListener(DidChangeTeamName);
         this.SetCanvasCustomButtonMsg("PartyChange/bt_CommonS01", DidTapChangeTeam);
+        this.SetCanvasCustomButtonMsg("AutoSelect/bt_CommonS01", DidTapAutoOrganization);
         if (m_IsPvP) {
             // Pvpの時はチーム変更できない
             GetScript<RectTransform> ("PartyChange").gameObject.SetActive (false);
@@ -133,7 +134,7 @@ public class Screen_PartyEdit : ViewBase
         }
     }
 
-    void UpdatePartyUnit(Party party)
+    public void UpdatePartyUnit(Party party)
     {
         for (int position = 1; position <= Party.PartyCardMax; ++position) {
             m_PartyEditUnitItems[position - 1].UpdateUnit (party[position], party.FormationData, position);
@@ -159,14 +160,14 @@ public class Screen_PartyEdit : ViewBase
         View_FadePanel.SharedInstance.IsLightLoading = true;
         AwsModule.PartyData.Sync ((bSuccess, sender, eArgs) => {
             View_FadePanel.SharedInstance.IsLightLoading = false;
+            LockInputManager.SharedInstance.IsLock = false;
             if(!bSuccess) {
-                PopupManager.OpenPopupSystemOK("編成の保存に失敗しました。通信環境のいい場所でもう一度保存を試してみてください。"); 
+                PopupManager.OpenPopupSystemOK("編成の保存に失敗しました。通信環境のいい場所でもう一度保存を試してみてください。");
             } else {
                 if(didSave != null) {
                     didSave();
                 }
             }
-            LockInputManager.SharedInstance.IsLock = false;
         });
     }
 
@@ -300,9 +301,9 @@ public class Screen_PartyEdit : ViewBase
         LockInputManager.SharedInstance.IsLock = true;
 
         // スキルによるドロップ率・経験値・クレド増加割合分を計算する。
-        int OverrideExpPercentage = 99999999;//0;
-        int OverrideGoldPercentage = 99999999;//0;
-        int OverrideItemDropPercentage = 99999999;//0;
+        int OverrideExpPercentage = 0;
+        int OverrideGoldPercentage = 0;
+        int OverrideItemDropPercentage = 0;
         if (m_HelperCard != null) {
             if (m_HelperCard.Parameter.PassiveSkillList.Any (x => x.Skill.HasItemDropUpLogic ())) {
                 OverrideItemDropPercentage += m_HelperCard.Parameter.PassiveSkillList.Where (x => x.Skill.HasItemDropUpLogic ()).Sum (x => x.GetItemDropUp ());
@@ -423,6 +424,14 @@ public class Screen_PartyEdit : ViewBase
 
     }
 
+	void DidTapAutoOrganization()
+	{
+        View_PartyEditAutoSelect.Create( this, () => {
+            View_PlayerMenu.IsEnableButtons = true;
+            this.IsEnableButton = true;
+        });
+	}
+
     // ボタン : 陣形
     void DidTapFormation()
     {
@@ -436,11 +445,7 @@ public class Screen_PartyEdit : ViewBase
         IsEnableButton = false;
         PopupManager.OpenPopupYN ("現在のチームを解散します。\n再度メンバーを登録してください。",
             () => {
-                var party = EditParty;
-                for (int index = 1; index <= Party.PartyCardMax; ++index) {
-                    party[index] = null;
-                }
-                UpdatePartyUnit(party);
+				TeamClear();
 
                 IsEnableButton = true;
 
@@ -452,6 +457,15 @@ public class Screen_PartyEdit : ViewBase
             }
         );
     }
+
+    public void TeamClear()
+	{
+		var party = EditParty;
+		for (int index = 1; index <= Party.PartyCardMax; ++index) {
+			party[index] = null;
+		}
+		UpdatePartyUnit(party);
+	}
 
     // ボタン : メンバー変更
     void DidTapChangeMember()
@@ -471,7 +485,7 @@ public class Screen_PartyEdit : ViewBase
             () => ScreenChanger.SharedInstance.GoToPartyDetails (m_IsBattleInit, m_IsPvP, NextSceneBackCallback()));
     }
 
-    Party EditParty {
+    public Party EditParty {
         get {
             if (m_IsPvP) {
                 return AwsModule.PartyData.PvPTeam;
@@ -504,7 +518,7 @@ public class Screen_PartyEdit : ViewBase
         m_EditMode = EditMode.Sorting;
     }
 
-    void ChangePartyEditMode()
+    public void ChangePartyEditMode()
     {
         // ボタンを効くようにする
         ChangeSaveButton();

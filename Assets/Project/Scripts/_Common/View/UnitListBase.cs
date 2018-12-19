@@ -18,7 +18,8 @@ public enum UnitListSortType {
     HP,
     ATK,
     DEF,
-    SPD
+    SPD,
+    Belonging
 }
 
 public class UnitListBase : ViewBase
@@ -64,11 +65,8 @@ public class UnitListBase : ViewBase
         // スクロールの初期設定
         m_UnitIconPrefab = Resources.Load ("_Common/View/ListItem_UnitIcon") as GameObject;
         var layoutGroup = this.GetScript<InfiniteGridLayoutGroup> ("UnitIcon");
-		var digit = (m_SortFilterCardDataList.Count <= 0) ? 1 : ((int)Mathf.Log10(m_SortFilterCardDataList.Count) + 1);
-		var limit = digit <= 1 ? 10 : Mathf.CeilToInt((float)m_SortFilterCardDataList.Count / (float)Math.Pow(10, digit - 1)) * 10;
-        layoutGroup.OnUpdateItemEvent.AddListener (new UnityEngine.Events.UnityAction<int, GameObject>(UpdateListItem));
-        layoutGroup.Initialize (m_UnitIconPrefab,
-            limit, m_SortFilterCardDataList.Count, false);
+        layoutGroup.OnUpdateItemEvent.AddListener (UpdateListItem);
+        layoutGroup.Initialize (m_UnitIconPrefab, 36, m_SortFilterCardDataList.Count, false);
         /*
         if (focusCardID != 0) {
             var focusIndex = m_SortFilterCardDataList.FindIndex (x => x.CardId == focusCardID);
@@ -115,6 +113,8 @@ public class UnitListBase : ViewBase
             return ListItem_UnitIcon.DispStatusType.HP;
         case UnitListSortType.SPD:
             return ListItem_UnitIcon.DispStatusType.SPD;
+        case UnitListSortType.Belonging:
+            return ListItem_UnitIcon.DispStatusType.Belonging;
         }
         return ListItem_UnitIcon.DispStatusType.Default;
     }
@@ -168,16 +168,8 @@ public class UnitListBase : ViewBase
 
     protected virtual void UpdateList()
     {
-		View_FadePanel.SharedInstance.IsLightLoading = true;
-
         var layoutGroup = this.GetScript<InfiniteGridLayoutGroup>("UnitIcon");
-        var digit = (m_SortFilterCardDataList.Count <= 0) ? 1 : ((int)Mathf.Log10(m_SortFilterCardDataList.Count) + 1);
-        var limit = digit <= 1 ? 10 : Mathf.CeilToInt((float)m_SortFilterCardDataList.Count / (float)Math.Pow(10, digit - 1)) * 10;
-        layoutGroup.ResetScrollPosition();
-        layoutGroup.OnUpdateItemEvent.AddListener(new UnityEngine.Events.UnityAction<int, GameObject>(UpdateListItem));
-		layoutGroup.InitializeAsync(m_UnitIconPrefab, limit, m_SortFilterCardDataList.Count, 3, () => {
-            View_FadePanel.SharedInstance.IsLightLoading = false;
-        }, false);
+        layoutGroup.UpdateList (m_UnitIconPrefab, m_SortFilterCardDataList.Count);
     }   
 
 	protected virtual void UpdateListItem(int index, GameObject go)
@@ -224,6 +216,13 @@ public class UnitListBase : ViewBase
             break;
         case UnitListSortType.SPD:
             sub = a.Parameter.Agility - b.Parameter.Agility;
+            break;
+        case UnitListSortType.Belonging:
+            //同一国だった場合レアリティの降順で計算
+            sub = a.Card.country.priority_view - b.Card.country.priority_view;
+            if (sub == 0) {
+                sub = b.Card.rarity - a.Card.rarity;
+            }
             break;
         }
 

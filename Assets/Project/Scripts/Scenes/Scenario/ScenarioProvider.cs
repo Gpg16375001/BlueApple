@@ -119,20 +119,17 @@ public static class ScenarioProvider
         if (info == null) {
             return rtn;
         }
-        var allScenarios = MasterDataTable.event_quest_stage_scenario_setting.DataList.FindAll(s => s.adv_project_name == info.adv_project_name);
-        foreach(var scenario in allScenarios){
-            if (!string.IsNullOrEmpty(scenario.scenario_pre_battle)) {
-                rtn.Add(scenario.scenario_pre_battle);
-            }
-            if (!string.IsNullOrEmpty(scenario.scenario_in_battle)) {
-                rtn.Add(scenario.scenario_in_battle);
-            }
-            if (!string.IsNullOrEmpty(scenario.scenario_out_battle)) {
-                rtn.Add(scenario.scenario_out_battle);
-            }
-            if (!string.IsNullOrEmpty(scenario.scenario_aft_battle)) {
-                rtn.Add(scenario.scenario_aft_battle);
-            }
+		if (!string.IsNullOrEmpty(info.scenario_pre_battle)) {
+			rtn.Add(info.scenario_pre_battle);
+        }
+		if (!string.IsNullOrEmpty(info.scenario_in_battle)) {
+			rtn.Add(info.scenario_in_battle);
+        }
+		if (!string.IsNullOrEmpty(info.scenario_out_battle)) {
+			rtn.Add(info.scenario_out_battle);
+        }
+		if (!string.IsNullOrEmpty(info.scenario_aft_battle)) {
+			rtn.Add(info.scenario_aft_battle);
         }
         return rtn;
     }

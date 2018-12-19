@@ -155,7 +155,7 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
     public void UpdateList(GameObject itemPrototype, int maxItemCount)
     {
         //gameObject.DestroyChildren();
-        int InstantiateCount = m_LoopItem ? m_InstantateItemCount : Mathf.Min(m_InstantateItemCount, m_MaxItemCount);
+        int InstantiateCount = m_LoopItem ? m_InstantateItemCount : Mathf.Min(m_InstantateItemCount, maxItemCount);
         if (InstantiateCount > m_ItemList.Count) {
             for (int i = m_ItemList.Count; i < InstantiateCount; ++i) {
                 var item = GameObject.Instantiate (itemPrototype);
@@ -174,6 +174,11 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
             }
         }
 
+        if (m_MaxItemCount != maxItemCount) {
+            m_MaxItemCount = maxItemCount;
+            CalculateCellSize ();
+        }
+
         ResetScrollPosition ();
         for (int i = 0; i < InstantiateCount; ++i) {
             var item = m_ItemList.ElementAt (i).gameObject;
@@ -181,6 +186,7 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
             if (index < 0) {
                 index = m_MaxItemCount + index;
             }
+            item.SetActive (true);
             OnUpdateItemEvent.Invoke (index, item);
         }
     }
@@ -246,6 +252,11 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
 		}
 	}
 
+    /// <summary>
+    /// 指定の番号のオブジェクトが存在すればGameObjectを返す
+    /// </summary>
+    /// <returns>指定の番号のオブジェクト</returns>
+    /// <param name="index">リストの番号</param>
     public GameObject GetItem(int index)
     {
         int topIndex = m_CurrentItemNo % m_MaxItemCount;
@@ -276,7 +287,22 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
         return null;
     }
 
-    // 数が減った場合などの時にスクロールポジションを初期のいちに戻す
+    /// <summary>
+    /// 指定の番号のオブジェクトが存在すればOnUpdateItemEventを呼び出す
+    /// </summary>
+    /// <param name="index">リストの番号</param>
+    public void UpdateItem(int index)
+    {
+        var obj = GetItem (index);
+        if (obj != null) {
+            OnUpdateItemEvent.Invoke (index, obj);
+        }
+    }
+
+    /// <summary>
+    /// スクロールポジションを初期のいちに戻す
+    /// </summary>
+    /// <param name="isItemUpdate"><c>true</c>の時はアイテムの更新も行う</param>
     public void ResetScrollPosition(bool isItemUpdate=false)
     {
         m_CurrentItemNo = 0;
@@ -601,7 +627,7 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
         }
 
         while(anchoredPosition - m_DiffPreFramePosition > 0) {
-            if (m_LoopItem || m_CurrentItemNo >= Mathf.Max(1, m_CellsPerMainAxis - 1)) {
+            if (m_LoopItem || m_CurrentItemNo > 0) {
                 m_DiffPreFramePosition += itemSize;
 
                 // セル個数分処理する
@@ -653,6 +679,13 @@ public class InfiniteGridLayoutGroup : GridLayoutGroup
     {
         get {
             return m_ScrollAxis == 0 ? cellSize.x + spacing.x : cellSize.y + spacing.y;
+        }
+    }
+
+    public bool IsInit
+    { 
+        get {
+            return m_IsInit;
         }
     }
 

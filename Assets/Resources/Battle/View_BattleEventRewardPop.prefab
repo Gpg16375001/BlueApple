@@ -549,7 +549,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224933835848849834}
   m_Layer: 5
-  m_Name: Item
+  m_Name: ItemReward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -564,7 +564,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224202055068144346}
   m_Layer: 5
-  m_Name: Item
+  m_Name: ItemTotal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -597,7 +597,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224120831713867196}
   m_Layer: 5
-  m_Name: Item
+  m_Name: ItemBonus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1020,7 +1020,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_subTextObjects:
   - {fileID: 0}
-  - {fileID: 114470135764773030}
+  - {fileID: 114700045503554626}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -1605,7 +1605,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_subTextObjects:
   - {fileID: 0}
-  - {fileID: 114538871268854496}
+  - {fileID: 114626554893045000}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -2612,7 +2612,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_subTextObjects:
   - {fileID: 0}
-  - {fileID: 114195323132267322}
+  - {fileID: 114221203908923400}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

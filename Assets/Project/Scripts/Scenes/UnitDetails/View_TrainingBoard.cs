@@ -235,9 +235,6 @@ public class View_TrainingBoard : ViewBase {
         pos.y = -1.0f * m_viewTrainingBoardSlots [m_NowDispPage].gameObject.GetComponent<RectTransform>().anchoredPosition.y;
         rectTras.anchoredPosition = pos;
 
-        m_PageNavigations.ForEach (x => x.ChangeSprite ("bannerled_off"));
-        m_PageNavigations [m_NowDispPage].ChangeSprite ("bannerled_on");
-
         GetScript<CustomButton>("bt_ArrowPage_1").gameObject.SetActive(m_NowDispPage < m_MaxPage - 1);
         GetScript<CustomButton> ("bt_ArrowPage_2").gameObject.SetActive(m_NowDispPage > 0);
     }
@@ -248,7 +245,7 @@ public class View_TrainingBoard : ViewBase {
         m_DispInfoObj [(int)type].SetActive (true);
     }
 
-    private void SetInfoSelectUnit(CardData card, int maxLimitBreak=4)
+    private void SetInfoSelectUnit(CardData card)
     {
         // アイコンの対応
         var iconRoot = GetScript<Transform> ("SelectUnit/UnitIcon");
@@ -266,16 +263,24 @@ public class View_TrainingBoard : ViewBase {
         GetScript<TextMeshProUGUI>("txtp_UnitSPD").SetText(card.Parameter.Agility);
 
         // 限界突破数
-        for (int i = 1; i <= maxLimitBreak; ++i) {
-            var limitBreakSymbolOn = GetScript<Transform>(string.Format ("SelectUnitSymbol{0}/LimitBreakIconOn", i));
-            var limitBreakSymbolOff = GetScript<Transform>(string.Format ("SelectUnitSymbol{0}/LimitBreakIconOff", i));
+        int maxLimitBreak = m_BoardPattern.total_board_number - m_BoardPattern.initial_board_number;
+        for (int i = 1; i <= 5; ++i) {
 
-            if(card.LimitBreakGrade >= i) {
-                limitBreakSymbolOff.gameObject.SetActive(false);
-                limitBreakSymbolOn.gameObject.SetActive(true);
+            if (maxLimitBreak < i) {
+                GetScript<Transform> (string.Format ("SelectUnitSymbol{0}", i)).gameObject.SetActive(false);
             } else {
-                limitBreakSymbolOn.gameObject.SetActive(false);
-                limitBreakSymbolOff.gameObject.SetActive(true);
+                GetScript<Transform> (string.Format ("SelectUnitSymbol{0}", i)).gameObject.SetActive(true);
+
+                var limitBreakSymbolOn = GetScript<Transform> (string.Format ("SelectUnitSymbol{0}/LimitBreakIconOn", i));
+                var limitBreakSymbolOff = GetScript<Transform> (string.Format ("SelectUnitSymbol{0}/LimitBreakIconOff", i));
+
+                if (card.LimitBreakGrade >= i) {
+                    limitBreakSymbolOff.gameObject.SetActive (false);
+                    limitBreakSymbolOn.gameObject.SetActive (true);
+                } else {
+                    limitBreakSymbolOn.gameObject.SetActive (false);
+                    limitBreakSymbolOff.gameObject.SetActive (true);
+                }
             }
         }
 
@@ -402,17 +407,6 @@ public class View_TrainingBoard : ViewBase {
 
     private void SetMaxPage()
     {
-        m_PageNavigations.Clear ();
-        for (int i = 1; i <= 8; ++i) {
-            var spriteChanger = GetScript<uGUISprite> (string.Format ("PageNavigation/Page{0}", i));
-            if (m_MaxPage >= i) {
-                spriteChanger.gameObject.SetActive (true);
-                m_PageNavigations.Add (spriteChanger);
-            } else {
-                spriteChanger.gameObject.SetActive (false);
-            }
-        }
-
         if (m_NowDispPage >= 0) {
             GetScript<CustomButton>("bt_ArrowPage_1").gameObject.SetActive(m_NowDispPage < m_MaxPage - 1);
             GetScript<CustomButton> ("bt_ArrowPage_2").gameObject.SetActive(m_NowDispPage > 0);
@@ -789,7 +783,6 @@ public class View_TrainingBoard : ViewBase {
     MaterialGrowthBoardPattern m_BoardPattern;
     Dictionary<MaterialGrowthBoardDefinition, List<MaterialGrowthBoardSlot>> m_BoardDefinitions = new Dictionary<MaterialGrowthBoardDefinition, List<MaterialGrowthBoardSlot>> ();
     List<View_TrainingBoardSlot> m_viewTrainingBoardSlots = new List<View_TrainingBoardSlot>();
-    List<uGUISprite> m_PageNavigations = new List<uGUISprite>();
 
     TrainingBoardOffsetSetting m_BoardOffsetSetting;
 

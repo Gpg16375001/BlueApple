@@ -69,12 +69,23 @@ public class View_ShopItemPurchasePop : PopupViewBase
 		// ボタン
 		this.SetCanvasCustomButtonMsg("Buy/bt_Common", DidTapBuy);
 		this.SetCanvasCustomButtonMsg("Cancel/bt_Common", DidTapCancel);
-		this.SetCanvasCustomButtonMsg("bt_Plus", DidTapPlus);
-		this.SetCanvasCustomButtonMsg("bt_Minus", DidTapSub);
+		this.SetCanvasCustomButtonMsg("bt_Plus", DidTapPlus, null, null, DidRepeatPlus);
+		this.SetCanvasCustomButtonMsg("bt_Minus", DidTapSub, null, null, DidRepeatSub);
 		this.GetScript<CustomButton>("bt_Minus").interactable = false;
 		this.GetScript<CustomButton>("bt_Plus").interactable = m_currentSelectNum <= NumCanBuyMax;
 		this.GetScript<CustomButton>("Buy/bt_Common").interactable = m_currentSelectNum <= NumCanBuyMax;
         SetBackButton ();
+	}
+
+	void UpdateInfo()
+	{
+		this.GetScript<TextMeshProUGUI>("txtp_SelectTotalNum").text = m_currentSelectNum.ToString();
+		this.GetScript<TextMeshProUGUI>("txtp_TotalPrice").text = (m_currentSelectNum * m_shopItem.use_item_count).ToString("#,0");
+		this.GetScript<CustomButton>("bt_Minus").interactable = m_currentSelectNum > 1;      
+		if(!this.GetScript<CustomButton>("bt_Plus").interactable){
+			this.GetScript<CustomButton>("bt_Plus").interactable = m_currentSelectNum <= NumCanBuyMax;
+		}
+		this.GetScript<CustomButton>("Buy/bt_Common").interactable = m_currentSelectNum <= NumCanBuyMax;
 	}
 
     protected override void DidBackButton ()
@@ -138,6 +149,27 @@ public class View_ShopItemPurchasePop : PopupViewBase
         PlayOpenCloseAnimation (false, Dispose);
 	}
 
+	void DidRepeatSub(int repeatCnt)
+	{
+		if (IsClosed) {
+			return;
+		}
+
+		if(m_currentSelectNum <= 1){
+			return;
+		}
+
+		if (repeatCnt < 20) {
+			m_currentSelectNum--;
+		} else if (repeatCnt < 40) {
+			m_currentSelectNum -= 10;
+		} else {
+			m_currentSelectNum -= 100;
+		}
+
+		m_currentSelectNum = Mathf.Max (m_currentSelectNum, 1);
+		UpdateInfo ();
+	}
 	// ボタン: 購入数の増減.
 	void DidTapSub()
 	{
@@ -149,13 +181,29 @@ public class View_ShopItemPurchasePop : PopupViewBase
 			return;
 		}
 		--m_currentSelectNum;
-		this.GetScript<TextMeshProUGUI>("txtp_SelectTotalNum").text = m_currentSelectNum.ToString();
-		this.GetScript<TextMeshProUGUI>("txtp_TotalPrice").text = (m_currentSelectNum * m_shopItem.use_item_count).ToString("#,0");
-		this.GetScript<CustomButton>("bt_Minus").interactable = m_currentSelectNum > 1;      
-		if(!this.GetScript<CustomButton>("bt_Plus").interactable){
-			this.GetScript<CustomButton>("bt_Plus").interactable = m_currentSelectNum <= NumCanBuyMax;
-        }
-		this.GetScript<CustomButton>("Buy/bt_Common").interactable = m_currentSelectNum <= NumCanBuyMax;
+		UpdateInfo ();
+	}
+
+	void DidRepeatPlus(int repeatCnt)
+	{
+		if (IsClosed) {
+			return;
+		}
+
+		if (m_currentSelectNum >= NumCanBuyMax) {
+			return;
+		}
+
+		if (repeatCnt < 20) {
+			m_currentSelectNum++;
+		} else if (repeatCnt < 40) {
+			m_currentSelectNum += 10;
+		} else {
+			m_currentSelectNum += 100;
+		}
+
+		m_currentSelectNum = Mathf.Min (m_currentSelectNum, NumCanBuyMax);
+		UpdateInfo ();
 	}
 	void DidTapPlus()
 	{
@@ -167,13 +215,7 @@ public class View_ShopItemPurchasePop : PopupViewBase
             return;
         }
         ++m_currentSelectNum;
-		this.GetScript<TextMeshProUGUI>("txtp_SelectTotalNum").text = m_currentSelectNum.ToString();
-		this.GetScript<TextMeshProUGUI>("txtp_TotalPrice").text = (m_currentSelectNum * m_shopItem.use_item_count).ToString("#,0");
-		this.GetScript<CustomButton>("bt_Plus").interactable = m_currentSelectNum < NumCanBuyMax;
-		if(!this.GetScript<CustomButton>("bt_Minus").interactable){
-			this.GetScript<CustomButton>("bt_Minus").interactable = true;
-		}
-		this.GetScript<CustomButton>("Buy/bt_Common").interactable = m_currentSelectNum <= NumCanBuyMax;
+		UpdateInfo ();
 	}
 
 	#endregion

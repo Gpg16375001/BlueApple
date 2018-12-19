@@ -122,15 +122,82 @@ namespace SmileLab.Net.API
         public bool IsReleaseFlavor2
 		{
 			get {
+				var modData = AwsModule.CardModifiedData.List.Find(m => m.CardId == CardId);
+				if(modData != null){
+					return modData.IsSeenReleaseFlavor2 || modData.IsNeedSeeReleaseFlavor2 || _isReleaseFlavor2;
+				}
+				return _isReleaseFlavor2;
+			}
+		}
+		private bool _isReleaseFlavor2 = false;
+
+		public void CheckReleaseFlavor2(System.Action<bool> didCheck)
+		{
+			if (_isReleaseFlavor2) {
+				didCheck (true);
+				return;
+			}
+
+			if (Card.release_flavor2_max_rarity) {
+				if (MaxRarity == Rarity) {
+					didCheck (true);
+					_isReleaseFlavor2 = true;
+					return;
+				}
+			}
+			CheckChapterFlavor2 (
+				(check1) => {
+					if(check1) {
+						didCheck(check1);
+						_isReleaseFlavor2 = true;
+						return;
+					}
+					CheckEventStageDetailFlavor2((check2) => {
+						if(check2) {
+							_isReleaseFlavor2 = true;
+						}
+						didCheck(check2);
+					});
+				}
+			);
+		}
+
+		private void CheckChapterFlavor2(System.Action<bool> didCheck)
+		{
+			if (Card.release_chapter_flavor2 != null) {
 				var chapter = Card.release_chapter_flavor2;
 				var questList = MasterDataTable.quest_main.GetQuestList(chapter.country, chapter.chapter);
 				var quest = MasterDataTable.quest_main[questList.Select(q => q.id).Max()];
-				var modData = AwsModule.CardModifiedData.List.Find(m => m.CardId == CardId);
-				if(modData != null){
-					return modData.IsSeenReleaseFlavor2 || modData.IsNeedSeeReleaseFlavor2 || QuestAchievement.CacheGetAll().Where(a => a.IsAchieved).Any(a => a.QuestId == quest.id);
-				}
-				return QuestAchievement.CacheGetAll().Where(a => a.IsAchieved).Any(a => a.QuestId == quest.id);
+
+				SendAPI.QuestsGetAchievementByQuestId (quest.id,
+					(success, response) => {
+						if(!success) {
+							return;
+						}
+						didCheck(response.IsAchieved);
+					}
+				);
+				return;
 			}
+			didCheck(false);
+		}
+
+		private void CheckEventStageDetailFlavor2(System.Action<bool> didCheck)
+		{
+			if (Card.release_flavor2_event_stage_detail_id != null) {
+				var eventStageDetailId = Card.release_flavor2_event_stage_detail_id.Value;
+
+				SendAPI.QuestsGetAchievementByQuestId (eventStageDetailId,
+					(success, response) => {
+						if(!success) {
+							return;
+						}
+						didCheck(response.IsAchieved);
+					}
+				);
+				return;
+			}
+			didCheck(false);
 		}
 
         /// 進化できるか

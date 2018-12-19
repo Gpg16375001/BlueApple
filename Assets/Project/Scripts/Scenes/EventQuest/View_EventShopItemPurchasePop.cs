@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 using TMPro;
 
@@ -48,24 +49,51 @@ public class View_EventShopItemPurchasePop : PopupViewBase {
         if(productDataSetting.StockItemDataList.Length == 1){
             this.GetScript<TextMeshProUGUI>("txtp_StockNum").SetText(productDataSetting.StockItemDataList[0].Quantity);
         }
-        this.GetScript<RectTransform>("TimeLimit").gameObject.SetActive(false); // TODO : アイテム販売期間が無制限なら表示しない.
         this.GetScript<RectTransform>("NumberLimit").gameObject.SetActive(productData.UpperLimit > 0); // TODO : アイテム購入制限がなければ表示しない.
         if (productData.UpperLimit > 0) {
             GetScript<TextMeshProUGUI> ("txtp_Number").SetText (productData.UpperLimit - productData.MaxPurchaseQuantity);
             GetScript<TextMeshProUGUI> ("txtp_NumberLimit").SetText (productData.UpperLimit);
         }
 
+		var eventQuest = MasterDataTable.event_quest [setting.event_quest_id];
+		var TimerLimitGo = GetScript<RectTransform> ("TimeLimit").gameObject;
+		if (setting.end_date.HasValue && eventQuest.exchange_time_limit != setting.end_date.Value) {
+			TimerLimitGo.SetActive (true);
+			GetScript<TextMeshProUGUI> ("txtp_TimeLimitDate").SetTextFormat ("{0}/{1}", setting.end_date.Value.Month, setting.end_date.Value.Day);
+			GetScript<TextMeshProUGUI> ("txtp_TimeLimitTime").SetTextFormat ("{0}:{1}", setting.end_date.Value.Hour, setting.end_date.Value.Minute);
+		} else {
+			TimerLimitGo.SetActive (false);
+		}
+
         var iconName = ItemTypeEnum.event_point.GetCurrencyIconName();
         this.GetScript<uGUISprite>("txtp_TotalPrice/CurrencyIcon").ChangeSprite(iconName);
         this.GetScript<uGUISprite>("Price/IconGem").ChangeSprite(iconName);
 
+		GetScript<Image>("txtp_TotalPrice/CurrencyIcon").overrideSprite = null; 
+		GetScript<Image>("Price/IconGem").overrideSprite = null; 
+		IconLoader.LoadEventPoint (setting.event_quest_id, DidLoadEventPointIcon);
+
         // ボタン
         this.SetCanvasCustomButtonMsg("Buy/bt_Common", DidTapBuy, m_currentSelectNum <= CanBuyMaxNumber);
         this.SetCanvasCustomButtonMsg("Cancel/bt_Common", DidTapCancel);
-        this.SetCanvasCustomButtonMsg("bt_Plus", DidTapPlus, m_currentSelectNum <= CanBuyMaxNumber);
-        this.SetCanvasCustomButtonMsg("bt_Minus", DidTapSub, m_currentSelectNum > 1);
+		this.SetCanvasCustomButtonMsg("bt_Plus", DidTapPlus, null, null, DidRepeatPlus, m_currentSelectNum <= CanBuyMaxNumber);
+		this.SetCanvasCustomButtonMsg("bt_Minus", DidTapSub, null, null, DidRepeatSub, m_currentSelectNum > 1);
         SetBackButton ();
     }
+
+	public override void Dispose ()
+	{
+		IconLoader.RemoveLoadedEvent (ItemTypeEnum.event_point, exchangeSetting.event_quest_id, DidLoadEventPointIcon);
+		base.Dispose ();
+	}
+
+	void DidLoadEventPointIcon(IconLoadSetting data, Sprite icon)
+	{
+		if (data.type == ItemTypeEnum.event_point && data.id == exchangeSetting.event_quest_id) {
+			GetScript<Image>("txtp_TotalPrice/CurrencyIcon").overrideSprite = icon; 
+			GetScript<Image>("Price/IconGem").overrideSprite = icon; 
+		}
+	}
 
     int HaveLimitCount()
     {
@@ -172,6 +200,29 @@ public class View_EventShopItemPurchasePop : PopupViewBase {
         PlayOpenCloseAnimation (false, Dispose);
     }
 
+	void DidRepeatPlus(int repeatCount)
+	{
+		if (IsClosed) {
+			return;
+		}
+
+		if (m_currentSelectNum >= CanBuyMaxNumber) {
+			return;
+		}
+
+		// リピート回数をみて変化量を変える
+		if (repeatCount < 20) {
+			m_currentSelectNum++;
+		} else if (repeatCount < 40) {
+			m_currentSelectNum += 10;
+		} else {
+			m_currentSelectNum += 100;
+		}
+
+		m_currentSelectNum = Mathf.Min(CanBuyMaxNumber, m_currentSelectNum);
+		UpdateInfo ();
+	}
+
     void DidTapPlus()
     {
         if (IsClosed) {
@@ -186,6 +237,28 @@ public class View_EventShopItemPurchasePop : PopupViewBase {
         UpdateInfo ();
     }
 
+	void DidRepeatSub(int repeatCount)
+	{
+		if (IsClosed) {
+			return;
+		}
+
+		if (m_currentSelectNum <= 1) {
+			UpdateInfo ();
+			return;
+		}
+
+		// リピート回数をみて変化量を変える
+		if (repeatCount < 20) {
+			m_currentSelectNum--;
+		} else if (repeatCount < 40) {
+			m_currentSelectNum -= 10;
+		} else  {
+			m_currentSelectNum -= 100;
+		}
+		m_currentSelectNum = Mathf.Max(1, m_currentSelectNum);
+		UpdateInfo ();
+	}
     void DidTapSub()
     {
         if (IsClosed) {

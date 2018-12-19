@@ -20,6 +20,7 @@ public class Screen_PlayerSupportEdit : ViewBase {
         SetSupportCardList(userData);
 
         SetCanvasCustomButtonMsg ("bt_PartySave", DidTapSave);
+        SetCanvasCustomButtonMsg("AutoSelect/bt_CommonS01", DidTapAutoOrganization);
 
         GetScript<ScreenBackground> ("BG").CallbackLoaded (() => {
             View_FadePanel.SharedInstance.FadeIn (View_FadePanel.FadeColor.Black);
@@ -55,6 +56,21 @@ public class Screen_PlayerSupportEdit : ViewBase {
             );
         }
     }
+
+	void DidTapAutoOrganization()
+	{
+		PopupManager.OpenPopupYN ("各属性を編成します\nよろしいですか？",
+			() => {
+				foreach( var pair in View_PartyEditAutoSelect.GetElementTypeDict() ) {
+					if( pair.Value.Count > 0 ) {
+						AwsModule.UserData.SetSupportCardList( pair.Key, pair.Value[0], true );
+					}
+				}
+				SetSupportCardList( AwsModule.UserData, true );
+			},
+			() => {}
+		);
+	}
 
     private void DidTapBackButon()
     {
@@ -93,18 +109,22 @@ public class Screen_PlayerSupportEdit : ViewBase {
         }
     }
 
-    private void SetSupportCardList(AwsLocalUserData userData)
+    private void SetSupportCardList(AwsLocalUserData userData, bool isUpdate=false)
     {
         for (ElementEnum element = ElementEnum.fire; element <= ElementEnum.dark; ++element) {
             var card = userData.GetSupportCardList (element);
             var script = GetScript<ListItem_PartyEditUnit> (string.Format ("ListItem_PartyEditUnit{0}", (int)element));
-            script.Init (
-                card,
-                null,
-                (int)element,
-                DidTapEditUnit,
-                DidLongTapEditUnit
-            );
+			if( !isUpdate ) {
+				script.Init (
+					card,
+					null,
+					(int)element,
+					DidTapEditUnit,
+					DidLongTapEditUnit
+				);
+			}else{
+				script.UpdateUnit( card, null, (int)element );
+			}
             // 長押し有効か
             script.EnableLongPress = true;
         }

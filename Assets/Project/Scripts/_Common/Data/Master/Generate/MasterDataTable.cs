@@ -343,6 +343,20 @@ public static class MasterDataTable {
     }
 
 
+    public static LoginbonusDistPackageDetailTable loginbonus_dist_package_detail {
+        get {
+            return MasterDataManager.LoadMasterData<LoginbonusDistPackageDetailTable> ("loginbonus_dist_package_detail");
+        }
+    }
+
+
+    public static LoginbonusDistPackageTable loginbonus_dist_package {
+        get {
+            return MasterDataManager.LoadMasterData<LoginbonusDistPackageTable> ("loginbonus_dist_package");
+        }
+    }
+
+
     public static EnemyUnitSizeTable enemy_unit_size {
         get {
             return MasterDataManager.LoadMasterData<EnemyUnitSizeTable> ("enemy_unit_size");
@@ -472,6 +486,13 @@ public static class MasterDataTable {
     public static ElementTable element {
         get {
             return MasterDataManager.LoadMasterData<ElementTable> ("element");
+        }
+    }
+
+
+    public static CommonSeasonTable season {
+        get {
+            return MasterDataManager.LoadMasterData<CommonSeasonTable> ("season");
         }
     }
 
@@ -735,6 +756,13 @@ public static class MasterDataTable {
     }
 
 
+    public static EventQuestPointNameTable event_quest_point_name {
+        get {
+            return MasterDataManager.LoadMasterData<EventQuestPointNameTable> ("event_quest_point_name");
+        }
+    }
+
+
     public static EventQuestScheduleTable event_quest_schedule {
         get {
             return MasterDataManager.LoadMasterData<EventQuestScheduleTable> ("event_quest_schedule");
@@ -794,6 +822,13 @@ public static class MasterDataTable {
     public static EventQuestScenarioSettingTable event_quest_scenario_setting {
         get {
             return MasterDataManager.LoadMasterData<EventQuestScenarioSettingTable> ("event_quest_scenario_setting");
+        }
+    }
+
+
+    public static CurrencyTable currency {
+        get {
+            return MasterDataManager.LoadMasterData<CurrencyTable> ("currency");
         }
     }
 
@@ -885,6 +920,13 @@ public static class MasterDataTable {
     public static BannerSettingTable banner_setting {
         get {
             return MasterDataManager.LoadMasterData<BannerSettingTable> ("banner_setting");
+        }
+    }
+
+
+    public static GemRecommendedTable gem_recommended {
+        get {
+            return MasterDataManager.LoadMasterData<GemRecommendedTable> ("gem_recommended");
         }
     }
 

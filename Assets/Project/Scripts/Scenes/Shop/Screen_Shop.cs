@@ -33,6 +33,9 @@ public class Screen_Shop : ViewBase
         View_PlayerMenu.DidSetEnableButton += bActive => this.IsEnableButton = bActive;
         View_PlayerMenu.DidTapBackButton += DidTapBack;
 
+		this.SetCanvasCustomButtonMsg("GemShop/bt_GemShop", View_PlayerMenu.Instance.DidTapGemShop);
+		updateGemFlow( true );
+
 		this.UpdateList();
 
         GetScript<ScreenBackground> ("BG").CallbackLoaded (() => {
@@ -46,19 +49,39 @@ public class Screen_Shop : ViewBase
 		base.Dispose();
     }
     // リスト更新.
-	private void UpdateList()
+	private void UpdateList(bool clean=true)
 	{
 		// タブ.
         var categories = MasterDataTable.shop_category.GetItemShopCategories();
         var root = this.GetScript<HorizontalLayoutGroup>("TabGrid");
-		root.gameObject.DestroyChildren();
-        foreach (var c in categories) {
-            var go = GameObjectEx.LoadAndCreateObject("_Common/View/ListItem_HorizontalTextTab", root.gameObject);
-            var tab = go.GetOrAddComponent<ListItem_HorizontalTextTab>();
-            tab.Init(c.name, DidTapTab);
-        }
-        // 初回リスト.
-        this.DidTapTab(root.GetComponentsInChildren<ListItem_HorizontalTextTab>().First());
+		if( clean ) {
+			root.gameObject.DestroyChildren();
+			foreach (var c in categories) {
+				var go = GameObjectEx.LoadAndCreateObject("_Common/View/ListItem_HorizontalTextTab", root.gameObject);
+				var tab = go.GetOrAddComponent<ListItem_HorizontalTextTab>();
+				tab.Init(c.name, DidTapTab);
+			}
+            try {
+                var data = MasterDataTable.shop_category[InitSelectCategory];
+                this.DidTapTab (root.GetComponentsInChildren<ListItem_HorizontalTextTab> ().FirstOrDefault(x => x.CategoryName == data.name));
+            }
+            catch {
+                // 初回リスト.
+                this.DidTapTab (root.GetComponentsInChildren<ListItem_HorizontalTextTab> ().First ());
+            }
+            finally {
+                InitSelectCategory = 0;
+            }
+		}else{
+			//ListItem_ShopItemのアップデート
+			var storeGrid = this.GetScript<InfiniteGridLayoutGroup> ("ShopItemGrid");
+			if( storeGrid ) {
+				Array.ForEach( storeGrid.GetComponentsInChildren<ListItem_ShopItem>(), item => {
+					var idx = m_list.FindIndex( s => s == item.Data );
+					CallbackUpdateListItem( idx, item.gameObject );
+				} );
+			}
+		}
 	}
 
 	// 司書キャラモデルリクエスト.
@@ -124,7 +147,7 @@ public class Screen_Shop : ViewBase
 			list.Init(data => {
 				var i = Array.FindIndex(m_productDatas, d => d.ShopProductId == data.ShopProductId);
 				m_productDatas[i] = data;
-				this.UpdateList();
+				this.UpdateList( false );
 			});
 		}
 		list.SetInfo(m_list[index], Array.Find(m_productDatas, d => d.ShopProductId == m_list[index].id));
@@ -204,9 +227,25 @@ public class Screen_Shop : ViewBase
 
     #endregion
 
+	bool saveValue = false;
+	void updateGemFlow( bool isFirst=false )
+	{
+		var value = !string.IsNullOrEmpty( View_PlayerMenu.MessageGemFlow );
+		if( isFirst || (saveValue != value) ) {
+			GetScript<RectTransform>("img_FastTimeDiscount").gameObject.SetActive( value );
+			GetScript<TextMeshProUGUI>("img_FastTimeDiscount/txtp_Discount_11").text = View_PlayerMenu.MessageGemFlow;
+			saveValue = value;
+		}
+	}
+
 	void Awake()
 	{
 		this.gameObject.AttachUguiRootComponent(CameraHelper.SharedInstance.Camera2D);
+	}
+
+	void Update()
+	{
+		updateGemFlow();
 	}
 
 	private GameObject m_shopListPrefab;
@@ -215,4 +254,5 @@ public class Screen_Shop : ViewBase
 	private ShopProductData[] m_productDatas;
     private CardBasedMaterial[] m_SoulExchangeList;
     private Live2dVoicePlayer m_Live2dVoicePlayer;
+    public static int InitSelectCategory = 0;
 }

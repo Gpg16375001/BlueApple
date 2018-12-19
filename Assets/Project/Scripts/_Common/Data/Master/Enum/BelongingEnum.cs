@@ -8,4 +8,5 @@ public enum BelongingEnum {
     Palladia = 6, // パラディア群国
     Amatu = 7, // アマツ巫国
     Unknown = 8, // 不明
+    AttackOnTitan = 9, // 進撃の巨人用所属
 }

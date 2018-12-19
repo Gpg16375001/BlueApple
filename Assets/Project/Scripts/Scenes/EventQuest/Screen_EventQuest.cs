@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 using SmileLab;
@@ -25,19 +26,38 @@ public class Screen_EventQuest : ViewBase {
             return;
         }
 
-        // BGM再生
-        if (!string.IsNullOrEmpty (EventQuest.bgm_name)) {
-            SoundManager.SharedInstance.PlayBGM (EventQuest.bgm_name, true);
-        }
+		if (m_IsExchangeOnly) {
+			// BGM再生
+			if (!string.IsNullOrEmpty (EventQuest.bgm_name)) {
+				SoundManager.SharedInstance.PlayBGM (EventQuest.bgm_name, true);
+			}
 
-        // BGを取得
-        var bgPrefab = GetAssetBundlePrefabs("BG");
-        if (bgPrefab) {
-            var bgGo = GameObject.Instantiate (bgPrefab) as GameObject;
-            gameObject.AddInChild (bgGo);
-            m_ViewBG = bgGo.GetOrAddComponent<View_EventBG> ();
-            m_ViewBG.Init(EventQuest);
-        }
+			// BGを取得
+			var bgPrefab = GetAssetBundlePrefabs (EventQuest.background_prefab);
+			if (bgPrefab) {
+				var bgGo = GameObject.Instantiate (bgPrefab) as GameObject;
+				gameObject.AddInChild (bgGo);
+				m_ViewBG = bgGo.GetOrAddComponent<View_EventBG> ();
+				m_ViewBG.Init (EventQuest.top_display_card_1, EventQuest.top_display_card_2);
+			}
+		} else if(m_IsEnabelEvent) {
+			// 開始期日が近いスケジュールの設定を取ってくる
+			var schedule = MasterDataTable.event_quest_schedule.DataList.Where(x => x.event_quest_id == EventId).
+				OrderBy(x => x.start_at - now).First();
+
+			// BGM再生
+			if (!string.IsNullOrEmpty (schedule.bgm_name)) {
+				SoundManager.SharedInstance.PlayBGM (EventQuest.bgm_name, true);
+			}
+			// BGを取得
+			var bgPrefab = GetAssetBundlePrefabs (schedule.background_prefab);
+			if (bgPrefab) {
+				var bgGo = GameObject.Instantiate (bgPrefab) as GameObject;
+				gameObject.AddInChild (bgGo);
+				m_ViewBG = bgGo.GetOrAddComponent<View_EventBG> ();
+				m_ViewBG.Init (schedule.top_display_card_1, schedule.top_display_card_2);
+			}
+		}
 
 
         var viewShop = GameObjectEx.LoadAndCreateObject("EventQuest/View_EventShop", this.gameObject);

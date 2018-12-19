@@ -28,12 +28,12 @@ SpriteAtlas:
       enableTightPacking: 0
     packedHash:
       serializedVersion: 2
-      Hash: 39d4051916061c55b210a808cec8db4d
+      Hash: 76fc75450c34e9ee77618b8d9ae16bf1
     variantMultiplier: 1
     bindAsDefault: 1
     finalFormat: 4
-    hashString: 39d4051916061c55b210a808cec8db4d
-    totalSpriteSurfaceArea: 48000
+    hashString: 76fc75450c34e9ee77618b8d9ae16bf1
+    totalSpriteSurfaceArea: 54400
     packables:
     - {fileID: 2800000, guid: 2fa06a52defbc1a41b0d4f1b584f2268, type: 3}
     - {fileID: 2800000, guid: 617207e8e33a90c43a5c682d0958d43a, type: 3}
@@ -47,11 +47,13 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 98266d38daa8ed84899f752108d8f946, type: 3}
     - {fileID: 2800000, guid: f509fb3480e9177418f83c9321cc4b02, type: 3}
     - {fileID: 2800000, guid: 8df5a57b80da746419f5011da2901948, type: 3}
+    - {fileID: 2800000, guid: 182646dfb8ba6fb4993ddf64ed9f864d, type: 3}
     packedSpriteRenderDataKeys:
     - 8df5a57b80da746419f5011da2901948: 21300000
     - 2fa06a52defbc1a41b0d4f1b584f2268: 21300000
     - 45ad3ae260dbfcf48b411e0d0f4050eb: 21300000
     - 617207e8e33a90c43a5c682d0958d43a: 21300000
+    - 182646dfb8ba6fb4993ddf64ed9f864d: 21300000
     - 80bc74f52f3363145b7bbe02a127b419: 21300000
     - 98266d38daa8ed84899f752108d8f946: 21300000
     - dfd1e7d6857e19e4a9dc03c6712365c0: 21300000
@@ -66,6 +68,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2fa06a52defbc1a41b0d4f1b584f2268, type: 3}
   - {fileID: 21300000, guid: 45ad3ae260dbfcf48b411e0d0f4050eb, type: 3}
   - {fileID: 21300000, guid: 617207e8e33a90c43a5c682d0958d43a, type: 3}
+  - {fileID: 21300000, guid: 182646dfb8ba6fb4993ddf64ed9f864d, type: 3}
   - {fileID: 21300000, guid: 80bc74f52f3363145b7bbe02a127b419, type: 3}
   - {fileID: 21300000, guid: 98266d38daa8ed84899f752108d8f946, type: 3}
   - {fileID: 21300000, guid: dfd1e7d6857e19e4a9dc03c6712365c0, type: 3}
@@ -79,6 +82,7 @@ SpriteAtlas:
   - IconCoin
   - IconGachaTicket
   - IconGem
+  - IconFriendPoint
   - IconPVPMedal
   - IconSkipTicket
   - IconResoulL

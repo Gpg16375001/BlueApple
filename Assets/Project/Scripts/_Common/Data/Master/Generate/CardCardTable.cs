@@ -163,6 +163,17 @@ public partial class CardCard
     // フレーバーテキスト2の条件となる解放章情報
     public MainQuestChapterInfo release_chapter_flavor2;
 
+    [SerializeField]
+    private bool release_flavor2_event_stage_detail_id_has_value;
+    [SerializeField]
+    private int release_flavor2_event_stage_detail_id_value;
+    // フレーバーテキスト2の条件となるイベントステージ詳細ID
+    public int? release_flavor2_event_stage_detail_id;
+
+    // レアリティ最大時もフレーバーテキスト2の条件となる
+    [SerializeField]
+    public bool release_flavor2_max_rarity;
+
     // ボイスファイル指定
     [SerializeField]
     public string voice_sheet_name;
@@ -187,7 +198,11 @@ public partial class CardCard
         character = MasterDataTable.character.DataList.First (x => x.id == _character);
         country = MasterDataTable.belonging.DataList.First (x => x.Enum == _country);
         element = MasterDataTable.element.DataList.First (x => x.Enum == _element);
-        release_chapter_flavor2 = MasterDataTable.quest_main_chapter_info.DataList.First (x => x.id == _release_chapter_flavor2);
+        release_chapter_flavor2 = MasterDataTable.quest_main_chapter_info.DataList.FirstOrDefault (x => x.id == _release_chapter_flavor2);
+        release_flavor2_event_stage_detail_id = null;
+        if(release_flavor2_event_stage_detail_id_has_value) {
+            release_flavor2_event_stage_detail_id = release_flavor2_event_stage_detail_id_value;
+        }
         InitExtension();
     }
 }

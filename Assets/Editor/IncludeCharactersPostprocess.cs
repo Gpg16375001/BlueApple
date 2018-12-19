@@ -12,7 +12,7 @@ using System.Linq;
 /// </summary>
 public class IncludeCharactersPostprocess : AssetPostprocessor 
 {
-    static readonly string DefaultFontAssetPath = "Assets/Font/FOT-MATISSEPRON-DB SDF.asset";
+    static readonly string DefaultFontAssetPath = "Assets/Resources/Font/FOT-MATISSEPRON-DB SDF.asset";
 
     public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetsPath)
     {

@@ -624,6 +624,7 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols:
+    1: DEFINE_DEVELOP
     4: DEFINE_DEVELOP
     7: DEFINE_DEVELOP
   platformArchitecture: {}

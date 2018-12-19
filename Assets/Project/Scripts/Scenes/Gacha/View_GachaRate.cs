@@ -61,6 +61,7 @@ public class View_GachaRate : ViewBase
 					this.GetScript<TextMeshProUGUI>("R3_R4Total/txtp_Rate").text = proInGroupR3.ToString("F2");
 					this.GetScript<TextMeshProUGUI>("R4_R4Total/txtp_Rate").text = "100";
                 }
+				itemList = itemList.OrderByDescending( item => item.Priority ).ToList();
                 foreach (var item in itemList) {
                     var go = GameObjectEx.LoadAndCreateObject("Gacha/ListItem_GachaRate", rootRarity.gameObject);
                     var c = go.GetOrAddComponent<ListItem_GachaRate>();

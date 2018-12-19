@@ -22,10 +22,13 @@ abstract public class AwsCognitoDatasetBase : IDisposable
     /// <param name="datasetName">Dataset名</param>
     public AwsCognitoDatasetBase(CognitoSyncManager mng, string datasetName)
     {
-        // 作成済みか判断する。
-        bool isCreated = mng.ListDatasets ().Any (x => x.DatasetName == datasetName);
+        m_Manager = mng;
+        m_DatasetName = datasetName;
 
-        m_Data = mng.OpenOrCreateDataset(datasetName);
+        // 作成済みか判断する。
+        bool isCreated = m_Manager.ListDatasets ().Any (x => x.DatasetName == m_DatasetName);
+
+        m_Data = m_Manager.OpenOrCreateDataset(datasetName);
         m_Data.OnSyncSuccess += OnSyncSuccess;
         m_Data.OnSyncFailure += OnSyncFailure;
         m_Data.OnSyncConflict = OnSyncConflict;
@@ -67,7 +70,7 @@ abstract public class AwsCognitoDatasetBase : IDisposable
         m_Data = null;
     }
 
-    public virtual void Delete()
+    public virtual void Delete(bool isDispose=false)
     {
         m_Data.Delete ();
         Dispose ();
@@ -164,8 +167,30 @@ abstract public class AwsCognitoDatasetBase : IDisposable
     {
         // 一応、null判定を入れておく
         if (e != null && e.Exception != null) {
-            UnityEngine.Debug.LogError (e.Exception.Message);
+			UnityEngine.Debug.LogErrorFormat ("AwsCognitoDatasetBase.OnSyncFailure: {0}", e.Exception.Message);
+            if(
+                e != null && 
+                (
+                    e.Exception is Amazon.CognitoIdentity.Model.NotAuthorizedException || 
+                    e.Exception is Amazon.CognitoSync.Model.NotAuthorizedException
+                )
+            ) {
+                // 認証し直す
+                AwsRequestAPI.AuthToken = string.Empty;
+                AwsModule.Request.RequestUserAuth(
+                    (ret) => {
+                        if(!ret) {
+                            m_DidCallback (false, sender, e);
+                        } else {
+                            // 再度Syncを試みる
+                            Sync(m_DidCallback);
+                        }
+                    }
+                );
+                return;
+            }
         }
+
         if (m_DidCallback == null) {
             return;
         }
@@ -217,4 +242,6 @@ abstract public class AwsCognitoDatasetBase : IDisposable
 
     protected Dataset m_Data;
     protected DidSyncDelegate m_DidCallback;
+    protected CognitoSyncManager m_Manager;
+    protected string m_DatasetName;
 }

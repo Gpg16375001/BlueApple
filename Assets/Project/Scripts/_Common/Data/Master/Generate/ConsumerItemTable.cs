@@ -62,6 +62,10 @@ public partial class ConsumerItem
     [SerializeField]
     public string sub_type;
 
+    // 説明テキスト
+    [SerializeField]
+    public string flavor_text;
+
 
     // 初期化関数をpartial化して拡張できるようにする。
     partial void InitExtension();

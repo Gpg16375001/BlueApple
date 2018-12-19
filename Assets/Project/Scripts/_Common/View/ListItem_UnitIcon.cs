@@ -24,7 +24,8 @@ public class ListItem_UnitIcon : ViewBase
         ATK,
         DEF,
         SPD,
-        EXP // 経験値
+        EXP, // 経験値
+        Belonging,  // 所属国
     }
 
 	public void Init(CardData card, DispStatusType statusType = DispStatusType.Default, bool isDispRemove = false, bool isDispOrganizing = false, bool isDispEquip = false, Action<CardData> DidTap = null, Action<CardData> DidLongPress = null)
@@ -46,12 +47,14 @@ public class ListItem_UnitIcon : ViewBase
         var starGrid = this.GetScript<Transform> ("StarGrid");
         var elementIcon = GetScript<Image> ("ElementIcon");
 		var expGaugeRoot = GetScript<Transform>("UnitExpGauge");
+        var country = GetScript<TextMeshProUGUI> ("Txtp_Country");
         if (m_CardData == null) {
             unitStatus.gameObject.SetActive (false);
             elementIcon.gameObject.SetActive (false);
             starGrid.gameObject.SetActive (false);
             levelRoot.gameObject.SetActive (false);
 			expGaugeRoot.gameObject.SetActive(false);
+            country.gameObject.SetActive (false);
             return;
         }
 
@@ -97,22 +100,25 @@ public class ListItem_UnitIcon : ViewBase
         // ステータス表示切り替え
         switch (statusType) {
         case DispStatusType.Default:
-			levelRoot.gameObject.SetActive(false);
-			expGaugeRoot.gameObject.SetActive(false);
+            levelRoot.gameObject.SetActive (false);
+            expGaugeRoot.gameObject.SetActive (false);
             unitStatus.gameObject.SetActive (false);
             starGrid.gameObject.SetActive (true);
+            country.gameObject.SetActive (false);
             break;
 		case DispStatusType.Level:
 			levelRoot.gameObject.SetActive(true);
             expGaugeRoot.gameObject.SetActive(false);
             unitStatus.gameObject.SetActive(false);
             starGrid.gameObject.SetActive(true);
+            country.gameObject.SetActive (false);
 			break;
         case DispStatusType.HP:
             levelRoot.gameObject.SetActive (false);
             expGaugeRoot.gameObject.SetActive (false);
             starGrid.gameObject.SetActive (false);
             unitStatus.gameObject.SetActive (true);
+            country.gameObject.SetActive (false);
             GetScript<RectTransform> ("img_ListIconHP").gameObject.SetActive (true);
             GetScript<RectTransform> ("img_ListIconATK").gameObject.SetActive (false);
             GetScript<RectTransform> ("img_ListIconDEF").gameObject.SetActive (false);
@@ -124,6 +130,7 @@ public class ListItem_UnitIcon : ViewBase
 			expGaugeRoot.gameObject.SetActive(false);
             starGrid.gameObject.SetActive (false);
             unitStatus.gameObject.SetActive (true);
+            country.gameObject.SetActive (false);
             GetScript<RectTransform> ("img_ListIconHP").gameObject.SetActive (false);
             GetScript<RectTransform> ("img_ListIconATK").gameObject.SetActive (true);
             GetScript<RectTransform> ("img_ListIconDEF").gameObject.SetActive (false);
@@ -135,6 +142,7 @@ public class ListItem_UnitIcon : ViewBase
 			expGaugeRoot.gameObject.SetActive(false);
             starGrid.gameObject.SetActive (false);
             unitStatus.gameObject.SetActive (true);
+            country.gameObject.SetActive (false);
             GetScript<RectTransform> ("img_ListIconHP").gameObject.SetActive (false);
             GetScript<RectTransform> ("img_ListIconATK").gameObject.SetActive (false);
             GetScript<RectTransform> ("img_ListIconDEF").gameObject.SetActive (true);
@@ -146,6 +154,7 @@ public class ListItem_UnitIcon : ViewBase
 			expGaugeRoot.gameObject.SetActive(false);
             starGrid.gameObject.SetActive (false);
             unitStatus.gameObject.SetActive (true);
+            country.gameObject.SetActive (false);
             GetScript<RectTransform> ("img_ListIconHP").gameObject.SetActive (false);
             GetScript<RectTransform> ("img_ListIconATK").gameObject.SetActive (false);
             GetScript<RectTransform> ("img_ListIconDEF").gameObject.SetActive (false);
@@ -157,7 +166,16 @@ public class ListItem_UnitIcon : ViewBase
 			expGaugeRoot.gameObject.SetActive(true);
 			unitStatus.gameObject.SetActive(false);
 			starGrid.gameObject.SetActive(true);
+            country.gameObject.SetActive (false);
 			break;
+        case DispStatusType.Belonging:  //所属国
+            levelRoot.gameObject.SetActive (false);
+            expGaugeRoot.gameObject.SetActive (false);
+            starGrid.gameObject.SetActive (false);
+            unitStatus.gameObject.SetActive (false);
+            country.gameObject.SetActive (true);
+            country.SetText (card.Card.country.short_name);
+            break;
         }
 
         elementIcon.gameObject.SetActive (true);

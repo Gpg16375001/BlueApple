@@ -176,6 +176,7 @@ public class View_GachaPurchasePop : PopupViewBase
                 break;
             case GachaTypeEnum.weapon_gacha:
                 CreateWeaponGacha (res);
+				View_GlobalMenu.Setup();
                 break;
             default:
                 LockInputManager.SharedInstance.IsLock = false;
@@ -289,7 +290,15 @@ public class View_GachaPurchasePop : PopupViewBase
 					if (service.IsNew) {
 						service.CardData.CacheSet();
 					} else{
-						(new MaterialData(service.ConvertedItemId, service.ConvertedQuantity)).CacheSet();
+						//上と同様の加算処理
+						var cache = MaterialData.CacheGet(service.ConvertedItemId);
+						if(cache == null){
+							var newItem = new MaterialData(service.ConvertedItemId, service.ConvertedQuantity);
+							newItem.CacheSet();
+						}else{
+							cache.Count += service.ConvertedQuantity;
+							cache.CacheSet();
+						}
 					}               
                     break;
 				case ItemTypeEnum.weapon:

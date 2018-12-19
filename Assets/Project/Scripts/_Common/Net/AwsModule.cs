@@ -68,24 +68,22 @@ public class AwsModule : ViewBase
         credentials.AuthLoggedin(identityId, token);
     }
 
-    public static void AllDelete()
+    public static void ClearDataset()
     {
-        if (UserData.IsExistAcount) {
-            UserData.Delete ();
-            LocalData.Delete ();
-            ProgressData.Delete ();
-            BattleData.Delete ();
-            PartyData.Delete ();
-            CardModifiedData.Delete ();
+        credentials.Clear ();
+        credentials.ClearIdentityCache ();
 
-            cognitoSyncManager.Dispose ();
-            cognitoSyncManager = null;
+        // authが通っているはずなのでそのままSyncManagerを初期化する。
+        cognitoSyncManager = new CognitoSyncManager(credentials, new AmazonCognitoSyncConfig { RegionEndpoint = RegionEndpoint.APNortheast1 });
 
-            credentials.Clear ();
-
-            // リクエストロジック初期化.
-            AwsRequestAPI.AuthToken = string.Empty;
-        }
+        // DataSetを作り直す
+        UserData = new AwsLocalUserData(cognitoSyncManager);
+        LocalData = new AwsLocalSaveData(cognitoSyncManager);
+        ProgressData = new AwsUserProgressData(cognitoSyncManager);
+        BattleData = new AwsBattleProgressData(cognitoSyncManager);
+        PartyData = new AwsPartyData (cognitoSyncManager);
+        CardModifiedData = new AwsCardModifiedData(cognitoSyncManager);
+        NotesModifiedData = new AwsNotesModifiedData(cognitoSyncManager);
     }
 
     private void Awake()
@@ -148,28 +146,28 @@ public class AwsModule : ViewBase
         // サーバーデータとSyncする。
         syncEndCount = 0;
         syncRequestCount = 7;
-        RertySync (UserData.OriginalSync, SyncResult);
-        RertySync (LocalData.Sync, SyncResult);
-        RertySync (ProgressData.Sync, () => {
+        RetrySync (UserData.OriginalSync, SyncResult);
+        RetrySync (LocalData.Sync, SyncResult);
+        RetrySync (ProgressData.Sync, () => {
             if(ProgressData.TutorialStageNum >= 0) {
                 ProgressData.UpdateTutorialPoint(-1, false);
             }
             SyncResult();
         });
-        RertySync (BattleData.Sync, SyncResult);
-        RertySync (PartyData.OriginalSync, SyncResult);
-        RertySync (CardModifiedData.Sync, SyncResult);
-        RertySync (NotesModifiedData.Sync, SyncResult);
+        RetrySync (BattleData.Sync, SyncResult);
+        RetrySync (PartyData.OriginalSync, SyncResult);
+        RetrySync (CardModifiedData.Sync, SyncResult);
+        RetrySync (NotesModifiedData.Sync, SyncResult);
     }
 
 
-    static void RertySync(Action<AwsCognitoDatasetBase.DidSyncDelegate> sync, Action success)
+    static void RetrySync(Action<AwsCognitoDatasetBase.DidSyncDelegate> sync, Action success)
     {
         sync ((isSuccess, sender, e) => {
             if(isSuccess) {
                 success();
             } else {
-                RertySync(sync, success);
+                RetrySync(sync, success);
             }
         });
     }

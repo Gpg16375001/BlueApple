@@ -10,6 +10,7 @@ namespace SmileLab.Net.API
 	{
 		// response
 		public UserData UserData;
+		public FriendData FriendData;
 
 		class ReceiveUsersFollowUserFormatter : IMessagePackFormatter<ReceiveUsersFollowUser>
 		{
@@ -19,7 +20,7 @@ namespace SmileLab.Net.API
 				}
 
 				var startOffset = offset;
-				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 4);
+				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 5);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "ResultCode");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.ResultCode);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "UserData");
@@ -27,6 +28,12 @@ namespace SmileLab.Net.API
 					offset += MessagePackBinary.WriteNil (ref bytes, offset);
 				} else {
 					offset += formatterResolver.GetFormatter<UserData> ().Serialize (ref bytes, offset, value.UserData, formatterResolver);
+				}
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "FriendData");
+				if(value.FriendData == null) {
+					offset += MessagePackBinary.WriteNil (ref bytes, offset);
+				} else {
+					offset += formatterResolver.GetFormatter<FriendData> ().Serialize (ref bytes, offset, value.FriendData, formatterResolver);
 				}
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "MasterVersion");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.MasterVersion);
@@ -62,6 +69,16 @@ namespace SmileLab.Net.API
 							ret.UserData = null;
 						} else {
 							ret.UserData = formatterResolver.GetFormatter<UserData> ().Deserialize (bytes, offset, formatterResolver, out readed);
+							offset += readed;
+						}
+						isRead = true;
+					}
+					if (key == "FriendData") {
+						if (MessagePackBinary.IsNil (bytes, offset)) {
+							offset += 1;
+							ret.FriendData = null;
+						} else {
+							ret.FriendData = formatterResolver.GetFormatter<FriendData> ().Deserialize (bytes, offset, formatterResolver, out readed);
 							offset += readed;
 						}
 						isRead = true;

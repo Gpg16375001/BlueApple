@@ -1261,11 +1261,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114155472893773870
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1733,11 +1741,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 1
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.2
 --- !u!114 &114259942721366336
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2282,11 +2298,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 1
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.2
 --- !u!114 &114629054137701700
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4075,12 +4099,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects:
   - {fileID: 1653859624294360}
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114995341718153272
 MonoBehaviour:
   m_ObjectHideFlags: 1

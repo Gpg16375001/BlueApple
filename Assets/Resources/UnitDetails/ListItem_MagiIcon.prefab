@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 224121569881769746}
   - component: {fileID: 222054444656796352}
   - component: {fileID: 114819773665776604}
+  - component: {fileID: 111891962701193894}
   m_Layer: 5
   m_Name: img_MagiEquip
   m_TagString: Untagged
@@ -72,6 +73,7 @@ GameObject:
   - component: {fileID: 224613472997873828}
   - component: {fileID: 222935920363439060}
   - component: {fileID: 114517461186721856}
+  - component: {fileID: 111268259161750762}
   m_Layer: 5
   m_Name: img_Lock
   m_TagString: Untagged
@@ -257,6 +259,7 @@ GameObject:
   - component: {fileID: 224344026908717028}
   - component: {fileID: 222311238670696144}
   - component: {fileID: 114516149326029428}
+  - component: {fileID: 111647914521107440}
   m_Layer: 5
   m_Name: img_MagiRemove
   m_TagString: Untagged
@@ -264,6 +267,51 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!111 &111268259161750762
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1263347962311534}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!111 &111647914521107440
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1940666796816606}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!111 &111891962701193894
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208830343965222}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &114062373265438700
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -452,11 +500,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114516149326029428
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -468,8 +524,8 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Material: {fileID: 2100000, guid: 77d3e3958096aab4e966a0d23d0db39c, type: 2}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.5019608}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -495,8 +551,8 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Material: {fileID: 2100000, guid: 77d3e3958096aab4e966a0d23d0db39c, type: 2}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.5019608}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -626,8 +682,8 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Material: {fileID: 2100000, guid: 77d3e3958096aab4e966a0d23d0db39c, type: 2}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.5019608}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:

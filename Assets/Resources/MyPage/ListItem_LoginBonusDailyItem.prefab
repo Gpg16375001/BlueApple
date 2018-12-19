@@ -28,7 +28,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1228418804885350
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1565805745020428
 GameObject:
   m_ObjectHideFlags: 1
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 222902827865235888}
   - component: {fileID: 114748390109612084}
   m_Layer: 5
-  m_Name: txtp_DailyItemName
+  m_Name: txtp_ItemName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,7 +275,7 @@ Transform:
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 224317805105829506}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
 --- !u!23 &23367111668170544
 MeshRenderer:
@@ -310,7 +310,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3501
+  m_SortingOrder: 3510
 --- !u!33 &33525448879861000
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -1033,8 +1033,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224396497818576376}
-  - {fileID: 4228252343944106}
   - {fileID: 224591484361236364}
+  - {fileID: 4228252343944106}
   m_Father: {fileID: 224635063086596952}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1109,7 +1109,7 @@ RectTransform:
   m_Children:
   - {fileID: 224288877365284692}
   m_Father: {fileID: 224317805105829506}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

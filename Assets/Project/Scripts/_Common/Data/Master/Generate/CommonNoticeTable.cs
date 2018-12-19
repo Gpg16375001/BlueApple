@@ -78,6 +78,20 @@ public partial class CommonNotice
     [SerializeField]
     public CommonNoticeCategoryEnum category;
 
+    // None
+    [SerializeField]
+    public CommonNoticePopupEnum popup_option;
+
+    [SerializeField]
+    private string popup_start_date_value;
+    // 強制表示開始日時
+    public DateTime? popup_start_date;
+
+    [SerializeField]
+    private string popup_end_date_value;
+    // 強制表示終了日時
+    public DateTime? popup_end_date;
+
 
     // 初期化関数をpartial化して拡張できるようにする。
     partial void InitExtension();
@@ -85,6 +99,8 @@ public partial class CommonNotice
         if(!Application.isPlaying) return;
        start_date = DateTime.Parse(start_date_value);
        end_date = DateTime.Parse(end_date_value);
+       if(string.IsNullOrEmpty(popup_start_date_value)) { popup_start_date = null; } else { popup_start_date = DateTime.Parse(popup_start_date_value); }
+       if(string.IsNullOrEmpty(popup_end_date_value)) { popup_end_date = null; } else { popup_end_date = DateTime.Parse(popup_end_date_value); }
         InitExtension();
     }
 }

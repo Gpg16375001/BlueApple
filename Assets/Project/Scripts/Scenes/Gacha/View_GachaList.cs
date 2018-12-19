@@ -235,7 +235,9 @@ public class View_GachaList : ViewBase
 
 		// 設定がない場合は非表示.
 		if (this.Exist<RectTransform>("BuyOneGacha/txtp_FreeGacha")) {
-            this.GetScript<RectTransform>("BuyOneGacha/txtp_FreeGacha").gameObject.SetActive(m_contents.DataFree != null && m_contents.DataFree.IsPurchasable);
+			var value = m_contents.DataFree != null && m_contents.DataFree.IsPurchasable;
+            this.GetScript<RectTransform>("BuyOneGacha/txtp_FreeGacha").gameObject.SetActive( value );
+            this.GetScript<RectTransform>("BuyOneGacha/Exclamation").gameObject.SetActive( value );
         }
 		this.GetScript<RectTransform>("OneGacha").gameObject.SetActive(m_contents.Data != null);
         this.GetScript<RectTransform>("Buy10Gacha").gameObject.SetActive(m_contents.Data10th != null);      

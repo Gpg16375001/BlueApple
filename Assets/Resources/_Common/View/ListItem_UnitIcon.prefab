@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 224368438825019276}
   - component: {fileID: 222653260845057424}
   - component: {fileID: 114189252084685200}
+  - component: {fileID: 111581746013067326}
   m_Layer: 5
   m_Name: img_UnitRemove
   m_TagString: Untagged
@@ -122,6 +123,7 @@ GameObject:
   - component: {fileID: 224424269094342758}
   - component: {fileID: 222109801493887166}
   - component: {fileID: 114483315035929914}
+  - component: {fileID: 111106054911665312}
   m_Layer: 5
   m_Name: img_UnitOrganizing
   m_TagString: Untagged
@@ -139,6 +141,7 @@ GameObject:
   - component: {fileID: 224145196138302354}
   - component: {fileID: 222375607647322978}
   - component: {fileID: 114929937639203584}
+  - component: {fileID: 111521875888405872}
   m_Layer: 5
   m_Name: img_EventBonus
   m_TagString: Untagged
@@ -857,6 +860,7 @@ GameObject:
   - component: {fileID: 224739612010216250}
   - component: {fileID: 222946608825791586}
   - component: {fileID: 114360044054829688}
+  - component: {fileID: 111558683599215328}
   m_Layer: 5
   m_Name: img_WeaponEquip
   m_TagString: Untagged
@@ -1088,6 +1092,21 @@ Transform:
   m_Father: {fileID: 224520190877857418}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &111106054911665312
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1092247726604524}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!111 &111351654840747050
 Animation:
   m_ObjectHideFlags: 1
@@ -1101,6 +1120,51 @@ Animation:
   - {fileID: 7400000, guid: 3a156fa9bff30f042ab19c476c39d8b8, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!111 &111521875888405872
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1102284559377062}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!111 &111558683599215328
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1814447629790470}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!111 &111581746013067326
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1066461267764160}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 1851bb461603bbe4693c326ee5ff5bfc, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
 --- !u!114 &114044257975587562
@@ -1485,8 +1549,8 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Material: {fileID: 2100000, guid: 77d3e3958096aab4e966a0d23d0db39c, type: 2}
+  m_Color: {r: 0.71323526, g: 0.71323526, b: 0.71323526, a: 0.5019608}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1689,11 +1753,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: SmileLab.UI.CustomButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_OnRepeat:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SmileLab.UI.CustomButton+ButtonRepeatEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_PlayLongPressSe: 0
   m_OnLongPressSe: 0
   m_TransitionObjects: []
   m_EnableLongPress: 0
   m_LongPressThredshold: 1
+  m_EnableRepeat: 0
+  m_RepeatThredshold: 0.5
+  m_RepeatInterval: 0.3
 --- !u!114 &114295254195513532
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1759,8 +1831,8 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Material: {fileID: 2100000, guid: 77d3e3958096aab4e966a0d23d0db39c, type: 2}
+  m_Color: {r: 0.71323526, g: 0.71323526, b: 0.71323526, a: 0.5019608}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1997,8 +2069,8 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Material: {fileID: 2100000, guid: 77d3e3958096aab4e966a0d23d0db39c, type: 2}
+  m_Color: {r: 0.71323526, g: 0.71323526, b: 0.71323526, a: 0.5019608}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2715,8 +2787,8 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Material: {fileID: 2100000, guid: 77d3e3958096aab4e966a0d23d0db39c, type: 2}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.5019608}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:

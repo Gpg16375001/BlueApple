@@ -18,21 +18,23 @@ public class View_MyPageNotes : PopupViewBase
 	/// <summary>
 	/// 生成.
 	/// </summary>
-	public static View_MyPageNotes Create(bool bDownloadSelf, Action didClose = null)
+	public static View_MyPageNotes Create(Dictionary<string, Sprite> bannerDict=null, Action didClose = null)
 	{
 		var go = GameObjectEx.LoadAndCreateObject("MyPage/View_MyPageNotes");
 		var c = go.GetOrAddComponent<View_MyPageNotes>();
-		c.InitInternal(bDownloadSelf, didClose);
+		c.InitInternal(bannerDict, didClose);
 		return c;
 	}
-	private void InitInternal(bool bDownloadSelf, Action didClose)
+	private void InitInternal(Dictionary<string, Sprite> bannerDict, Action didClose)
 	{
+		m_myPageBannerDict = bannerDict;
+		m_myPageBannerCount = 0;
 		m_didClose = didClose;
 
 		this.UpdateNewBadge();
 
-		// バナーリスト
-		if (bDownloadSelf) {
+		// バナーリストを読み込み
+		if (bannerDict == null) {
 			DLCManager.StartBannerDownload(MasterDataTable.banner_setting.EnableData.Select(x => x.image_path).ToArray(), UpdateBanner);
 		}
 
@@ -127,6 +129,19 @@ public class View_MyPageNotes : PopupViewBase
 		this.UpdateInfoList(category);
 	}
 #endregion
+
+	private Dictionary<string, Sprite> m_myPageBannerDict;
+	private int m_myPageBannerCount;
+
+	void Update() {
+		//m_myPageBannerDictの監視
+		if( m_myPageBannerDict != null ) {
+			while( m_myPageBannerCount < m_myPageBannerDict.Count ) {
+				var key = m_myPageBannerDict.Keys.ToList()[ m_myPageBannerCount++ ];
+				UpdateBanner( key, m_myPageBannerDict[key] );
+			}
+		}
+	}
 
 	private Dictionary<int, ListItem_Banner> m_bannerDict = new Dictionary<int, ListItem_Banner>();
 	private Action m_didClose;

@@ -14,6 +14,7 @@ public class AwsLocalSaveData : AwsCognitoDatasetBase
     private UnitListSortData unitListSortData;
     private FriendSelectSortData friendSelectSortData;
     private OptionSupportSortData optionSupportSortData;
+    private ItemListSortData itemListSortData;
 
 	/// <summary>AP回復時の通知が有効かどうか.</summary>
     public bool IsNotificateAP
@@ -72,6 +73,17 @@ public class AwsLocalSaveData : AwsCognitoDatasetBase
         get { return Get<OptionSupportSortData>("OptionSupportSortData"); }
         set { Put("OptionSupportSortData", value); }
     }
+    /// <summary>オプションサポートソートデータ.</summary>
+    public ItemListSortData ItemListSortData {
+        get { return Get<ItemListSortData>("ItemListSortData"); }
+        set { Put("ItemListSortData", value); }
+    }
+
+    /// <summary>ジェムショップ開いたフラグ</summary>
+    public bool IsOpenedGemshop {
+        get { return Get<bool>("OpenedGemshop"); }
+        set { Put("OpenedGemshop", value); }
+    }
 
     public bool IsModify {
         get {
@@ -86,6 +98,7 @@ public class AwsLocalSaveData : AwsCognitoDatasetBase
         LoadUnitListSortData();
         LoadFriendSelectSortData();
         LoadOptionSupportSortData();
+        LoadItemListSortData();
     }
 
     // 全値のリセット.
@@ -97,6 +110,7 @@ public class AwsLocalSaveData : AwsCognitoDatasetBase
         this.Volume_SE = 1f;
         this.Volume_Voice = 1f;
 		this.Scenario_Auto = false;
+        this.IsOpenedGemshop = false;
     }
 
     private void LoadWeaponSortData()
@@ -145,6 +159,18 @@ public class AwsLocalSaveData : AwsCognitoDatasetBase
             Put("OptionSupportSortData", optionSupportSortData);
         }
         optionSupportSortData.Commit ();
+    }
+
+    private void LoadItemListSortData()
+    {
+        itemListSortData = new ItemListSortData(false);
+        string key = "ItemListSortData";
+        if (ExistKey (key)) {
+            itemListSortData = Get<ItemListSortData> (key);
+        } else {
+            Put("ItemListSortData", itemListSortData);
+        }
+        itemListSortData.Commit ();
     }
 }
 
@@ -409,6 +435,39 @@ public class OptionSupportSortData
         IsModify = false;
 
         backupSortType = SortType;
+        backupIsDescending = IsDescending;
+    }
+}
+
+[Serializable]
+public class ItemListSortData
+{
+    /// <summary> 降順フラグ </summary>
+    public bool IsDescending;
+
+    private bool backupIsDescending;
+
+    public ItemListSortData(bool isDescending)
+    {
+        IsDescending = isDescending;
+    }
+
+    public bool IsModify {
+        get;
+        private set;
+    }
+
+    public void Reset()
+    {
+        IsDescending = backupIsDescending;
+
+        IsModify = false;
+    }
+
+    public void Commit()
+    {
+        IsModify = false;
+
         backupIsDescending = IsDescending;
     }
 }

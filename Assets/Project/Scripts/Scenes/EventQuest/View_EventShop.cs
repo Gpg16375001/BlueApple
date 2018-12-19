@@ -20,16 +20,22 @@ public class View_EventShop : ViewBase {
 
         EventQuest questData = MasterDataTable.event_quest [EventId];
 
+
+		GetScript<Image> ("IconEventPoint").overrideSprite = null;
+		IconLoader.LoadEventPoint(EventID, DidLoadIcon);
+		GetScript<TextMeshProUGUI> ("txtp_ShopNotes").SetTextFormat ("{0}で交換できるアイテムです", ItemTypeEnum.event_point.GetName (EventId));
+		GetScript<TextMeshProUGUI> ("txtp_Category").SetTextFormat ("{0}交換所", ItemTypeEnum.event_point.GetName (EventId));
+
         GetScript<TextMeshProUGUI> ("txtp_LimitDay").SetTextFormat ("{0}月{1}日 {2}:{3}まで",
             questData.exchange_time_limit.Month, questData.exchange_time_limit.Day,
             questData.exchange_time_limit.Hour, questData.exchange_time_limit.Minute);
         GetScript<TextMeshProUGUI> ("txtp_Wallet").SetText (eventPoint);
 
-        ExchangeList = MasterDataTable.event_quest_exchange_setting [EventId];
+		ExchangeList = MasterDataTable.event_quest_exchange_setting.GetEnableList(EventId);
         ExchangeList = ExchangeList.OrderBy(x => {
             var productData = System.Array.Find (ProductDatas, p => p.ShopProductId == x.id);
             if(productData != null) {
-                if(productData.MaxPurchaseQuantity <= 0) {
+				if(productData.MaxPurchaseQuantity <= 0 || !productData.IsPurchasable) {
                     return 1;
                 }
             }
@@ -66,6 +72,7 @@ public class View_EventShop : ViewBase {
 
     public override void Dispose ()
     {
+		IconLoader.RemoveLoadedEvent (ItemTypeEnum.event_point, EventID, DidLoadIcon);
         base.Dispose ();
     }
 
@@ -83,6 +90,13 @@ public class View_EventShop : ViewBase {
         }
         return true;
     }
+
+	private void DidLoadIcon(IconLoadSetting data, Sprite icon)
+	{
+		if (data.type == ItemTypeEnum.event_point && data.id == EventID) {
+			GetScript<Image> ("IconEventPoint").overrideSprite = icon;
+		}
+	}
 
     private void InitItem(GameObject go)
     {
@@ -147,7 +161,13 @@ public class View_EventShop : ViewBase {
                         m_PruchasePop = null;
                     }
 
-                    m_PruchaseOKPop = View_EventShopItemOKPop.Create(exchange, count, null);
+                    m_PruchaseOKPop = View_EventShopItemOKPop.Create(exchange, count, () => {
+                        var cardIdList = res.EventShopProductData.StockItemDataList.Where(x => x.CardData != null && x.CardData.CardId > 0).
+                            Select(x => x.CardData.CardId).ToList();
+                        if(cardIdList != null && cardIdList.Count > 0) {
+                            PlayCharacterIntroAdv(cardIdList);
+                        }
+                    });
                 }
             }
         );  
@@ -182,6 +202,52 @@ public class View_EventShop : ViewBase {
     private void OpenPruchasePop(EventQuestExchangeSetting exchange, EventShopProductData product)
     {
         m_PruchasePop = View_EventShopItemPurchasePop.Create (EventPoint, exchange, product, DidBuy);
+    }
+
+    // 自己紹介
+    // 自己紹介
+    private void PlayCharacterIntroAdv(List<int> cardList)
+    {
+        if(cardList == null || cardList.Count <= 0){
+            return;
+        }      
+        this.StartCoroutine(CoPlayCharacterIntroAdv(cardList));
+    }
+    private IEnumerator CoPlayCharacterIntroAdv(List<int> cardIdList)
+    {
+        var bg = GameObjectEx.LoadAndCreateObject("Gacha/View_GachaCharacterIntro");
+        bg.gameObject.AttachUguiRootComponent(CameraHelper.SharedInstance.Camera2D);
+
+        UtageModule.SharedInstance.SetActiveCore(true);
+        var bPlayScenario = false;
+        foreach(var cardId in cardIdList){
+            bPlayScenario = true;
+            View_FadePanel.SharedInstance.IsLightLoading = true;
+            UtageModule.SharedInstance.LoadUseChapter(cardId.ToString(), () => {
+                View_FadePanel.SharedInstance.IsLightLoading = false;
+                UtageModule.SharedInstance.StartIntro("intro", MasterDataTable.card[cardId].character.cv, () => {
+                    bPlayScenario = false;
+                }, true);            
+            });
+
+            // スキップを全員分にする.
+            while(bPlayScenario){
+                if (UtageModule.SharedInstance.IsSkip) {
+                    Utage.SoundManager.GetInstance().StopVoice();               
+                    View_FadePanel.SharedInstance.FadeOut(View_FadePanel.FadeColor.Black, () => {
+                        UtageModule.SharedInstance.IsSkip = false;
+                        UtageModule.SharedInstance.ClearCache();
+                        UtageModule.SharedInstance.SetActiveCore(false);
+                        GameObject.Destroy(bg);
+                        View_FadePanel.SharedInstance.FadeIn(View_FadePanel.FadeColor.Black);
+                    });               
+                    yield break;
+                }
+                yield return null;
+            }
+        }
+        UtageModule.SharedInstance.SetActiveCore(false);
+        GameObject.Destroy(bg);
     }
 
     int EventID;

@@ -68,12 +68,41 @@ namespace SmileLab
         /// <summary>
         /// ボタンを押した時の処理設定. ※for SmileLab.UI.CustomButton
         /// </summary>
-        public void SetCanvasCustomButtonMsg(string btnName, UnityAction func, bool interactable = true)
+        public void SetCanvasCustomButtonMsg(string btnName, UnityAction func, bool interactable = true, bool clean=false)
         {
             var button = this.GetScript<CustomButton> (btnName);
+			if( clean )
+				button.onClick.RemoveAllListeners();
             button.onClick.AddListener(func);
             button.interactable = interactable;
         }
+		/// <summary>
+		/// ボタンを押した時の処理設定. ※for SmileLab.UI.CustomButton
+		/// </summary>
+		public void SetCanvasCustomButtonMsg(string btnName, UnityAction click, UnityAction longPress, UnityAction release, UnityAction<int> repeat, bool interactable = true, bool clean=false)
+		{
+			var button = this.GetScript<CustomButton> (btnName);
+			if (clean) {
+				button.onClick.RemoveAllListeners ();
+				button.onLongPress.RemoveAllListeners ();
+				button.onRelease.RemoveAllListeners ();
+				button.onRepeat.RemoveAllListeners ();
+			}
+			if (click != null) {
+				button.onClick.AddListener (click);
+			}
+			if (longPress != null) {
+				button.onLongPress.AddListener (longPress);
+			}
+			if (release != null) {
+				button.onRelease.AddListener (release);
+			}
+			if (repeat != null) {
+				button.onRepeat.AddListener (repeat);
+			}
+
+			button.interactable = interactable;
+		}
 
         /// <summary>
         /// テキストオブジェクトに文字列を設定する

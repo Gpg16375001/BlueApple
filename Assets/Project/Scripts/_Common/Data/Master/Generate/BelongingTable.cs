@@ -62,6 +62,14 @@ public partial class Belonging
     [SerializeField]
     public int priority_view;
 
+    // 省略名
+    [SerializeField]
+    public string short_name;
+
+    // メインクエストの一覧への表示
+    [SerializeField]
+    public bool disp_main_quest_list;
+
 
     // 初期化関数をpartial化して拡張できるようにする。
     partial void InitExtension();

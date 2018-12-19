@@ -51,7 +51,10 @@ public class ListItem_Friend : ViewBase
             }
         }
         GetScript<TextMeshProUGUI>("txtp_LoginDate").SetText(lastLogin);
-
+		if( Exist<RectTransform>("Group_FriendPoint") ) {
+			GetScript<RectTransform>("Group_FriendPoint").gameObject.SetActive( user.GainFriendPointOnSupport != 0 );
+			GetScript<TextMeshProUGUI>("Group_FriendPoint/txtp_Num").text = string.Format( "{0}", user.GainFriendPointOnSupport );
+		}
 
 		GetScript<Image>("img_FriendIcon").gameObject.SetActive(UserData.IsFollow && UserData.IsFollower);
 		GetScript<Image>("img_FollowIcon").gameObject.SetActive(UserData.IsFollow && !UserData.IsFollower);

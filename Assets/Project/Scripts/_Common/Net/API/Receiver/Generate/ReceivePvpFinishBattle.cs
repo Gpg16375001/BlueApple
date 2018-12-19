@@ -10,9 +10,9 @@ namespace SmileLab.Net.API
 	{
 		// response
 		public int BaseWinningPoint;
+		public int WinningPoint;
 		public int RankCorrectedWinningPoint;
 		public int ConsecutiveWinsBonusWinningPoint;
-		public int WinningPoint;
 		public int PvpMedal;
 		public PvpUserData PvpUserData;
 		public UserData UserData;
@@ -30,12 +30,12 @@ namespace SmileLab.Net.API
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.ResultCode);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "BaseWinningPoint");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.BaseWinningPoint);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "WinningPoint");
+				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.WinningPoint);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "RankCorrectedWinningPoint");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.RankCorrectedWinningPoint);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "ConsecutiveWinsBonusWinningPoint");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.ConsecutiveWinsBonusWinningPoint);
-				offset += MessagePackBinary.WriteString (ref bytes, offset, "WinningPoint");
-				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.WinningPoint);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "PvpMedal");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.PvpMedal);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "PvpUserData");
@@ -83,6 +83,11 @@ namespace SmileLab.Net.API
 						offset += readed;
 						isRead = true;
 					}
+					if (key == "WinningPoint") {
+						ret.WinningPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
 					if (key == "RankCorrectedWinningPoint") {
 						ret.RankCorrectedWinningPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
@@ -90,11 +95,6 @@ namespace SmileLab.Net.API
 					}
 					if (key == "ConsecutiveWinsBonusWinningPoint") {
 						ret.ConsecutiveWinsBonusWinningPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
-						offset += readed;
-						isRead = true;
-					}
-					if (key == "WinningPoint") {
-						ret.WinningPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
 						isRead = true;
 					}

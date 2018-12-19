@@ -80,4 +80,6 @@ public enum SkillEffectLogicArgEnum {
     DamageGivenCountMaxRatio, // 与ダメージ回数による効果倍率最大値
     LevelupDamageGivenCountMaxRatio, // 与ダメージ回数によるレベルアップ時効果倍率最大値
     IgnorePassiveEffect, // パッシブ効果無視
+    DamageRatio, // ダメージ倍率
+    LevelupDamageRatio, // レベルアップ時増加ダメージ倍率
 }

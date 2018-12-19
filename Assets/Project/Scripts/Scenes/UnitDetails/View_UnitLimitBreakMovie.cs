@@ -45,10 +45,18 @@ public class View_UnitLimitBreakMovie : ViewBase {
                 renderCntl.SortingLayer = rootCanvas.sortingLayerName;
                 renderCntl.SortingOrder = rootCanvas.sortingOrder;
 
-                for (int i = 1; i <= 4; ++i) {
-                    GetScript<RectTransform> (string.Format ("{0}/Get", i)).gameObject.SetActive (limitBreakCount == i);
-                    GetScript<RectTransform> (string.Format ("{0}/Off", i)).gameObject.SetActive (limitBreakCount < i);
-                    GetScript<RectTransform> (string.Format ("{0}/On", i)).gameObject.SetActive (limitBreakCount > i);
+                var growthBoardSetting = MasterDataTable.card_growth_board_setting [card.CardId];
+                var boardPattern = MasterDataTable.material_growth_board_pattern [growthBoardSetting.growth_board_pattern_id];
+                int maxLimitBreak = boardPattern.total_board_number - boardPattern.initial_board_number;
+                for (int i = 1; i <= 5; ++i) {
+                    if (maxLimitBreak < i) {
+                        GetScript<Transform> (string.Format ("{0}", i)).gameObject.SetActive(false);
+                    } else {
+                        GetScript<Transform> (string.Format ("{0}", i)).gameObject.SetActive(true);
+                        GetScript<RectTransform> (string.Format ("{0}/Get", i)).gameObject.SetActive (limitBreakCount == i);
+                        GetScript<RectTransform> (string.Format ("{0}/Off", i)).gameObject.SetActive (limitBreakCount < i);
+                        GetScript<RectTransform> (string.Format ("{0}/On", i)).gameObject.SetActive (limitBreakCount > i);
+                    }
                 }
                 View_FadePanel.SharedInstance.IsLightLoading = false;
                 m_VoicePlayer = live2d.GetOrAddComponent<Live2dVoicePlayer>();

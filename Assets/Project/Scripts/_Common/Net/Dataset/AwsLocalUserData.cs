@@ -231,10 +231,10 @@ public class AwsLocalUserData : AwsCognitoDatasetBase
         return age;
     }
 
-    public void SetSupportCardList(ElementEnum element, CardData card)
+    public void SetSupportCardList(ElementEnum element, CardData card, bool isOverride=false)
     {
         int cardId = card != null ? card.CardId : 0;
-        if (this._SupportCardIDList [(int)element - 1] != cardId) {
+        if (isOverride || this._SupportCardIDList [(int)element - 1] != cardId) {
             this._SupportCardIDList [(int)element - 1] = cardId;
             this._IsSupportCardListModfiy = true;
         } else {

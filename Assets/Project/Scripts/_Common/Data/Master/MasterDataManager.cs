@@ -31,7 +31,9 @@ public static class MasterDataManager
     {
         _IsReady = false;
 
+
         MasterDataPath = DLCManager.GetDownloadPath (DLCManager.DLC_FOLDER.Master, MasterDataFileName);
+		Debug.Log (MasterDataPath);
         DLCManager.DownloadFile (DLCManager.DLC_FOLDER.Master, MasterDataFileName, 
             (result) => {
                 _IsReady = true;
@@ -47,16 +49,16 @@ public static class MasterDataManager
                 return refObj.Target as T;
             }
         }
-            
+
         // assetBundleがnullであればロードする。
         var assetBundle = DLCManager.AssetBundleFromFile(MasterDataPath);
+
         if (assetBundle == null) {
             return null;
         }
         var masterData = assetBundle.assetbundle.LoadAsset<T> (masterName);
         // この関数ないでloadされていた場合は後片付け。
         assetBundle.Unload (false);
-
         refs [masterName] = new WeakReference (masterData);
         return masterData;
     }
@@ -70,13 +72,6 @@ public static class MasterDataManager
                 return;
             }
         }
-#if USE_LOCAL_DATA
-        var assetBundle = DLCManager.AssetBundleFromFile(DLCManager.DLC_FOLDER.Master, partitionName);
-        T obj = assetBundle.assetbundle.LoadAsset<T>(partitionName);
-        refs [partitionName] = new WeakReference (obj);
-        didLoad(obj);
-        assetBundle.Unload(false);
-#else
         DLCManager.AssetBundleFromDownloadOrCache(DLCManager.DLC_FOLDER.Master, partitionName,
             (assetBundle) => {
                 T obj = assetBundle.assetbundle.LoadAsset<T>(partitionName);
@@ -87,6 +82,5 @@ public static class MasterDataManager
                 assetBundle.Unload(false);
             }
         );
-#endif
     }
 }

@@ -22,10 +22,10 @@ namespace SmileLab.Net.API
 				offset += MessagePackBinary.WriteMapHeader (ref bytes, offset, 3);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "ResultCode");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.ResultCode);
-				offset += MessagePackBinary.WriteString (ref bytes, offset, "ErrorMessage");
-				offset += MessagePackBinary.WriteString(ref bytes, offset, value.ErrorMessage);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "MasterVersion");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.MasterVersion);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "ErrorMessage");
+				offset += MessagePackBinary.WriteString(ref bytes, offset, value.ErrorMessage);
 				return offset - startOffset;
 			}
 
@@ -50,13 +50,13 @@ namespace SmileLab.Net.API
 						offset += readed;
 						isRead = true;
 					}
-					if (key == "ErrorMessage") {
-						ret.ErrorMessage = MessagePackBinary.ReadString(bytes, offset, out readed);
+					if (key == "MasterVersion") {
+						ret.MasterVersion = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
 						isRead = true;
 					}
-					if (key == "MasterVersion") {
-						ret.MasterVersion = MessagePackBinary.ReadInt32(bytes, offset, out readed);
+					if (key == "ErrorMessage") {
+						ret.ErrorMessage = MessagePackBinary.ReadString(bytes, offset, out readed);
 						offset += readed;
 						isRead = true;
 					}

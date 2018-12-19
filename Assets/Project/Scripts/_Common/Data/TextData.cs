@@ -27,6 +27,12 @@ public static class TextData {
         return text.Text;
     }
 
+    public static string GetText(string keyword, string defaultText)
+	{
+		var text = GetText( keyword );
+		return !string.IsNullOrEmpty( text ) ? text : defaultText;
+	}
+
     /// <summary>
     /// キャッシュしているマスターのテーブル情報をクリアする。
     /// </summary>

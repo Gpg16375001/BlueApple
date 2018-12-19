@@ -31,7 +31,8 @@ namespace SmileLab.Net
             }
         }
         private static float timeOutTime = -1f;
-        private static readonly float TIME_TIMEOUT_DEFAULT = 20f;
+        // サーバー側のタイムアウトが29秒なので
+        private static readonly float TIME_TIMEOUT_DEFAULT = 35f;
 
         // retry回数
         public static int RetryCount

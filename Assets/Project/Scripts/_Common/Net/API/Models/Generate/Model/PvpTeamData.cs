@@ -19,13 +19,13 @@ namespace SmileLab.Net.API
 		public int TotalOverallIndex;
 		public int RivalStrength;
 		public int GainWinningPoint;
+		public int WinningPoint;
 		public int FormationId;
 		public int FormationLevel;
 		public int RankCorrectionPercentage;
 		public int ContestId;
 		public int WinCount;
 		public int LoseCount;
-		public int WinningPoint;
 
 		class PvpTeamDataFormatter : IMessagePackFormatter<PvpTeamData>
 		{
@@ -80,6 +80,8 @@ namespace SmileLab.Net.API
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.RivalStrength);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "GainWinningPoint");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GainWinningPoint);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "WinningPoint");
+				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.WinningPoint);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "FormationId");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.FormationId);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "FormationLevel");
@@ -92,8 +94,6 @@ namespace SmileLab.Net.API
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.WinCount);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "LoseCount");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.LoseCount);
-				offset += MessagePackBinary.WriteString (ref bytes, offset, "WinningPoint");
-				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.WinningPoint);
 				return offset - startOffset;
 			}
 
@@ -188,6 +188,11 @@ namespace SmileLab.Net.API
 						offset += readed;
 						isRead = true;
 					}
+					if (key == "WinningPoint") {
+						ret.WinningPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
 					if (key == "FormationId") {
 						ret.FormationId = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
@@ -215,11 +220,6 @@ namespace SmileLab.Net.API
 					}
 					if (key == "LoseCount") {
 						ret.LoseCount = MessagePackBinary.ReadInt32(bytes, offset, out readed);
-						offset += readed;
-						isRead = true;
-					}
-					if (key == "WinningPoint") {
-						ret.WinningPoint = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
 						isRead = true;
 					}

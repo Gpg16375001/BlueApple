@@ -41,6 +41,13 @@ public class ListItem_MyPageNotes : ViewBase
 		View_WebView.Open(DLCManager.AddUrlMasterVersion(m_info.url));
 		AwsModule.NotesModifiedData.ConrirmedData(m_info);
 	}
+	
+	public static View_WebView DisplayItem( CommonNotice info )
+	{
+		var view = View_WebView.Open( DLCManager.AddUrlMasterVersion( info.url ) );
+		AwsModule.NotesModifiedData.ConrirmedData( info );
+		return view;
+	}
 
 	private CommonNotice m_info;
 	private Action<CommonNotice> m_didTap;   

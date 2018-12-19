@@ -81,9 +81,15 @@ public class View_BattleResult : ViewBase
         }
 
         if (questResult.GainEventPoint > 0) {
+			// eventIdの取得
+			var current = AwsModule.ProgressData.CurrentQuest;
+			int eventId = 1;
+			if(current.QuestType == 6){
+				eventId = MasterDataTable.event_quest_stage_details [current.ID].EventQuestData.id;
+			}
             go = GameObjectEx.LoadAndCreateObject("Battle/View_BattleEventRewardPop", rootObj);
             var viewEvent = go.GetOrAddComponent<MiniView_BattleEventResult>();
-            viewEvent.Init(count++, questResult);
+			viewEvent.Init(count++, eventId, questResult);
             go.SetActive(false);
             pages.Add(viewEvent);
         }

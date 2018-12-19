@@ -45,7 +45,7 @@ public class View_PlayerMenu : ViewBase
     /// <summary>
 	/// Event : プロフィール画面閉じ後のイベント.ホームキャラクター切り替え時はカードデータ付与.
     /// </summary>
-	public static event Action<bool,CardData> DidCloseUserProfile;
+	public static event Action<bool> DidCloseUserProfile;
 
     /// <summary>
     /// 自身の全ボタンの有効/無効設定.
@@ -69,6 +69,7 @@ public class View_PlayerMenu : ViewBase
 			if (instance.m_BackButton != null) {
 				instance.m_BackButton.gameObject.SetActive(value);
 				instance.m_HomeCharacter.gameObject.SetActive(!value);
+				instance.m_HomeSubMenu.gameObject.SetActive(!value);
             }
 		}
 	}
@@ -89,7 +90,34 @@ public class View_PlayerMenu : ViewBase
 
         return instance;
     }
-        
+
+	public static void Setup(bool? isDisp=null)
+	{
+		if( instance != null ) {
+			if( isDisp == null ) {
+				messageGemFlow = null;
+				instance.GetScript<RectTransform>("bt_FirstTimeDiscount").gameObject.SetActive( false );
+				View_GemShop.CheckDiscount( ( message ) => {
+					messageGemFlow = message;
+					if( !string.IsNullOrEmpty(messageGemFlow) ) {
+						instance.SetCanvasCustomButtonMsg("bt_FirstTimeDiscount", instance.DidTapGemShop, true, true);
+						instance.GetScript<RectTransform>("bt_FirstTimeDiscount").gameObject.SetActive( true );
+						instance.GetScript<TextMeshProUGUI>("bt_FirstTimeDiscount/txtp_Discount").text = messageGemFlow;
+					}
+				} );
+			}else{
+				instance.GetScript<RectTransform>("bt_FirstTimeDiscount").gameObject.SetActive( (bool)isDisp && !string.IsNullOrEmpty(messageGemFlow) );
+			}
+		}
+	}
+
+	private static string messageGemFlow;
+	public static string MessageGemFlow {
+		get {
+			return (instance == null) ? null : messageGemFlow;
+		}
+	}
+
     /// <summary>
     /// Updates the view.
     /// </summary>
@@ -121,11 +149,17 @@ public class View_PlayerMenu : ViewBase
         m_HomeBg = GetScript<RectTransform> ("img_PlayerMenuBase").gameObject;
         m_HomeBg.SetActive (true);
 		m_HomeCharacter = GetScript<RectTransform>("HomeCharacter");
+		m_HomeSubMenu = GetScript<RectTransform>("LeftButton");
 		SetCanvasCustomButtonMsg("bt_Back", DidTapBack);
 		this.SetCanvasCustomButtonMsg("bt_HomeCharacter", DidTapCharacter);
 		this.SetCanvasCustomButtonMsg("Coin/img_PlayerHeaderFrame", DidTapCoinShop);
         this.SetCanvasCustomButtonMsg("Gem/img_PlayerHeaderFrame", DidTapGemShop);
         this.SetCanvasCustomButtonMsg ("AP/img_PlayerHeaderFrame", DidTapAPHeal);      
+
+		m_HomeSubMenu.gameObject.SetActive( true );
+		this.SetCanvasCustomButtonMsg("LeftButton/bt_CharaChange", DidTapCharacterChange);
+		this.SetCanvasCustomButtonMsg("LeftButton/bt_Community", DidTapCommunity);
+        this.SetCanvasCustomButtonMsg("LeftButton/bt_ItemList", DidItemList);
 
         UpdateView (AwsModule.UserData.UserData);
 
@@ -166,6 +200,7 @@ public class View_PlayerMenu : ViewBase
             }
             m_HomeCharacter.gameObject.SetActive(isMypage);
             m_HomeBg.gameObject.SetActive(isMypage);
+			m_HomeSubMenu.gameObject.SetActive(isMypage);
         }
     }
     // コールバック：シーン切り替え直後
@@ -176,6 +211,13 @@ public class View_PlayerMenu : ViewBase
         DidTapBackButton = null;
 		WillOpenProfile = null;
         DidCloseUserProfile = null;
+
+		//ジェム購入促しの表示
+		if( sceneName == "MyPage" || sceneName == "Shop" ) {
+			Setup( true );
+		}else{
+			Setup( false );
+		}
 
         AndroidBackButton.SetEventInThisScene (DidBackButton, false);
     }
@@ -206,14 +248,38 @@ public class View_PlayerMenu : ViewBase
         if(WillOpenProfile != null){
             WillOpenProfile();
         }
-        m_infoPop = View_PlayerInfoPop.Create((bEnd, card) => {
+        m_infoPop = View_PlayerInfoPop.Create((bEnd) => {
             if(DidCloseUserProfile != null) {
-                DidCloseUserProfile(bEnd,card);
+                DidCloseUserProfile(bEnd);
             }
         });
     }
 
+	void DidTapCharacterChange()
+	{
+		View_PlayerInfoPop.CharacterChange( null, () => ScreenChanger.SharedInstance.GoToMyPage() );
+	}
+
+	void DidTapCommunity()
+	{
+        if(m_communityPop != null){
+            return;
+        }
+        m_communityPop = View_CommunityPop.Create();
+	}
+        
+    void DidItemList()
+    {
+        View_FadePanel.SharedInstance.FadeOutWithLoadingAnim (
+            View_FadePanel.FadeColor.Black, 
+            () => {
+                ScreenChanger.SharedInstance.GoToItemList ();
+            }
+        );
+    }
+
 	private View_PlayerInfoPop m_infoPop;
+	private View_CommunityPop m_communityPop;
 
     // ボタン：クレドショップ
     void DidTapCoinShop()
@@ -221,7 +287,7 @@ public class View_PlayerMenu : ViewBase
 		View_CoinShop.Create();
 	}
 
-    void DidTapGemShop()
+    public void DidTapGemShop()
     {
         // 年齢確認Popup
         View_GemShop.OpenGemShop();
@@ -243,9 +309,11 @@ public class View_PlayerMenu : ViewBase
  
 	private CustomButton m_BackButton;
 	private RectTransform m_HomeCharacter;
+	private RectTransform m_HomeSubMenu;
     private GameObject m_OtherBg;
     private GameObject m_HomeBg;
     private Image[] m_PageTitleImages;
     int prevActionPoint = 0;
     private static View_PlayerMenu instance = null;
+    public static View_PlayerMenu Instance { get { return instance; } }
 }

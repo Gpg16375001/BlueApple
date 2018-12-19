@@ -22,15 +22,13 @@ public class TitleSController : ScreenControllerBase
     //>通信リクエスト：ユーザーログイン.必要であれば新規登録.
     private void RequestUserLogin(Action<bool> didConnectEnd)
     {
-        var localData = AwsModule.UserData;
-        if(localData.IsExistAcount) {
+        if(AwsModule.UserData.IsExistAcount) {
             // ユーザー認証
 			AwsModule.Request.RequestUserAuth(bSuccess => {
 				// チュートリアル中であればブート段階で必要アセットのDLを行う.
 				if (AwsModule.ProgressData.TutorialStageNum >= 0 && AwsModule.ProgressData.TutorialStageNum <= 2) {
                     TutorialResourceDownloader.RequestGacha();
                 }
-
 				didConnectEnd(bSuccess);
 			});
         } else {
@@ -42,17 +40,19 @@ public class TitleSController : ScreenControllerBase
                         return; // エラー.
                     }
 
+                    AwsModule.ClearDataset ();
+
                     // インストールイベントの通知
                     AdjustEvent adjustEvent = new AdjustEvent("cmmzeh");
                     adjustEvent.addCallbackParameter("uid", res.UserId.ToString());
                     Adjust.trackEvent(adjustEvent);
 
-                    localData.UserID = (uint)res.UserId;
-                    localData.CustomerID = res.CustomerId;
-					localData.SetAuthUserInfo(res.AuthUsername, res.AuthPassword);
+                    AwsModule.UserData.UserID = (uint)res.UserId;
+                    AwsModule.UserData.CustomerID = res.CustomerId;
+                    AwsModule.UserData.SetAuthUserInfo(res.AuthUsername, res.AuthPassword);
                     AwsModule.Request.RequestUserAuth(
                         (ret) => {
-                            localData.Sync(
+                            AwsModule.UserData.Sync(
                                 (success, sender, e) => {                           
                                     // ユーザー認証へ.
                                     didConnectEnd(ret);
@@ -60,8 +60,9 @@ public class TitleSController : ScreenControllerBase
                             );
 
 							// チュートリアル中であればブート段階で必要アセットのDLを行う.
+                            Debug.Log(AwsModule.ProgressData.TutorialStageNum);
     						if (AwsModule.ProgressData.TutorialStageNum >= 0 && AwsModule.ProgressData.TutorialStageNum <= 2) {
-                                    TutorialResourceDownloader.RequestGacha();
+                                TutorialResourceDownloader.RequestGacha();
                             }
                         }
                     );

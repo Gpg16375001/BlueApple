@@ -80,6 +80,10 @@ public partial class CharaMaterial
     // ロール
     public CardRoleEnum? role;
 
+    // 説明テキスト
+    [SerializeField]
+    public string flavor_text;
+
 
     // 初期化関数をpartial化して拡張できるようにする。
     partial void InitExtension();

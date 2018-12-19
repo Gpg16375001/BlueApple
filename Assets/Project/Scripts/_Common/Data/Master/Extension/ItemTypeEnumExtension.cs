@@ -7,28 +7,37 @@ public static class ItemTypeEnumExtension {
 
     public static string GetName(this ItemTypeEnum type, int id)
     {
-        switch (type) {
-        case ItemTypeEnum.card:
-			return MasterDataTable.card[id].nickname;
-        case ItemTypeEnum.money:
-		case ItemTypeEnum.pvp_medal:
-        case ItemTypeEnum.free_gem:
-        case ItemTypeEnum.paid_gem:
-        case ItemTypeEnum.weapon_exp:
-        case ItemTypeEnum.card_exp:
-        case ItemTypeEnum.event_point:
-            return MasterDataTable.item_type.DataList.Find(i => i.Enum == type).display_name;
-        case ItemTypeEnum.formation:
-            return MasterDataTable.formation[id].name;
-        case ItemTypeEnum.weapon:
-            return MasterDataTable.weapon[id].name;
-        case ItemTypeEnum.magikite:
-            return MasterDataTable.magikite[id].name;
-		case ItemTypeEnum.consumer:
-            return MasterDataTable.consumer_item[id].name;    // TODO
-        case ItemTypeEnum.material:
-            return MasterDataTable.chara_material[id].name;
-        }
+		try {
+	        switch (type) {
+	        case ItemTypeEnum.card:
+				return MasterDataTable.card[id].nickname;
+	        case ItemTypeEnum.money:
+			case ItemTypeEnum.pvp_medal:
+	        case ItemTypeEnum.free_gem:
+	        case ItemTypeEnum.paid_gem:
+	        case ItemTypeEnum.weapon_exp:
+	        case ItemTypeEnum.card_exp:
+	            return MasterDataTable.item_type.DataList.Find(i => i.Enum == type).display_name;
+			case ItemTypeEnum.event_point:
+                if(MasterDataTable.event_quest_point_name != null) {
+				    return MasterDataTable.event_quest_point_name [id].point_name;
+                }
+                return MasterDataTable.item_type.DataList.Find(i => i.Enum == type).display_name;
+	        case ItemTypeEnum.formation:
+	            return MasterDataTable.formation[id].name;
+	        case ItemTypeEnum.weapon:
+	            return MasterDataTable.weapon[id].name;
+	        case ItemTypeEnum.magikite:
+	            return MasterDataTable.magikite[id].name;
+			case ItemTypeEnum.consumer:
+	            return MasterDataTable.consumer_item[id].name;    // TODO
+	        case ItemTypeEnum.material:
+	            return MasterDataTable.chara_material[id].name;
+	        }
+		} catch (System.Exception e) {
+			// 通知だけして例外は無視する
+			Debug.LogException (e);
+		}
         return string.Empty;
     }
 
@@ -86,6 +95,8 @@ public static class ItemTypeEnumExtension {
                 return iconName+"PVPMedal";
             case ItemTypeEnum.event_point:
                 return iconName+"EventPoint";
+            case ItemTypeEnum.friend_point:
+                return iconName+"FriendPoint";
         }
         return null;
     }
@@ -116,7 +127,12 @@ public static class ItemTypeEnumExtension {
             case ItemTypeEnum.free_gem:
 				return new ItemIconInfo { AtlasName = "CurrencyIcon", SpriteName = "IconGem" };
             case ItemTypeEnum.event_point:
-                return new ItemIconInfo { AtlasName = "CurrencyIcon", SpriteName = "IconEventPoint" };
+				{
+					ItemIconInfo info = new ItemIconInfo();
+					info.IconObject = GameObjectEx.LoadAndCreateObject("_Common/View/ListItem_EventQuestPointIcon");
+					info.IconObject.GetOrAddComponent<ListItem_EventQuestPointIcon>().Init(id);
+					return info;
+				}
             case ItemTypeEnum.material: // 素材
                 {
 					ItemIconInfo info = new ItemIconInfo();
@@ -142,7 +158,13 @@ public static class ItemTypeEnumExtension {
                     info.IconObject.GetOrAddComponent<ListItem_ConsumerIcon>().Init(id);
                     return info;
                 }
-
+            case ItemTypeEnum.friend_point:
+                {
+                    ItemIconInfo info = new ItemIconInfo { AtlasName = "CurrencyIcon", SpriteName = "IconFriendPoint" };
+                    var loadAtlas = Resources.Load("Atlases/"+ info.AtlasName) as UnityEngine.U2D.SpriteAtlas;
+                    info.IconSprite = loadAtlas.GetSprite(info.SpriteName);
+                    return info;
+                }
         }
 		return new ItemIconInfo();
     }
@@ -155,6 +177,8 @@ public struct ItemIconInfo
 
     public string AtlasName;
     public string SpriteName;
+
+	public Sprite IconSprite;
 
     /// <summary>スプライト情報があればnull.アイコンGameObject.</summary>
     public GameObject IconObject;

@@ -26,6 +26,9 @@ public class View_GemShop : PopupViewBase {
     private static View_GemShop instance;
     public static View_GemShop Create()
     {
+        AwsModule.LocalData.IsOpenedGemshop = true;
+		View_PlayerMenu.Setup();	//ジェム誘導更新
+
         if(instance != null){
             instance.Dispose();
         }
@@ -35,6 +38,54 @@ public class View_GemShop : PopupViewBase {
         return instance;
     }
 
+	public static void CheckDiscount( System.Action<string> proc )
+	{
+		if( MasterDataTable.gem_recommended != null ) {
+			var recommended = MasterDataTable.gem_recommended.GetRecommended();
+			if( recommended != null ) {
+				switch( recommended.type ) {
+					case GemRecommendedEnum.Discount:
+						if( AwsModule.LocalData.IsOpenedGemshop )
+							return;
+
+						if( checkPaymentsGetProductList == false ) {
+							checkPaymentsGetProductList = true;
+							SendAPI.PaymentsGetProductList( (result, response) => {
+								if( result && (response != null) ) {
+									GemProductData[] productDataList = response.GemProductDataList;
+									var skuItems = PurchaseManager.SharedInstance.SkuItems;
+									if( skuItems != null ) {
+										skuItems = skuItems.OrderBy (x => x.price).ToList();
+										List<BonusGem> list = new List<BonusGem>();
+										skuItems.ForEach( item => {
+											var storeSetting = MasterDataTable.gem_store_setting.DataList.FirstOrDefault(x => x.store_product_id == item.productID);
+											var severData = productDataList.FirstOrDefault (x => x.GemProductId == storeSetting.app_product_id);
+											var bonusData = MasterDataTable.bonus_gem [severData.BonusId];
+											if( !string.IsNullOrEmpty( bonusData.catch_copy ) )
+												list.Add( bonusData );
+										} );
+										if( list.Count == skuItems.Count ) {
+											proc( recommended.message );
+											saveDisplayDiscount = true;
+										}else{
+											AwsModule.LocalData.IsOpenedGemshop = true;	//過去に開いているとみなす
+										}
+									}
+								}
+							} );
+						}else{
+							if( saveDisplayDiscount ) {
+								proc( recommended.message );
+							}
+						}
+						break;
+					case GemRecommendedEnum.Free:
+						proc( recommended.message );
+						break;
+				}
+			}
+		}
+	}
 
     public override void Dispose ()
     {
@@ -187,6 +238,13 @@ public class View_GemShop : PopupViewBase {
         PopupManager.OpenPopupOkWithScroll(info.text, null, menu.name);
     }
 
+	static bool saveDisplayDiscount;
+	static bool checkPaymentsGetProductList;
+	public static void Reset()
+	{
+		saveDisplayDiscount = false;
+		checkPaymentsGetProductList = false;
+	}
 
     GemMonthryLimitation monthlyLimitation;
 }

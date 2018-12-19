@@ -101,6 +101,17 @@ public class View_BattleSupportFollowPop : PopupViewBase {
             return;
         }
 
+        var max = MasterDataTable.user_level[AwsModule.UserData.UserData.Level].follower_max;
+        if(m_Suppoter.FollowerCount >= max){
+            PopupManager.OpenPopupOK("相手の"+TextData.GetText("FOLLOWER_USER_FULL"));
+            return;
+        }
+        max = MasterDataTable.user_level[AwsModule.UserData.UserData.Level].follow_max;
+        if(AwsModule.UserData.UserData.FollowCount >= max){
+            PopupManager.OpenPopupOK("自分の"+TextData.GetText("FOLLOW_USER_FULL"));
+            return;
+        }
+
         LockInputManager.SharedInstance.IsLock = true;
         View_FadePanel.SharedInstance.IsLightLoading = true;
         SendAPI.UsersFollowUser (m_SuppoterUserID,

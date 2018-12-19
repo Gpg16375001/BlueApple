@@ -14,9 +14,9 @@ namespace SmileLab.Net.API
 		public int GachaProductId;
 		public int GachaId;
 		public int GachaItemId;
+		public int ItemId;
 		public int GachaGroupId;
 		public int ItemType;
-		public int ItemId;
 		public int Quantity;
 		public bool IsNew;
 		public int ConvertedItemType;
@@ -41,12 +41,12 @@ namespace SmileLab.Net.API
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GachaId);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "GachaItemId");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GachaItemId);
+				offset += MessagePackBinary.WriteString (ref bytes, offset, "ItemId");
+				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.ItemId);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "GachaGroupId");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.GachaGroupId);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "ItemType");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.ItemType);
-				offset += MessagePackBinary.WriteString (ref bytes, offset, "ItemId");
-				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.ItemId);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "Quantity");
 				offset += MessagePackBinary.WriteInt32(ref bytes, offset, value.Quantity);
 				offset += MessagePackBinary.WriteString (ref bytes, offset, "IsNew");
@@ -109,6 +109,11 @@ namespace SmileLab.Net.API
 						offset += readed;
 						isRead = true;
 					}
+					if (key == "ItemId") {
+						ret.ItemId = MessagePackBinary.ReadInt32(bytes, offset, out readed);
+						offset += readed;
+						isRead = true;
+					}
 					if (key == "GachaGroupId") {
 						ret.GachaGroupId = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
@@ -116,11 +121,6 @@ namespace SmileLab.Net.API
 					}
 					if (key == "ItemType") {
 						ret.ItemType = MessagePackBinary.ReadInt32(bytes, offset, out readed);
-						offset += readed;
-						isRead = true;
-					}
-					if (key == "ItemId") {
-						ret.ItemId = MessagePackBinary.ReadInt32(bytes, offset, out readed);
 						offset += readed;
 						isRead = true;
 					}

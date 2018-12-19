@@ -51,6 +51,12 @@ public class View_WebView : ViewBase {
             m_WebViewObject = GetScript<WebViewObject>("WebView");
             m_WebViewObject.Init(
                 (str) => {
+                    try {
+                        TapWebViewLink(str);
+                    }
+                    catch {
+                        Debug.LogFormat("WebView Callback Err: {0}", str);
+                    }
                 },
                 err: (str) => {
                     Debug.LogErrorFormat("WebView Err: {0}", str);
@@ -73,6 +79,28 @@ public class View_WebView : ViewBase {
             m_WebViewObject.LoadURL(url);
             m_WebViewObject.SetVisibility(true);
         }
+    }
+
+    void TapWebViewLink(string message)
+    {
+        if (string.IsNullOrEmpty (message)) {
+            Debug.Log ("Message Is NULL");
+            return;
+        }
+
+        var parameters = message.Split ('|');
+        int enumIndex = 0;
+
+        if (parameters == null || parameters.Length == 0) {
+            Debug.Log ("データが不正です");
+            return;
+        } else if (!int.TryParse (parameters [0], out enumIndex)) {
+            Debug.Log ("データが不正です");
+            return;
+        }
+
+        var transitionEnum = (ApplicationTransitionEnum)enumIndex;
+        transitionEnum.Transition (parameters);
     }
 
     void DidTapCloseWebView()

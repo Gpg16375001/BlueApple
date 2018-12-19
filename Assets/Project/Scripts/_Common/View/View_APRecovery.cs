@@ -12,7 +12,7 @@ public class View_APRecovery : PopupViewBase {
     public static View_APRecovery Create()
     {
         int level = MasterDataTable.user_level.GetLevel(AwsModule.UserData.UserData.Exp);
-        if (AwsModule.UserData.UserData.ActionPoint >= MasterDataTable.user_level.GetMaxAp (level)) {
+		if (AwsModule.UserData.UserData.ActionPoint >= MasterDataTable.user_level.GetMaxAp (level)) {
             PopupManager.OpenPopupSystemOK ("APは最大です。");
             return null;
         }
@@ -25,34 +25,67 @@ public class View_APRecovery : PopupViewBase {
 
     private void InitInternal()
     {
-        var apRecoveryItems = MasterDataTable.consumer_item.DataList.Where (x => x.sub_type == "AP回復薬").ToArray();
+		View_FadePanel.SharedInstance.IsLightLoading = true;
+		LockInputManager.SharedInstance.IsLock = true;
+		IsInit = false;
 
-        SetLimitTime ();
+		var obj = GetScript<RectTransform> ("AnimParts");
+		obj.gameObject.SetActive (false);
+		SendAPI.UsersGetUserData(new int [1] {AwsModule.UserData.UserData.UserId},
+			(success, response) => {
+				View_FadePanel.SharedInstance.IsLightLoading = false;
+				LockInputManager.SharedInstance.IsLock = false;
+				if(!success) {
+					Dispose();
+					return;
+				}
 
-        // 回復アイテムの登録
-        var GridObj = GetScript<RectTransform>("ItemGrid").gameObject;
-        foreach (var item in apRecoveryItems) {
-            var consumerData = ConsumerData.CacheGet (item.index);
-            int count = consumerData != null ? consumerData.Count : 0;
+				var userData = response.UserDataList.FirstOrDefault(x => x.UserId == AwsModule.UserData.UserData.UserId);
+				if(userData == null) {
+					Dispose();
+					return;
+				}
 
-            if (count > 0) {
-                var go = GameObjectEx.LoadAndCreateObject ("_Common/View/ListItem_PointRecoveryItem", GridObj);
-                var behaviour = go.GetOrAddComponent<ListItem_PointRecoveryItem> ();
-                behaviour.Init (UserPointTypeEnum.AP, item, count, DidHeal);
-            }
-        }
 
-        // ジェム回復の登録
-        {
-            var go = GameObjectEx.LoadAndCreateObject ("_Common/View/ListItem_PointRecoveryItem", GridObj);
-            var behaviour = go.GetOrAddComponent<ListItem_PointRecoveryItem> ();
-            behaviour.Init (UserPointTypeEnum.AP, 5, DidHeal);
-        }
+				obj.gameObject.SetActive (true);
+				// UserDataの更新
+				AwsModule.UserData.UserData = userData;
+				int level = MasterDataTable.user_level.GetLevel(AwsModule.UserData.UserData.Exp);
+				if (AwsModule.UserData.ActionPoint >= MasterDataTable.user_level.GetMaxAp (level)) {
+					PopupManager.OpenPopupSystemOK ("APは最大です。");
+					return;
+				}
+				IsInit = true;
 
-        SetCanvasCustomButtonMsg ("bt_Close", DidTapClose);
-        SetBackButton ();
+		        var apRecoveryItems = MasterDataTable.consumer_item.DataList.Where (x => x.sub_type == "AP回復薬").ToArray();
+		        SetLimitTime ();
 
-        PlayOpenCloseAnimation (true);
+		        // 回復アイテムの登録
+		        var GridObj = GetScript<RectTransform>("ItemGrid").gameObject;
+		        foreach (var item in apRecoveryItems) {
+		            var consumerData = ConsumerData.CacheGet (item.index);
+		            int count = consumerData != null ? consumerData.Count : 0;
+
+		            if (count > 0) {
+		                var go = GameObjectEx.LoadAndCreateObject ("_Common/View/ListItem_PointRecoveryItem", GridObj);
+		                var behaviour = go.GetOrAddComponent<ListItem_PointRecoveryItem> ();
+		                behaviour.Init (UserPointTypeEnum.AP, item, count, DidHeal);
+		            }
+		        }
+
+		        // ジェム回復の登録
+		        {
+		            var go = GameObjectEx.LoadAndCreateObject ("_Common/View/ListItem_PointRecoveryItem", GridObj);
+		            var behaviour = go.GetOrAddComponent<ListItem_PointRecoveryItem> ();
+					behaviour.Init (UserPointTypeEnum.AP, AwsModule.UserData.UserData.ActionPointHealCost, DidHeal);
+		        }
+
+		        SetCanvasCustomButtonMsg ("bt_Close", DidTapClose);
+		        SetBackButton ();
+
+		        PlayOpenCloseAnimation (true);
+			}
+		);
     }
 
     protected override void DidBackButton ()
@@ -62,6 +95,9 @@ public class View_APRecovery : PopupViewBase {
 
     void SetLimitTime()
     {
+		if (!IsInit) {
+			return;
+		}
         var fullRecoveryTime = Mathf.Max(0, AwsModule.UserData.ActionPointTimeToFull);
         var recoveryTime = MasterDataTable.userpoint_recovery_time[UserPointTypeEnum.AP].recovery_time;
         // 1回復までの時間表示
@@ -96,4 +132,6 @@ public class View_APRecovery : PopupViewBase {
     {
         SetLimitTime ();
     }
+
+	private bool IsInit = false;
 }
